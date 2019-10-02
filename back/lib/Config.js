@@ -9,7 +9,10 @@ module.exports = class {
 
         for (let k in conf) this [k] = conf [k]
                 
-        this.pools = {db: this.setup_db ()}
+        this.pools = {
+        	db       : this.setup_db (),
+            sessions : this.setup_sessions (),
+        }
 
     }
 
@@ -18,6 +21,15 @@ module.exports = class {
         let model = new (require ('./Model.js')) ({path: './Model'})
 
         return Dia.DB.Pool (this.db, model)
+
+    }
+    
+    setup_sessions () {
+    
+        return new Dia.Cache ({
+        	name: 'session',
+        	ttl : this.auth.sessions.timeout * 60 * 1000,
+        })
 
     }
 

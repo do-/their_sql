@@ -1,4 +1,5 @@
 const Dia = require ('./Ext/Dia/Dia.js')
+const CachedCookieSession = require ('./Ext/Dia/Content/Handler/HTTP/Session/CachedCookieSession.js')
 
 let HTTP_handler = class extends Dia.HTTP.Handler {
 
@@ -7,79 +8,15 @@ let HTTP_handler = class extends Dia.HTTP.Handler {
         let m = this.http.request.method
         if (m != 'POST') throw '405 No ' + m + 's please'
     }
-    
-    check_params () {
-        super.check ()
-        let h = this.http.request.headers
-        let rq = this.rq
-        this.uri = `${h.scheme}://${h.host}/${rq.type}/`
-        if (rq.id) this.uri += rq.id
-    }
 
     get_session () {
 
-        return new class extends this.CookieSession {
+    	let h = this
+    	let p = h.pools
 
-            async start () {
-            
-                super.start ()
-                
-                await this.h.db.do ("DELETE FROM sessions WHERE id_user = ?", [this.user.uuid])
-
-                return this.h.db.insert ('sessions', {
-                    id_user       : this.user.uuid,
-                    ts            : new Date (),
-                    uuid          : this.id,                    
-                })
-                
-            }
-            
-            async finish () {            
-                super.finish ()                
-                return this.h.db.do ('DELETE FROM sessions WHERE uuid = ?', [this.old_id])
-            }
-            
-            restrict_access () {
-                let rq = this.h.rq
-                if (rq.type != 'sessions' && rq.action != 'create') throw '401 Authenticate first'
-                return undefined
-            }
-            
-            keep_alive () {            
-                setImmediate (() => 
-                    this.h.db.do ('UPDATE sessions SET ts = ? WHERE uuid = ?', [new Date (), this.id])
-                )
-            }
-
-            async get_user () {
-
-                if (!this.id) return this.restrict_access ()
-                
-                let ts = new Date ()
-                ts.setMinutes (ts.getMinutes () - this.o.timeout - 1)
-
-                let r = await this.h.db.get ([                
-                    {sessions: {
-                        uuid:    this.id,
-                        'ts >=': ts,
-                    }},
-                    {'$users (uuid, label)': {is_deleted: 0}}, 
-                    'roles (name)'
-                ])
-
-                if (!r.uuid) return this.restrict_access ()
-                
-                this.keep_alive ()
-
-                return {
-                    uuid: r ['users.uuid'], 
-                    label: r ['users.label'], 
-                    role: r ['roles.name']
-                }
-
-            }
-            
-            async password_hash (salt, password) {
+    	return new class extends CachedCookieSession {
+			
+			async password_hash (salt, password) {
             
                 const fs     = require ('fs')
                 const crypto = require ('crypto')
@@ -102,20 +39,17 @@ let HTTP_handler = class extends Dia.HTTP.Handler {
 
             }
 
-        } ({
-            cookie_name: this.conf.auth.sessions.cookie_name || 'sid',
-            timeout: this.conf.auth.sessions.timeout || 10,
-        })
-        
+    	} (h, {
+    		sessions:    p.sessions,
+    		cookie_name: h.conf.auth.sessions.cookie_name || 'sid',
+    	})
+
     }
-    
-    async get_user () {
-        let user = await super.get_user ()
-        if (!this.is_transactional () || !user) return user
-        await this.db.do ("SELECT set_config ('tasks.id_user', ?, true)", [user.uuid])
-        return user
+
+    is_anonymous () {
+        return this.rq.type == 'sessions' && this.rq.action == 'create'
     }
-    
+
     get_method_name () {
         let rq = this.rq
         if (rq.part)   return 'get_' + rq.part + '_of_' + rq.type
@@ -149,7 +83,7 @@ module.exports.create_http_server = function (conf) {
             
                 conf, 
                 
-                pools: {db: conf.pools.db}, 
+                pools: conf.pools, 
                 
                 http: {request, response}
                 

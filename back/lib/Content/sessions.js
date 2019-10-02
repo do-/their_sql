@@ -9,7 +9,7 @@ do_create_sessions:
         let user = await this.db.get ([{users: {
             login: this.rq.data.login,
         }}, 'roles(name)'])
-        
+
         if (user.is_deleted) throw '#foo#: Вас пускать не велено'
                 
         if (user.uuid) {
@@ -21,14 +21,8 @@ do_create_sessions:
         else {
             return {}
         }
-
-        this.session.user = user
-        await this.session.start ()
         
-        user.role = user ['roles.name']
-        user.id = user.uuid
-        
-        user.opt = await this.db.fold ([
+		user.opt = await this.db.fold ([
 
             {'user_options()': {
                 is_on: 1,
@@ -37,9 +31,24 @@ do_create_sessions:
 
             'voc_user_options(name)'
 
-        ], (i, d) => {d [i ['voc_user_options.name']] = 1}, {})
+        ], (i, d) => {d [i ['voc_user_options.name']] = 1}, {})        
 
-        return {user, timeout: this.session.o.timeout}
+        this.session.user = user
+        
+        await this.session.start ()
+
+        return {
+
+			user: {
+				id    : user.uuid,
+				label : user.label,
+				opt   : user.opt,
+				role  : user ['roles.name'],
+			},
+
+			timeout: this.session.o.timeout,
+			
+        }
 
     },
     

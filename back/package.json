@@ -6,6 +6,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "memcached": "^2.2.2",
     "pg": "^7.0.0"
   }
 }

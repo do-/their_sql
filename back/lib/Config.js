@@ -10,25 +10,30 @@ module.exports = class {
         for (let k in conf) this [k] = conf [k]
                 
         this.pools = {
-        	db       : this.setup_db (),
+        
+        	db       : Dia.DB.Pool (this.db, new (require ('./Model.js')) ({path: './Model'})),
+        	
             sessions : this.setup_sessions (),
+            
         }
-
-    }
-
-    setup_db () {
-    
-        let model = new (require ('./Model.js')) ({path: './Model'})
-
-        return Dia.DB.Pool (this.db, model)
 
     }
     
     setup_sessions () {
-    
-        return new Dia.Cache ({
+    	
+    	let s = this.auth.sessions
+
+//  uncomment this unless memcached is available
+//    
+//      return new (require ('./Ext/Dia/Cache/MapTimer.js')) ({
+//      	name: 'session',
+//        	ttl : s.timeout * 60 * 1000,
+//      })
+        
+        return new (require ('./Ext/Dia/Cache/Memcached.js')) ({
         	name: 'session',
-        	ttl : this.auth.sessions.timeout * 60 * 1000,
+        	ttl : s.timeout * 60 * 1000,
+        	memcached: s.memcached,
         })
 
     }

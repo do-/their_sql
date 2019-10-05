@@ -31,7 +31,6 @@ module.exports = class {
 //      })
         
         return new (require ('./Ext/Dia/Cache/Memcached.js')) ({
-        	name: 'session',
         	ttl : s.timeout * 60 * 1000,
         	memcached: s.memcached,
         })

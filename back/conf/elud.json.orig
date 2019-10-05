@@ -11,7 +11,16 @@
 
         "auth": {
                 "allow_test_admin": 1,
-                "sessions": {"timeout": 30},
+                "sessions": {
+                	"timeout": 30, 
+                	"memcached": [	
+                		"127.0.0.1:11211", 
+                		{
+                			"timeout": 100,
+                			"retries": 1
+                		}
+                	]
+                },
                 "salt_file": "/etc/tasks.salt"
         }
 

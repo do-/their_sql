@@ -37,5 +37,15 @@ module.exports = class {
         })
 
     }
+    
+    async init () {
+    
+		let db = this.pools.db
+		
+		await db.load_schema ()
+		
+		await db.update_model ()
+		
+    }
 
 }

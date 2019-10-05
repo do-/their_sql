@@ -1,25 +1,26 @@
-const Content = require ('./Content.js')
+const conf = new (require ('./Config.js'));
 
-_ ()
-
-async function _ () {
-
-    let conf = new (require ('./Config.js'))
+(async function () {
     
     try {
-        await migrate (conf.pools.db)
+        await conf.init ()
     }
     catch (x) {
-        return darn (['DB MIGRATION FAILED', x])
+        return darn (['Initialization failed', x])
     }
 
-    Content.create_http_server (conf)
+    require ('http').createServer (
+        
+        (request, response) => {new (require ('./Content/Handler/WebUiBackend.js')) ({
+        
+            conf, 
+            
+            pools: conf.pools, 
+            
+            http: {request, response}
+            
+        }).run ()}
 
-}
+    ).listen (conf.listen, function () {darn ('default app is listening to HTTP at ' + this._connectionKey)})
 
-async function migrate (db) {
-
-    await db.load_schema ()
-    await db.update_model ()
-
-}
+}) ()

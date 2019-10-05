@@ -1,4 +1,5 @@
 const Dia = require ('../../Ext/Dia/Dia.js')
+const Session = require ('./HTTP/Session.js')
 
 module.exports = class extends Dia.HTTP.Handler {
     
@@ -13,32 +14,7 @@ module.exports = class extends Dia.HTTP.Handler {
     	let h = this
     	let p = h.pools
 
-    	return new class extends require ('../../Ext/Dia/Content/Handler/HTTP/Session/CachedCookieSession.js') {
-			
-			async password_hash (salt, password) {
-            
-                const fs     = require ('fs')
-                const crypto = require ('crypto')
-                const hash   = crypto.createHash ('sha256')
-                const input  = fs.createReadStream (this.h.conf.auth.salt_file)
-
-                return new Promise ((resolve, reject) => {
-
-                    input.on ('error', reject)
-
-                    input.on ('end', () => {
-                        hash.update (String (salt))
-                        hash.update (String (password), 'utf8')
-                        resolve (hash.digest ('hex'))
-                    })
-
-                    input.pipe (hash, {end: false})
-
-                })
-
-            }
-
-    	} (h, {
+    	return new Session (h, {
     		sessions:    p.sessions,
     		cookie_name: h.conf.auth.sessions.cookie_name || 'sid',
     	})

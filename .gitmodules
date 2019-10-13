@@ -7,6 +7,3 @@
 [submodule "back/lib/Ext/Dia"]
 	path = back/lib/Ext/Dia
 	url = https://github.com/do-/dia.js.git
-[submodule "back/lib/Ext/DiaW2ui"]
-	path = back/lib/Ext/DiaW2ui
-	url = https://github.com/do-/dia.js_w2ui.git

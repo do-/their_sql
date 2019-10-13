@@ -1,5 +1,6 @@
 const Dia = require ('../../Ext/Dia/Dia.js')
 const Session = require ('./HTTP/Session.js')
+const DiaW2uiFilter = require ('../../Ext/Dia/Content/Handler/HTTP/Ext/w2ui/Filter.js')
 
 module.exports = class extends Dia.HTTP.Handler {
     
@@ -32,8 +33,6 @@ module.exports = class extends Dia.HTTP.Handler {
         return (rq.id ? 'get_item_of_' : 'select_') + rq.type
     }
     
-    w2ui_filter () {
-        return new (require ('../../Ext/DiaW2ui/Filter.js')) (this.rq)
-    }
+    w2ui_filter () {return new DiaW2uiFilter (this.rq)}
 
 }

@@ -6,7 +6,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "generic-pool": "^3.7.1",
     "memcached": "^2.2.2",
-    "pg": "^7.0.0"
+    "pg": "^7.0.0",
+    "sqlite3": "^4.1.0"
   }
 }

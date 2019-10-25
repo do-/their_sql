@@ -6,6 +6,7 @@
         },
 
         "db": {
+                "_connectionString": "sqlite3://../db/test.db",
                 "connectionString": "postgresql://tmp:XXXXXX@localhost:5432/tmp"
         },
 

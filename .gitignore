@@ -1,6 +1,7 @@
 /back/conf/elud.json
 /back/lib/Updates/_shot
 /back/logs
+/back/db
 /back/node_modules/
 /front/logs
 /front/node_modules/

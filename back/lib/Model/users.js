@@ -3,7 +3,6 @@ module.exports = {
     label : 'Пользователи',
 
     columns : {
-        uuid       : 'uuid=uuid_generate_v4()',
         id_role    : '(roles)=2                                   // Роль',           
         is_deleted : 'int=0                                       // 1, если удалён', 
         label      : 'string [30] /^[А-ЯЁ][А-ЯЁа-яё \\-]+[а-яё]$/ // ФИО',

@@ -31,7 +31,7 @@ module.exports = class extends Dia.DB.Model {
             table.pk = 'id'
         } 
         else {
-            cols [table.pk = 'uuid'] = 'uuid=uuid_generate_v4()'
+            cols [table.pk = 'uuid'] = 'uuid'
         }
         
     }

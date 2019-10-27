@@ -92,7 +92,14 @@ do_set_option_users:
         if (this.user.role != 'admin') throw '#foo#:Доступ запрещён'
 
         let d = {
-            id_user: this.rq.id
+            id_user: this.rq.id,
+            uuid: Dia.new_uuid ()	// Caution! DON'T replicate this line!
+            	
+									// This is only a hack to allow dual PostreSQL / SQLite compatibility
+
+									// for PostreSQL, better decalre uuid=uuid_generate_v4()
+									// for SQLite, it mysteriously works with NULL uuids
+
         }
         
         for (let k of ['is_on', 'id_voc_user_option']) d [k] = this.rq.data [k]

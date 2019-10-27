@@ -1,6 +1,10 @@
-const conf = new (require ('./Config.js'));
+const conf = new (require ('./Config.js'))
+const pools = conf.pools
 
-(async function () {
+const back  = require ('./Content/Handler/WebUiBackend.js')
+const front = require ('./Ext/Dia/Content/Handler/HTTP/EluStatic.js')
+
+;(async function () {
     
     try {
         await conf.init ()
@@ -11,15 +15,15 @@ const conf = new (require ('./Config.js'));
 
     require ('http').createServer (
         
-        (request, response) => {new (require ('./Content/Handler/WebUiBackend.js')) ({
-        
-            conf, 
-            
-            pools: conf.pools, 
-            
-            http: {request, response}
-            
-        }).run ()}
+        (request, response) => {
+        	
+        	let http = {request, response}
+
+			let handler = request.url.match (/^\/(\?|_back)/) ? new back ({conf, pools, http}) : new front ({http})
+
+        	handler.run ()
+        	
+        }
 
     ).listen (conf.listen, function () {darn ('default app is listening to HTTP at ' + this._connectionKey)})
 

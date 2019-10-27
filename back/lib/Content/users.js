@@ -248,7 +248,7 @@ do_create_users:
         for (let k of ['login', 'label', 'id_role']) d [k] = data [k]        
         
         try {
-            d.uuid = await this.db.insert ('users', d)
+            await this.db.insert ('users', d)
         }
         catch (x) {
             if (this.db.is_pk_violation (x)) return d

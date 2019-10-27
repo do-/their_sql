@@ -252,7 +252,11 @@ do_create_users:
         }
         catch (x) {
             if (this.db.is_pk_violation (x)) return d
-            throw x.constraint == 'ix_users_login' ? '#login#: Этот login уже занят' : x
+
+            throw (false
+            	|| x.constraint == 'ix_users_login'
+            	|| x.message.match (/constraint failed: users.login/)
+            ) ? '#login#: Этот login уже занят' : x
         }
         
         return d

@@ -145,45 +145,8 @@ get_own_options_of_users:
             }}
         ])
 
-    },
+    },    
     
-////////////////////////////////////////////////////////////////////////////////
-
-get_peers_of_users: 
-      
-    async function () {
-        
-        return this.db.add ({}, [
-            {users: {
-                'login <>' : null,
-                'uuid  <>' : this.user.uuid,
-                is_deleted : 0,
-                ORDER      : 'label',
-            }},
-            {'user_users AS user_user ON user_user.id_user_ref = users.uuid': {
-                is_on: 1,
-                id_user: this.user.uuid,
-            }}
-        ])
-
-    },
-    
-////////////////////////////////////////////////////////////////////////////////
-
-do_set_peers_users:
-  
-    async function () {
-        
-        await this.db.do ('UPDATE user_users SET is_on = 0 WHERE id_user = ?', [this.user.uuid])
-
-        await this.db.upsert ('user_users', this.rq.data.ids.map ((i) => {return {
-            is_on              : 1,
-            id_user            : this.user.uuid,
-            id_user_ref        : i,            
-        }}), ['id_user', 'id_user_ref'])
-
-    },
-        
 ////////////////////////////////////////////////////////////////////////////////
 
 do_set_password_users: 
@@ -192,9 +155,9 @@ do_set_password_users:
 
         if (this.rq.p1 == undefined) throw '#p1#: Получено пустое значение пароля'
         if (this.rq.p1 != this.rq.p2) throw '#p2#: Повторное значение пароля не сходится'
-
+darn (this.user)
         let uuid = 
-                   this.user.role == 'admin' ? this.rq.id : 
+                   this.user.role == 'admin' ? this.rq.id || this.user.uuid : 
                    this.user.uuid
 
         let salt     = await this.session.password_hash (Math.random (), new Date ().toJSON ())

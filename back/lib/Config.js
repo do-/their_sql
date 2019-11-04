@@ -15,6 +15,12 @@ module.exports = class {
         	
             sessions : this.setup_sessions (),
             
+			pwd_calc: new (require ('./Ext/Dia/Crypto/FileSaltHashCalculator.js')) ({
+				salt_file: this.auth.salt_file,
+				// algorithm: 'sha256', // <-- default value
+				// encoding:  'hex',    // <-- also default; set null to get a Buffer
+			}),
+
         }
 
     }

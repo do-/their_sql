@@ -24,6 +24,7 @@ do_create_sessions:
         
         let user = {
 			id    : u.uuid,
+			uuid  : u.uuid,
 			label : u.label,
 			opt   : u.opt,
 			role  : u ['roles.name'],

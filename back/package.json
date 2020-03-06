@@ -6,6 +6,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "content-disposition": "^0.5.3",
     "generic-pool": "^3.7.1",
     "memcached": "^2.2.2",
     "pg": "^7.0.0",

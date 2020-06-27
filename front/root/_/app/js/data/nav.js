@@ -6,6 +6,12 @@ $_DO.open_tables_nav = function () {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+$_DO.open_columns_nav = function () {
+    open_tab ('/columns')
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 $_DO.open_users_nav = function () {
     open_tab ('/users')
 }
@@ -52,9 +58,9 @@ $_GET.nav = async function (o) {
                 icon: "menu",
             },
             {
-                id: "open_help",
-                label: "Справка",
-                icon: "help",
+                id: "open_columns",
+                label: "Столбцы",
+                icon: "menu",
             },
             {
                 id: "open_users",

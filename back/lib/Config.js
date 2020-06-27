@@ -29,17 +29,10 @@ module.exports = class {
     	
     	let s = this.auth.sessions
 
-//  uncomment this unless memcached is available
-//    
-//      return new (require ('./Ext/Dia/Cache/MapTimer.js')) ({
-//      	name: 'session',
-//        	ttl : s.timeout * 60 * 1000,
-//      })
-        
-        return new (require ('./Ext/Dia/Cache/Memcached.js')) ({
+		return new (require ('./Ext/Dia/Cache/MapTimer.js')) ({
+	      	name: 'session',
         	ttl : s.timeout * 60 * 1000,
-        	memcached: s.memcached,
-        })
+		})
 
     }
     

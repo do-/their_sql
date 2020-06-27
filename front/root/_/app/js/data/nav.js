@@ -1,5 +1,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 
+$_DO.open_tables_nav = function () {
+    open_tab ('/tables')
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 $_DO.open_users_nav = function () {
     open_tab ('/users')
 }
@@ -41,8 +47,8 @@ $_GET.nav = async function (o) {
         header: [
         
             {
-                id: "open_widgets",
-                label: "Меню",
+                id: "open_tables",
+                label: "Таблицы",
                 icon: "menu",
             },
             {

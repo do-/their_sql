@@ -1,0 +1,48 @@
+<span>
+
+	<style>
+		input[data-block-name=table] {width: 300px!important;}
+	</style>
+
+	<div>
+
+        <div class="w2ui-page page-0">
+
+			<header>
+				<span data-off="is_view">Таблица</span>
+				<span data-on="is_view">SQL View</span>
+				<span data-text="id" />
+			</header>
+
+            <div class="w2ui-field">
+                <label>Строк там порядка</label>
+                <div>
+                    <input name=cnt readonly/>
+                </div>
+            </div>
+
+            <div class="w2ui-field">
+                <label>Их комментарий</label>
+                <div>
+                    <input name=remark readonly/>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="w2ui-buttons">
+        	<span>
+                <button class=w2ui-btn name=edit   data-on=__read_only data-hotkey=F4>Редактировать</button>
+<!--
+                <button class=w2ui-btn name=pass   data-on=__read_only>Установить пароль</button>
+                <button class=w2ui-btn name=delete data-on=__read_only data-hotkey=Ctrl-Delete>Удалить</button>
+
+                <button class=w2ui-btn name=update data-off=__read_only data-hotkey=Ctrl-Enter>Сохранить</button>
+-->
+                <button class=w2ui-btn name=cancel data-off=__read_only data-hotkey=Esc>Отменить</button>
+
+            </span>
+        </div>
+
+	</div>
+</span>

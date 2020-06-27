@@ -1,5 +1,4 @@
-TRUNCATE TABLE tables;
-TRUNCATE TABLE columns;
+TRUNCATE TABLE tables CASCADE;
 INSERT INTO tables (id,is_view,cnt,remark) VALUES ('fkr.access_oper',0,3492,NULL);
 INSERT INTO tables (id,is_view,cnt,remark) VALUES ('fkr.ep_vut',1,NULL,'VIEW');
 INSERT INTO tables (id,is_view,cnt,remark) VALUES ('fkr.si_blobj',1,NULL,'VIEW');

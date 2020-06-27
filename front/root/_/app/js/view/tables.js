@@ -12,9 +12,10 @@ $_DRAW.tables = async function (data) {
         },            
 
         columns: [                
-            {field: 'id',      caption: 'Имя',    size: 100, sortable: true},
+            {field: 'id',      caption: 'Имя',    size: 50, sortable: true},
             {field: 'remark',  caption: 'Их комментарий',    size: 100},
-            {field: 'cnt',     caption: '~К-во строк',  size: 50,  sortable: true},
+            {field: 'note',    caption: 'Наш комментарий',    size: 100},
+            {field: 'cnt',     caption: '~К-во строк',  size: 20,  sortable: true},
         ],
                     
         url: '_back/?type=tables',

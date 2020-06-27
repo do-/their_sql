@@ -7,7 +7,7 @@ $_DRAW.table = async function (data) {
         name: 'main',
 
         panels: [
-            {type: 'top', size: 230},
+            {type: 'top', size: 220},
             {type: 'main', size: 400,
 				tabs: [
                 	{id: 'table_columns', caption: 'Поля'},

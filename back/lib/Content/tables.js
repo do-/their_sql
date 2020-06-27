@@ -26,6 +26,7 @@ select_tables:
             this.rq.search = [
                 {field: 'id',     operator: 'contains', value: q},
                 {field: 'remark', operator: 'contains', value: q},
+                {field: 'note',   operator: 'contains', value: q},
             ]
 
         }

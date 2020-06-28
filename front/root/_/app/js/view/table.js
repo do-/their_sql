@@ -7,12 +7,9 @@ $_DRAW.table = async function (data) {
         name: 'main',
 
         panels: [
-            {type: 'top', size: 220},
-            {type: 'main', size: 400,
-				tabs: [
-                	{id: 'table_columns', caption: 'Поля'},
-				],
-            },
+            {type: 'top', size: 130},
+            {type: 'main', size: '*', title: 'Поля этой таблицы'},
+            {type: 'right', size: '50%', title: 'Ссылки сюда', resizable: true},
         ],
                 
     })
@@ -23,6 +20,13 @@ $_DRAW.table = async function (data) {
         
         record: data,
         
+		onChange: e => e.done ($_DO.update_table),
+        
     })
+    
+    $_DO.edit_table ()
+    
+	show_block ('table_columns')
+	show_block ('table_refs')
 
 }

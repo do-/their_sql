@@ -67,9 +67,20 @@ $_DRAW.table_columns = async function (data) {
         		
         		data.columns = this.records
         		
-        		$('body').data ('data', data)
-        	
-        		show_block ('table_data')
+        		let pk = data.columns.filter (i => i.is_pk)
+        		
+        		if (pk.length) {
+
+					$('body').data ('data', data)
+
+					show_block ('table_data')
+
+        		}
+        		else {
+        		
+					$(layout.el ('bottom')).html ('<br><br><br><center>Первичного ключа нет, данные показывать не будем')
+        		
+        		}
         	
         	})
         

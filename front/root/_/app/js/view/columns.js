@@ -10,20 +10,34 @@ $_DRAW.columns = async function (data) {
             toolbar: true,
             footer: true,
         },            
-
-        columns: [                
+        
+		columnGroups : [
+			{span: 2, caption: 'ID'},
+			{span: 2, caption: 'Опции'},
+			{span: 2, caption: 'Комментарии к полю'},
+			{span: 3, caption: 'Ссылка'},
+		],
+    
+        columns: [
+        
             {field: 'id_table', caption: 'Таблица',    size: 50, sortable: true},
             {field: 'name',     caption: 'Поле',    size: 50, sortable: true},
+
             {field: 'type',     caption: 'Тип',    size: 50},
-            {field: 'is_pk', caption: 'ПК?',    size: 10, render: r => r.is_pk ? 'ПК' : ''},
-            {field: 'id_ref_table', caption: 'Ссылка',    size: 50, sortable: true},
-            {field: 'remark',   caption: 'Их комментарий',    size: 100},
-            {field: 'note',     caption: 'Наш комментарий',    size: 100},
+            {field: 'is_pk',    caption: 'ПК?',    size: 10, render: r => r.is_pk ? 'ПК' : ''},
+            
+            {field: 'remark',   caption: 'Их',    size: 100},
+            {field: 'note',     caption: 'Наш',    size: 100},
+            
+            {field: 'id_ref_table',    caption: 'Имя',    size: 50, sortable: true},
+            {field: 'tables.remark',   caption: 'Их комментарий',     size: 100},
+            {field: 'tables.note',     caption: 'Наш комментарий',    size: 100},
+            
         ],
                     
         url: '_back/?type=columns',
 
-//        onDblClick: (e) => open_tab   (`/column/${e.recid}`),
+        onDblClick: null,
 
     }).refresh ();
     

@@ -8,7 +8,7 @@ module.exports = {
         name         : 'string                                      // Имя',
         type         : 'string                                      // Тип',
         remark       : 'string                                      // Комментарий в БД',
-//        id_table     : '(tables)                                    // Таблица',           
+        id_table     : '(tables)                                    // Таблица',           
         id_ref_table : 'string                                      // Ссылка',           
     },
 
@@ -23,6 +23,7 @@ module.exports = {
         	
         		stc := parse_ident (NEW.id);
         		
+        		NEW.id_table = stc [1] || '.' || stc [2];
         		NEW.name = stc [3];
         		
         		RETURN NEW;

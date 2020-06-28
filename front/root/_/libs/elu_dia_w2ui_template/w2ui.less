@@ -62,3 +62,13 @@ div.w2ui-tabs div.w2ui-tab.active {
 	background-color: #eef5eb;
 	font-weight: bold;
 }
+
+.link() {
+    color: blue;
+    text-decoration: underline;
+}
+
+td.w2ui-grid-data[data-ref] > div:not(:empty) {
+    .link();
+    cursor: pointer;
+}

@@ -56,6 +56,24 @@ $_DRAW.table_columns = async function (data) {
         	}
         
         },
+        
+        onLoad: function (e) {
+        
+        	dia2w2ui (e)
+        
+        	e.done (() => {
+        	
+        		let data = $('body').data ('data')
+        		
+        		data.columns = this.records
+        		
+        		$('body').data ('data', data)
+        	
+        		show_block ('table_data')
+        	
+        	})
+        
+        }
 
     }).refresh ();
     

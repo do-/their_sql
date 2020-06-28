@@ -12,7 +12,8 @@ module.exports = class {
         this.pools = {
         
         	db       : Dia.DB.Pool (this.db, new (require ('./Model.js')) ({path: './Model'})),
-        	
+        	db_o     : Dia.DB.Pool (this.db_o),
+
             sessions : this.setup_sessions (),
             
 			pwd_calc: new (require ('./Ext/Dia/Crypto/FileSaltHashCalculator.js')) ({

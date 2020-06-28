@@ -12,6 +12,10 @@ module.exports = {
         id_table     : '(tables)                                    // Таблица',           
         id_ref_table : 'string                                      // Ссылка',           
     },
+    
+    keys: {
+    	id_ref_table: 'id_ref_table',
+    },
 
     triggers : {
 

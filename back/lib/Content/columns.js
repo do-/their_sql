@@ -32,11 +32,11 @@ select_columns:
     
         let filter = this.w2ui_filter ()
         
-        let {id_table} = this.rq; if (id_table) {
+        let {id_table, id_ref_table} = this.rq; 
         
-        	filter ['id LIKE'] = id_table + '.%'
+        if (id_table) filter ['id LIKE'] = id_table + '.%'
         
-		}
+        if (id_ref_table) filter.id_ref_table = id_ref_table
 
         return this.db.add_all_cnt ({}, [
         	{columns: filter},

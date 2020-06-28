@@ -10,6 +10,7 @@ $_DRAW.table = async function (data) {
             {type: 'top', size: 130},
             {type: 'main', size: '*', title: 'Поля этой таблицы'},
             {type: 'right', size: '50%', title: 'Ссылки сюда', resizable: true},
+            {type: 'bottom', size: 200, resizable: true, title: 'Содержимое'},
         ],
                 
     })

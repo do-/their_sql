@@ -12,7 +12,7 @@ $_DRAW.tables = async function (data) {
         },            
 
         columns: [                
-            {field: 'id',      caption: 'Имя',    size: 50, sortable: true},
+            {field: 'id',      caption: 'Имя',    size: 50, sortable: true, attr: 'data-ref=1'},
             {field: 'remark',  caption: 'Их комментарий',    size: 100},
             {field: 'note',    caption: 'Наш комментарий',    size: 100},
             {field: 'cnt',     caption: '~К-во строк',  size: 20,  sortable: true, render: 'int'},
@@ -20,7 +20,16 @@ $_DRAW.tables = async function (data) {
                     
         src: 'tables',
 
-        onDblClick: (e) => open_tab   (`/table/${e.recid}`),
+        onClick: function (e) {
+        
+        	let r = this.get (e.recid), {field} = this.columns [e.column]
+        
+        	switch (field) {
+        		case 'id':
+        			 open_tab (`/table/${r [field]}`)
+        	}
+        
+        },
 
     }).refresh ();
     

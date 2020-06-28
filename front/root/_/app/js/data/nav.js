@@ -55,12 +55,12 @@ $_GET.nav = async function (o) {
             {
                 id: "open_tables",
                 label: "Таблицы",
-                icon: "menu",
+                icon: "tables",
             },
             {
                 id: "open_columns",
                 label: "Столбцы",
-                icon: "menu",
+                icon: "columns",
             },
             {
                 id: "open_users",

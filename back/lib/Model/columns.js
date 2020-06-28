@@ -8,6 +8,7 @@ module.exports = {
         name         : 'string                                      // Имя',
         type         : 'string                                      // Тип',
         remark       : 'string                                      // Комментарий в БД',
+        note         : 'string                                      // Наш комментарий',
         id_table     : '(tables)                                    // Таблица',           
         id_ref_table : 'string                                      // Ссылка',           
     },

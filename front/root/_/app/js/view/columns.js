@@ -27,7 +27,7 @@ $_DRAW.columns = async function (data) {
             {field: 'is_pk',    caption: 'ПК?',    size: 10, render: r => r.is_pk ? 'ПК' : ''},
             
             {field: 'remark',   caption: 'Их',    size: 100},
-            {field: 'note',     caption: 'Наш',    size: 100},
+            {field: 'note',     caption: 'Наш',    size: 100, editable: {type: 'text'}},
             
             {field: 'id_ref_table',    caption: 'Имя',    size: 50, sortable: true},
             {field: 'tables.remark',   caption: 'Их комментарий',     size: 100},
@@ -38,6 +38,8 @@ $_DRAW.columns = async function (data) {
         url: '_back/?type=columns',
 
         onDblClick: null,
+        
+		onChange: $_DO.patch_columns,        
 
     }).refresh ();
     

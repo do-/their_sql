@@ -18,7 +18,7 @@ $_DRAW.tables = async function (data) {
             {field: 'cnt',     caption: '~К-во строк',  size: 20,  sortable: true, render: 'int'},
         ],
                     
-        url: '_back/?type=tables',
+        src: 'tables',
 
         onDblClick: (e) => open_tab   (`/table/${e.recid}`),
 

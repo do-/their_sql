@@ -1,13 +1,12 @@
-$_DRAW.columns = async function (data) {
+$_DRAW.table_columns = async function (data) {
 
-    $('title').text ('Все поля')
-
-    $('main').w2regrid ({ 
+    $(w2_waiting_panel ()).w2regrid ({ 
     
         name: 'columnsGrid',             
         
         show: {
-            toolbar: true,
+            toolbar: false,
+            toolbarInput: false,
             footer: true,
         },            
         
@@ -35,7 +34,9 @@ $_DRAW.columns = async function (data) {
             
         ],
                     
-        src: 'columns',
+        src: ['columns', {
+        	id_table: data.id
+        }],
 
         onDblClick: null,
         

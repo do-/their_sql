@@ -11,6 +11,14 @@ $_DRAW.columns = async function (data) {
             footer: true,
         },            
         
+		toolbar: {
+
+			items: [
+				{type: 'button', id: 'edit', caption: 'Проставить ссылки...', onClick: $_DO.set_ref_columns, icon: 'w2ui-icon-pencil'},
+			]
+                
+		},
+        
 		columnGroups : [
 			{span: 2, caption: 'ID'},
 			{span: 2, caption: 'Опции'},

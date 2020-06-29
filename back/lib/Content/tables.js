@@ -25,6 +25,7 @@ select_tables:
 
             this.rq.search = [
                 {field: 'id',     operator: 'contains', value: q},
+                {field: 'pk',     operator: 'is', value: q},
                 {field: 'remark', operator: 'contains', value: q},
                 {field: 'note',   operator: 'contains', value: q},
             ]
@@ -33,7 +34,7 @@ select_tables:
     
         let filter = this.w2ui_filter ()
         
-        return this.db.add_all_cnt ({}, [{tables: filter}])
+        return this.db.add_all_cnt ({}, [{tables_vw: filter}])
 
     },
 

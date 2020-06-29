@@ -1,5 +1,34 @@
 ////////////////////////////////////////////////////////////////////////////////
 
+$_DO.set_pk_table_columns = async function (e) {
+
+	let grid = this
+
+	let {id, name, is_pk} = grid.get (e.recid)
+	
+	if (is_pk) {
+
+		if (!confirm (`Вы уверены, что ${name} НЕ является первичным ключом этой таблицы?`)) return
+		
+	}
+	else {
+
+		let [c] = grid.records.filter (i => i.is_pk)
+
+		if (c) return alert (`В настоящее время в первичным ключом этой таблицы считается ${c.name}`)
+
+		if (!confirm (`Вы уверены, что ${name} - первичный ключ этой таблицы?`)) return
+		
+	}
+	
+	await response ({type: 'columns', id, action: 'update'}, {data: {is_pk: 1 - is_pk}})
+	
+	show_block ('table_columns')
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 $_DO.patch_table_columns = async function (e) {
 
     let grid = this, row = grid.get (e.recid), col = grid.columns [e.column]

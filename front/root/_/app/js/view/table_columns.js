@@ -40,11 +40,19 @@ $_DRAW.table_columns = async function (data) {
         src: ['columns', {
         	id_table: data.id
         }],
-
-        onDblClick: null,
         
 		onChange: $_DO.patch_columns,        
 
+        onDblClick: function (e) {
+        
+        	let {field} = this.columns [e.column]
+        
+        	switch (field) {
+        		case 'is_pk': return $_DO.set_pk_table_columns.call (this, e)
+        	}
+
+        },
+        
         onClick: function (e) {
         
         	let r = this.get (e.recid), {field} = this.columns [e.column]

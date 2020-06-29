@@ -8,6 +8,8 @@ darn (data)
     
         name: 'columnsGrid',             
         
+        multiSelect: false,
+        
         show: {
             toolbar: false,
             toolbarInput: false,
@@ -48,7 +50,11 @@ darn (data)
         	let {field} = this.columns [e.column]
         
         	switch (field) {
-        		case 'is_pk': return $_DO.set_pk_table_columns.call (this, e)
+        		case 'is_pk': 
+        			return $_DO.set_pk_table_columns.call (this, e)
+        		case 'id_ref_table':
+        			this.select (e.recid)
+        			return show_block ('set_ref_columns_popup')
         	}
 
         },
@@ -60,7 +66,8 @@ darn (data)
         	switch (field) {
         		case 'id_table':
         		case 'id_ref_table':
-        			 open_tab (`/table/${r [field]}`)
+        			let id = r [field]
+        			if (id) open_tab (`/table/${id}`)
         	}
         
         },

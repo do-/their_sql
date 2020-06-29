@@ -10,11 +10,20 @@ $_DRAW.tables = async function (data) {
             toolbar: true,
             footer: true,
         },            
-
+        
+        searches: [
+			{field: 'id',  caption: 'Имя', type: 'text'},
+			{field: 'remark',  caption: 'Их комментарий', type: 'text'},
+			{field: 'note',  caption: 'Наш комментарий', type: 'text'},
+			{field: 'pk',  caption: 'Первичный ключ', type: 'text'},
+			{field: 'cnt', caption: '~К-во строк', type: 'int'},
+		],
+		        
         columns: [                
             {field: 'id',      caption: 'Имя',    size: 50, sortable: true, attr: 'data-ref=1'},
             {field: 'remark',  caption: 'Их комментарий',    size: 100},
             {field: 'note',    caption: 'Наш комментарий',    size: 100},
+            {field: 'pk',      caption: 'ПК',  size: 20},
             {field: 'cnt',     caption: '~К-во строк',  size: 20,  sortable: true, render: 'int'},
         ],
                     

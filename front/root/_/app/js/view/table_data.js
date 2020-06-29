@@ -42,6 +42,12 @@ darn (data.columns)
         	id_table: data.id
         }],
 
+        onDblClick: function (e) {
+
+        	open_tab ('/record/' + data.id + '.' + e.recid)
+
+        },
+
     }).refresh ();
     
     $('#grid_dataGrid_search_all').focus ()

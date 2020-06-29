@@ -46,7 +46,7 @@ get_item_of_tables:
     
     	let {id} = this.rq
 
-        let data = await this.db.get ([{tables: {id}}])
+        let data = await this.db.get ([{tables_vw: {id}}])
 
         data._fields = this.db.model.tables.tables.columns
         

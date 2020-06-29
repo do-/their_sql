@@ -35,6 +35,8 @@ select_table_data:
 		q += ` LIMIT ${start}, ${portion}`
 		
 		let all = await this.db_o.select_all (q, p)
+		
+		for (let i of all) if (!i.uuid) i.uuid = i [pk]
 
 		return {all, cnt: all.length}
 

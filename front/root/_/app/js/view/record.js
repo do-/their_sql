@@ -1,7 +1,26 @@
-$_DRAW.table_columns = async function (data) {
+$_DRAW.record = async function (data) {
 
-	var layout = w2ui ['main']
+    $('title').text (data.table.id + ' №' + data.id)
 
+    var layout = $('main').w2relayout ({
+
+        name: 'main',
+
+        panels: [
+            {type: 'top', size: 50},
+            {type: 'main', size: '*', title: 'Содержимое непустых полей'},
+        ].filter (not_off),
+                
+    })
+
+    $(layout.el ('top')).html (await to_fill ('record', data)).w2reform ({
+
+        name: 'form',
+        
+        record: data,
+                
+    })
+        
 	var $panel = $(layout.el ('main'))               
 
     $panel.w2regrid ({ 
@@ -18,14 +37,16 @@ $_DRAW.table_columns = async function (data) {
         
 		columnGroups : [
 			{span: 1, master: true},
-			{span: 2 - data.is_view, caption: 'Опции'},
+			{span: 1, master: true},
+			{span: 2, caption: 'Опции'},
 			{span: 2, caption: 'Комментарии к полю'},
 			{span: 3, caption: 'Ссылка'},
 		],
     
         columns: [
         
-            {field: 'name',     caption: 'Поле',    size: 50, sortable: true},
+            {field: 'name',     caption: 'Имя',    size: 50},
+            {field: 'value',    caption: 'Значение',    size: 100},
 
             {field: 'type',     caption: 'Тип',    size: 50},
             {field: 'is_pk',    caption: 'ПК?',    size: 10, render: r => r.is_pk ? 'ПК' : '', off: data.is_view},
@@ -39,9 +60,7 @@ $_DRAW.table_columns = async function (data) {
             
         ].filter (not_off),
                     
-        src: ['columns', {
-        	id_table: data.id
-        }],
+		records: data.columns.filter (i => 'value' in i),
         
 		onChange: $_DO.patch_columns,        
 
@@ -64,10 +83,9 @@ $_DRAW.table_columns = async function (data) {
         	let r = this.get (e.recid), {field} = this.columns [e.column]
         
         	switch (field) {
-        		case 'id_table':
         		case 'id_ref_table':
         			let id = r [field]
-        			if (id) open_tab (`/table/${id}`)
+        			if (id) open_tab (`/record/${id}.${r.value}`)
         	}
         
         },
@@ -102,7 +120,5 @@ $_DRAW.table_columns = async function (data) {
         }
 
     }).refresh ();
-    
-    $('#grid_columnsGrid_search_all').focus ()
 
 }

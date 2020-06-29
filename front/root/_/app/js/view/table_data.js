@@ -15,6 +15,22 @@ darn (data.columns)
             toolbarInput: false,
             footer: true,
         },
+        
+        searches: data.columns.map (i => {
+        
+        	let {name, type} = i
+        
+        	return {
+				field: name, 
+				caption: name,  
+				type: 
+					/^date/    .test (type) ? 'date'  : 
+					/^decimal/ .test (type) ? 'float' : 
+					/int/      .test (type) ? 'int'   : 
+					'text'
+
+        	}
+        }),         
 
         columns: data.columns.map (i => ({
         	field: i.name.toUpperCase (), 

@@ -7,8 +7,8 @@ select_table_data:
     async function () {
    
         let filter = this.w2ui_filter ()
-        
-        let [portion, start] = filter.LIMIT
+
+        let [portion, start] = filter.LIMIT; delete filter.LIMIT
 
         let {id_table} = this.rq
         
@@ -17,13 +17,24 @@ select_table_data:
         	is_pk: 1,
         }})).name
 
-        let sql = 'SELECT * FROM ' + id_table
+        let q = 'SELECT * FROM ' + id_table + ' WHERE 1=1', p = []
+        
+        for (let [t, v] of Object.entries (filter)) {
 
-        if (pk) sql += ' ORDER BY ' + pk + ' DESC'
+        	if (/\?\%/.test (t)) v += '%'
+        	if (/\%\?/.test (t)) v  = '%' + v
 
-		sql += ` LIMIT ${start}, ${portion}`
+        	q += ' AND ' + t.replace ('ILIKE', 'LIKE').replace (/\%/g, '')
+        	
+        	p.push (v)
+        
+        }
+
+        if (pk) q += ' ORDER BY ' + pk + ' DESC'
+
+		q += ` LIMIT ${start}, ${portion}`
 		
-		let all = await this.db_o.select_all (sql)
+		let all = await this.db_o.select_all (q, p)
 
 		return {all, cnt: all.length}
 

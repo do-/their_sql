@@ -19,19 +19,13 @@ select_table_data:
 
         let sql = 'SELECT * FROM ' + id_table
 
-        if (pk) sql += ' ORDER BY ' + pk
+        if (pk) sql += ' ORDER BY ' + pk + ' DESC'
 
 		sql += ` LIMIT ${start}, ${portion}`
+		
+		let all = await this.db_o.select_all (sql)
 
-        let [all, cnt] = await Promise.all ([
-
-			this.db_o.select_all (sql),
-
-			this.db_o.select_scalar (`SELECT COUNT(*) FROM ${id_table}`),
-
-        ])
-
-		return {all, cnt}
+		return {all, cnt: all.length}
 
     },
 

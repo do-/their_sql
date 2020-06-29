@@ -1,7 +1,7 @@
 $_DRAW.table_columns = async function (data) {
 
 	var layout = w2ui ['main']
-
+darn (data)
 	var $panel = $(layout.el ('main'))               
 
     $panel.w2regrid ({ 
@@ -16,7 +16,7 @@ $_DRAW.table_columns = async function (data) {
         
 		columnGroups : [
 			{span: 1, master: true},
-			{span: 2, caption: 'Опции'},
+			{span: 2 - data.is_view, caption: 'Опции'},
 			{span: 2, caption: 'Комментарии к полю'},
 			{span: 3, caption: 'Ссылка'},
 		],
@@ -26,7 +26,7 @@ $_DRAW.table_columns = async function (data) {
             {field: 'name',     caption: 'Поле',    size: 50, sortable: true},
 
             {field: 'type',     caption: 'Тип',    size: 50},
-            {field: 'is_pk',    caption: 'ПК?',    size: 10, render: r => r.is_pk ? 'ПК' : ''},
+            {field: 'is_pk',    caption: 'ПК?',    size: 10, render: r => r.is_pk ? 'ПК' : '', off: data.is_view},
             
             {field: 'remark',   caption: 'Их',    size: 100},
             {field: 'note',     caption: 'Наш',    size: 100, editable: {type: 'text'}},
@@ -35,7 +35,7 @@ $_DRAW.table_columns = async function (data) {
             {field: 'tables.remark',   caption: 'Их комментарий',     size: 100},
             {field: 'tables.note',     caption: 'Наш комментарий',    size: 100},
             
-        ],
+        ].filter (not_off),
                     
         src: ['columns', {
         	id_table: data.id
@@ -69,7 +69,7 @@ $_DRAW.table_columns = async function (data) {
         
         	dia2w2ui (e)
         
-        	e.done (() => {
+        	if (!data.is_view) e.done (() => {
         	
         		let data = $('body').data ('data')
         		

@@ -9,9 +9,9 @@ $_DRAW.table = async function (data) {
         panels: [
             {type: 'top', size: 130},
             {type: 'main', size: '*', title: 'Поля этой таблицы'},
-            {type: 'right', size: '50%', title: 'Ссылки сюда', resizable: true},
-            {type: 'bottom', size: 200, resizable: true, title: 'Содержимое'},
-        ],
+            {type: 'right', size: '50%', title: 'Ссылки сюда', resizable: true, off: data.is_view},
+            {type: 'bottom', size: 200, resizable: true, title: 'Содержимое', off: data.is_view},
+        ].filter (not_off),
                 
     })
 
@@ -28,6 +28,6 @@ $_DRAW.table = async function (data) {
     $_DO.edit_table ()
     
 	show_block ('table_columns')
-	show_block ('table_refs')
+	if (!data.is_view) show_block ('table_refs')
 
 }

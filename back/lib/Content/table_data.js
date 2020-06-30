@@ -12,12 +12,13 @@ select_table_data:
 
         let {id_table} = this.rq
         
-        let pk = (await this.db.get ({columns: {
+        let cols = (await this.db.list ({columns: {
         	'id LIKE': id_table + '.%',
-        	is_pk: 1,
-        }})).name
+        }}))
+        
+        let [pk] = cols.filter (i => i.is_pk).map (i => i.name)
 
-        let q = 'SELECT * FROM ' + id_table + ' WHERE 1=1', p = []
+        let q = `SELECT ${cols.map (i => {let {name} = i; return name + ' ' + name.toLowerCase ()})} FROM ` + id_table + ' WHERE 1=1', p = []
         
         for (let [t, v] of Object.entries (filter)) {
 

@@ -33,7 +33,7 @@ darn (data.columns)
         }),         
 
         columns: data.columns.map (i => ({
-        	field: i.name.toUpperCase (), 
+        	field: i.name, 
         	caption: i.name,  
         	size: 50
         })),

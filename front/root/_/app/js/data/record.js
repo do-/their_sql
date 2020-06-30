@@ -10,7 +10,7 @@ $_GET.record = async function (o) {
 
 	let {all}     = await response ({type: 'table_data', id: null}, {id_table, offset: 0, limit: 1, search: [{field: table.pk, type: "int", operator: "is", value: id}], searchLogic: "AND"})
 	
-	let r = {}; for (let [k, v] of Object.entries (all [0])) if (v != null) r [k] = v
+	let r = {}; for (let [k, v] of Object.entries (all [0])) if (v != null && v != '') r [k] = v
 	
 	for (let c of columns) {
 		c.recid = c.id

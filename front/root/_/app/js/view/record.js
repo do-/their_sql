@@ -20,6 +20,8 @@ $_DRAW.record = async function (data) {
         record: data,
                 
     })
+    
+    clickOn ($('#table_href'), () => open_tab ('/table/' + data.table.id))
         
 	var $panel = $(layout.el ('main'))               
 

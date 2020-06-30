@@ -5,6 +5,8 @@ $_GET.record = async function (o) {
 	let [s, t, id] = $_REQUEST.id.split ('.'), id_table = s + '.' + t
 
     let table     = await response ({type: 'tables', id: id_table})
+    
+    let {remark, note} = table; table.label = note || remark
 
     let {columns} = await response ({type: 'columns', id: null}, {id_table, offset: 0, limit: 10000})
 

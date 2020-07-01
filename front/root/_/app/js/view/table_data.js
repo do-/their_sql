@@ -47,6 +47,28 @@ darn (data.columns)
         	open_tab ('/record/' + data.src [1].id_table + '.' + e.recid)
 
         },
+        
+        onLoad: function (e) {
+        
+        	dia2w2ui (e)
+        
+        	e.done (() => {
+        	
+        		let ids = {}
+        		
+        		for (let r of this.records) {
+
+        			for (let k in r) if (!ids [k] && r [k] != null) ids [k] = 1
+
+        		}
+        		
+        		let nil = data.columns.map (i => i.name).filter (i => !ids [i])
+        		
+        		this.hideColumn.apply (this, nil)
+        		
+        	})
+        
+        }
 
     }).refresh ();
     

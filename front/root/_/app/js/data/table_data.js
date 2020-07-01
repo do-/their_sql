@@ -5,6 +5,18 @@ $_GET.table_data = async function (o) {
 	let data = clone ($('body').data ('data'))
 	
 	let {id_table, aaand} = o
+	
+	if (id_table != data.table.id) {
+	
+		data = await response ({type: 'tables', id: id_table})
+		
+	    let {columns} = await response ({type: 'columns', id: null}, {id_table, offset: 0, limit: 10000})
+	    
+	    data.columns = columns
+
+	    data.table = clone (data)
+	
+	}
 
 	data.src = ['table_data', {id_table, aaand}]
 	

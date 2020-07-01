@@ -28,6 +28,8 @@ $_DRAW.tables = async function (data) {
         ],
                     
         src: 'tables',
+        
+        onDblClick: null,
 
         onClick: function (e) {
         

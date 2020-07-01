@@ -42,8 +42,8 @@ $_DRAW.record = async function (data) {
 		columnGroups : [
 			{span: 1, master: true},
 			{span: 1, master: true},
-			{span: 2, caption: 'Опции'},
-			{span: 2, caption: 'Комментарии к полю'},
+			{span: 1, master: true},
+//			{span: 2, caption: 'Опции'},
 			{span: 2, caption: 'Ссылка'},
 		],
     
@@ -52,14 +52,13 @@ $_DRAW.record = async function (data) {
             {field: 'name',     caption: 'Имя',    size: 50},
             {field: 'value',    caption: 'Значение',    size: 100},
 
-            {field: 'type',     caption: 'Тип',    size: 50},
-            {field: 'is_pk',    caption: 'ПК?',    size: 10, render: r => r.is_pk ? 'ПК' : '', off: data.is_view},
-            
-            {field: 'remark',   caption: 'Их',    size: 100},
-            {field: 'note',     caption: 'Наш',    size: 100, editable: {type: 'text'}},
+            {field: 'note',     caption: 'Комментарий',    size: 100, editable: {type: 'text'}},
+
+//            {field: 'type',     caption: 'Тип',    size: 50},
+//            {field: 'is_pk',    caption: 'ПК?',    size: 10, render: r => r.is_pk ? 'ПК' : '', off: data.is_view},
             
             {field: 'id_ref_table',    caption: 'Имя',    size: 50, attr: 'data-ref=1'},
-            {field: 'ref.note',     caption: 'Наш комментарий',    size: 100},
+            {field: 'ref.note',     caption: 'Комментарий',    size: 100, render: r => r ['ref.note']},
             
         ].filter (not_off),
                     

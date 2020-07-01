@@ -22,7 +22,7 @@ $_DRAW.columns = async function (data) {
 		columnGroups : [
 			{span: 2, caption: 'ID'},
 			{span: 2, caption: 'Опции'},
-			{span: 2, caption: 'Комментарии к полю'},
+			{span: 2, caption: 'Комментарии'},
 			{span: 2, caption: 'Ссылка'},
 		],
     
@@ -34,8 +34,8 @@ $_DRAW.columns = async function (data) {
             {field: 'type',     caption: 'Тип',    size: 50},
             {field: 'is_pk',    caption: 'ПК?',    size: 10, render: r => r.is_pk ? 'ПК' : ''},
             
-            {field: 'remark',   caption: 'Их',    size: 100},
-            {field: 'note',     caption: 'Наш',    size: 100, editable: {type: 'text'}},
+            {field: 'tables.note',   caption: 'К таблице',    size: 100},
+            {field: 'note',     caption: 'К полю',    size: 100, editable: {type: 'text'}},
             
             {field: 'id_ref_table',    caption: 'Имя',    size: 50, attr: 'data-ref=1'},
             {field: 'ref.note',     caption: 'Комментарий',    size: 100},

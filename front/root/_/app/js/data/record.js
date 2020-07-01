@@ -18,7 +18,7 @@ $_GET.record = async function (o) {
 		c.recid = c.id
 		if (c.name in r) c.value = r [c.name]
 	}
-	
+darn ({columns})	
     let data = {table, id, columns}
     
     $('body').data ('data', data)

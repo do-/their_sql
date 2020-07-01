@@ -40,7 +40,7 @@ select_columns:
         if (id_ref_table) filter.id_ref_table = id_ref_table
 
         return this.db.add_all_cnt ({}, [
-        	{columns: filter},
+        	{'columns_vw AS columns': filter},
         	'tables_vw AS tables ON id_table',
         	'tables_vw AS ref ON id_ref_table',
         ])

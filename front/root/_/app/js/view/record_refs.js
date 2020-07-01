@@ -18,14 +18,14 @@ $_DRAW.record_refs = async function (data) {
         
 		columnGroups : [
 			{span: 2, caption: 'ID'},
-			{span: 2, caption: 'Комментарии к таблице'},
+			{span: 2, caption: 'Комментарии'},
 		],
     
         columns: [
             {field: 'id_table', caption: 'Таблица',    size: 50, sortable: true},
             {field: 'name',     caption: 'Поле',    size: 50, sortable: true},
-            {field: 'remark',   caption: 'Их',    size: 100},
-            {field: 'note',     caption: 'Наш',    size: 100, editable: {type: 'text'}},
+            {field: 'tables.note',     caption: 'К таблице',    size: 100},
+            {field: 'note',     caption: 'К полю',    size: 100},
         ],
                     
         src: ['columns', {

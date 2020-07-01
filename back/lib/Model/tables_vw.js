@@ -6,7 +6,6 @@ module.exports = {
         id           : 'string                                      // Имя',
         is_view      : 'int=0                                       // 1, если VIEW', 
         cnt          : 'int                                         // Число записей', 
-        remark       : 'string                                      // Их комментарий',
         note         : 'string                                      // Наш комментарий',
         pk           : 'string                                      // Первичный ключ',
     },
@@ -16,8 +15,7 @@ module.exports = {
 			tables.id
 			, tables.is_view      
 			, tables.cnt         
-			, tables.remark      
-			, tables.note        
+			, COALESCE (tables.note, tables.remark || ' [их комментарий]') AS note
 			, pk.name AS pk
     	FROM
     		tables

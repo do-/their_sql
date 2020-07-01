@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-
+/*
 $_DO.patch_table_refs = async function (e) {
 
     let grid = this, row = grid.get (e.recid), col = grid.columns [e.column]
@@ -17,7 +17,7 @@ $_DO.patch_table_refs = async function (e) {
     grid.refresh ()
 
 }
-    
+*/    
 ////////////////////////////////////////////////////////////////////////////////
 
 $_GET.table_refs = async function (o) {

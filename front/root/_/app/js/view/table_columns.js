@@ -34,8 +34,7 @@ $_DRAW.table_columns = async function (data) {
             {field: 'note',     caption: 'Наш',    size: 100, editable: {type: 'text'}},
             
             {field: 'id_ref_table',    caption: 'Имя',    size: 50, attr: 'data-ref=1'},
-            {field: 'tables.remark',   caption: 'Их комментарий',     size: 100},
-            {field: 'tables.note',     caption: 'Наш комментарий',    size: 100},
+            {field: 'ref.note',     caption: 'Комментарий',    size: 100},
             
         ].filter (not_off),
                     

@@ -41,7 +41,8 @@ select_columns:
 
         return this.db.add_all_cnt ({}, [
         	{columns: filter},
-        	'tables ON id_ref_table'
+        	'tables_vw AS tables ON id_table',
+        	'tables_vw AS ref ON id_ref_table',
         ])
 
     },

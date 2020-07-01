@@ -23,7 +23,7 @@ $_DRAW.columns = async function (data) {
 			{span: 2, caption: 'ID'},
 			{span: 2, caption: 'Опции'},
 			{span: 2, caption: 'Комментарии к полю'},
-			{span: 3, caption: 'Ссылка'},
+			{span: 2, caption: 'Ссылка'},
 		],
     
         columns: [
@@ -38,8 +38,7 @@ $_DRAW.columns = async function (data) {
             {field: 'note',     caption: 'Наш',    size: 100, editable: {type: 'text'}},
             
             {field: 'id_ref_table',    caption: 'Имя',    size: 50, attr: 'data-ref=1'},
-            {field: 'tables.remark',   caption: 'Их комментарий',     size: 100},
-            {field: 'tables.note',     caption: 'Наш комментарий',    size: 100},
+            {field: 'ref.note',     caption: 'Комментарий',    size: 100},
             
         ],
                     

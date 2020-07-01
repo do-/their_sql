@@ -43,9 +43,9 @@ select_table_data:
 
 		q += ` LIMIT ${start}, ${portion}`
 		
-		let all = await this.db_o.select_all (q, p)
+		let all = await this.db_o.select_all (q, p), n = 0
 		
-		for (let i of all) if (!i.uuid) i.uuid = i [pk]
+		for (let i of all) if (!i.uuid) i.uuid = pk ? i [pk] : 'X3_' + (n ++)
 
 		return {all, cnt: all.length}
 

@@ -24,7 +24,9 @@ $_GET.table_data = async function (o) {
 
 	if (aaand) data.sql += ' WHERE ' + Object.entries (aaand).map (kv => kv.join (' = ')).join (' AND ')
 	
-	data.sql += ' ORDER BY ' + data.table.pk + ' DESC LIMIT 100'
+	let {pk} = data; if (pk) data.sql += ' ORDER BY ' + pk + ' DESC'
+
+	data.sql += ' LIMIT 100'
 
     return data
 

@@ -25,7 +25,6 @@ select_columns:
 
             this.rq.search = [
                 {field: 'name',   operator: 'is', value: q},
-                {field: 'remark', operator: 'contains', value: q},
                 {field: 'note',   operator: 'contains', value: q},
             ]
 

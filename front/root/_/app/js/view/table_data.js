@@ -43,6 +43,8 @@ darn (data.columns)
         src: data.src,
 
         onDblClick: function (e) {
+        
+        	if (!data.pk) return alert ('Первичного ключа нет - непонятно, как показывать')
 
         	open_tab ('/record/' + data.src [1].id_table + '.' + e.recid)
 

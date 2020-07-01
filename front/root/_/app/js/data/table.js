@@ -32,6 +32,8 @@ $_GET.table = async function (o) {
 
     let data = await response ({type: 'tables'})
     
+    data.table = clone (data)
+    
     $('body').data ('data', data)
 
     $_SESSION.set ('__read_only', 1)

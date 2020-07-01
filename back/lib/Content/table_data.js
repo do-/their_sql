@@ -10,7 +10,7 @@ select_table_data:
 
         let [portion, start] = filter.LIMIT; delete filter.LIMIT
 
-        let {id_table} = this.rq
+        let {id_table, aaand} = this.rq
         
         let cols = (await this.db.list ({columns: {
         	'id LIKE': id_table + '.%',
@@ -26,6 +26,14 @@ select_table_data:
         	if (/\%\?/.test (t)) v  = '%' + v
 
         	q += ' AND ' + t.replace ('ILIKE', 'LIKE').replace (/\%/g, '')
+        	
+        	p.push (v)
+        
+        }
+
+        if (aaand) for (let [t, v] of Object.entries (aaand)) {
+
+        	q += ' AND ' + t + ' = ?'
         	
         	p.push (v)
         

@@ -3,6 +3,8 @@ $_DRAW.table_data = async function (data) {
 darn (data.columns)
 
 	var layout = w2ui ['main']
+	
+	$('#layout_main_panel_bottom .w2ui-panel-title').text (data.sql)
 
 	var $panel = $(layout.el ('bottom'))               
 
@@ -38,13 +40,11 @@ darn (data.columns)
         	size: 50
         })),
 
-        src: ['table_data', {
-        	id_table: data.id
-        }],
+        src: data.src,
 
         onDblClick: function (e) {
 
-        	open_tab ('/record/' + data.id + '.' + e.recid)
+        	open_tab ('/record/' + data.src [1].id_table + '.' + e.recid)
 
         },
 

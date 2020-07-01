@@ -9,6 +9,8 @@ $_DRAW.record = async function (data) {
         panels: [
             {type: 'top', size: 50},
             {type: 'main', size: '*', title: 'Содержимое непустых полей'},
+            {type: 'right', size: '50%', title: 'Ссылки сюда', resizable: true},
+            {type: 'bottom', size: 200, resizable: true, title: 'Содержимое', hidden: true},
         ].filter (not_off),
                 
     })
@@ -122,5 +124,7 @@ $_DRAW.record = async function (data) {
         }
 
     }).refresh ();
+	
+	show_block ('record_refs')
 
 }

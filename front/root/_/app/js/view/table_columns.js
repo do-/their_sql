@@ -88,7 +88,7 @@ $_DRAW.table_columns = async function (data) {
 
 					$('body').data ('data', data)
 
-					show_block ('table_data')
+					show_block ('table_data', {id_table: data.id})
 
         		}
         		else {

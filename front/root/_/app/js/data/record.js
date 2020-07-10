@@ -16,9 +16,9 @@ $_GET.record = async function (o) {
 	
 	for (let c of columns) {
 		c.recid = c.id
-		if (c.name in r) c.value = r [c.name]
+		if (c.name in r) c.value = ('' + r [c.name]).replace (/.000\+0[34]:00$/, '').replace (/T00:00:00$/, '')
 	}
-darn ({columns})	
+
     let data = {table, id, columns}
     
     $('body').data ('data', data)

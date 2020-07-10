@@ -59,15 +59,25 @@ darn (data.columns)
         		let ids = {}
         		
         		for (let r of this.records) {
+        		        			
+        			for (let k in r) {
 
-        			for (let k in r) if (!ids [k] && r [k] != null) ids [k] = 1
+        				let v = r [k]; if (v == null) continue
+
+        				if (!ids [k]) ids [k] = 1
+        				
+        				if (v.length == 29) r [k] = v.replace (/T00:00:00.00.*/, '')
+
+        			}
 
         		}
+
+        		let sh = {hideColumn: [], showColumn: []}
         		
-        		let nil = data.columns.map (i => i.name).filter (i => !ids [i])
+        		for (let {name} of data.columns) sh [ids [name] ? 'showColumn' : 'hideColumn'].push (name)
         		
-        		this.hideColumn.apply (this, nil)
-        		
+        		for (let [k, v] of Object.entries (sh)) this [k].apply (this, v)
+
         	})
         
         }

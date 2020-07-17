@@ -11,10 +11,17 @@ $_DRAW.table_columns = async function (data) {
         multiSelect: false,
         
         show: {
-            toolbar: false,
+            toolbar: true,
             toolbarInput: false,
+            toolbarReload: false,
             footer: true,
         },            
+
+    	toolbar: {
+			items: [
+		        {type: 'button', id: 'printButton', caption: 'MS Excel', onClick: function (e) {this.owner.saveAsXLS ()}},        
+		    ],
+		},
         
 		columnGroups : [
 			{span: 1, master: true},

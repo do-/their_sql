@@ -9,11 +9,18 @@ $_DRAW.table_refs = async function (data) {
         name: 'refColumnsGrid',             
         
         show: {
-            toolbar: false,
+            toolbar: true,
             toolbarInput: false,
+            toolbarReload: false,
             footer: true,
         },            
         
+    	toolbar: {
+			items: [
+		        {type: 'button', id: 'printButton', caption: 'MS Excel', onClick: function (e) {this.owner.saveAsXLS ()}},        
+		    ],
+		},
+
 		columnGroups : [
 			{span: 2, caption: 'ID'},
 			{span: 2, caption: 'Комментарии'},

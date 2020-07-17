@@ -18,6 +18,12 @@ darn (data.columns)
             footer: true,
         },
         
+    	toolbar: {
+			items: [
+		        {type: 'button', id: 'printButton', caption: 'MS Excel', onClick: function (e) {this.owner.saveAsXLS ()}},        
+		    ],
+		},
+
         searches: data.columns.map (i => {
         
         	let {name, type} = i

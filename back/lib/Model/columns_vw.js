@@ -18,7 +18,7 @@ module.exports = {
 			, is_pk        
 			, name         
 			, type         
-			, COALESCE (note, remark || ' [их комментарий]') AS note
+			, COALESCE (note, remark) AS note
 			, id_table      
 			, id_ref_table 
     	FROM

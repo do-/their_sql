@@ -11,7 +11,7 @@ module.exports = class extends require ('./Ext/Dia/Content/Handler/HTTP/Router.j
 		
 			let {conf} = this, pools = {...conf.pools}
 
-			if (!url.match (/type=table_data/)) delete pools.db_o
+			if (!url.match (/type=table_data/)) for (let k of ['db_o', 'db_k']) delete pools [k]
 				
 			return new back ({conf, pools, http})
 		

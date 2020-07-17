@@ -17,15 +17,33 @@ select_table_data:
         }}))
         
         let [pk] = cols.filter (i => i.is_pk).map (i => i.name)
-
-        let q = `SELECT ${cols.map (i => {let {name} = i; return name + ' ' + name.toLowerCase ()})} FROM ` + id_table + ' WHERE 1=1', p = []
+        
+        let [prefix, table_name] = id_table.split ('.')
+        
+        let db = prefix == 'k' ? this.db_k : this.db_o
+        
+        let is_mysql = db.product == 'mysql', quot = is_mysql ? '`' : '"' // "` 
+        
+        let q = `SELECT ${cols.map (i => {
+        
+        	let {name} = i
+        	
+        	let sql = `${quot}${name}${quot}`
+        	
+        	let lc = name.toLowerCase (); if (lc != name) sql += ` AS ${quot}${lc}${quot}`
+        	
+        	return sql
+        
+        })} FROM ` + (is_mysql ? id_table : table_name) + ' WHERE 1=1', p = []
         
         for (let [t, v] of Object.entries (filter)) {
 
         	if (/\?\%/.test (t)) v += '%'
         	if (/\%\?/.test (t)) v  = '%' + v
+        	
+        	if (is_mysql) t = t.replace ('ILIKE', 'LIKE')
 
-        	q += ' AND ' + t.replace ('ILIKE', 'LIKE').replace (/\%/g, '')
+        	q += ' AND ' + t.replace (/\%/g, '')
         	
         	p.push (v)
         
@@ -41,9 +59,9 @@ select_table_data:
 
         if (pk) q += ' ORDER BY ' + pk + ' DESC'
 
-		q += ` LIMIT ${start}, ${portion}`
+		q += is_mysql ? ` LIMIT ${start}, ${portion}` : ` LIMIT ${portion} OFFSET ${start}`
 		
-		let all = await this.db_o.select_all (q, p), n = 0
+		let all = await db.select_all (q, p), n = 0
 		
 		for (let i of all) if (!i.uuid) i.uuid = pk ? i [pk] : 'X3_' + (n ++)
 

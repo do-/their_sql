@@ -13,6 +13,7 @@ module.exports = class {
         
         	db       : Dia.DB.Pool (this.db, new (require ('./Model.js')) ({path: './Model'})),
         	db_o     : Dia.DB.Pool (this.db_o),
+        	db_k     : Dia.DB.Pool (this.db_k),
 
             sessions : this.setup_sessions (),
             

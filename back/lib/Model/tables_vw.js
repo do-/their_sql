@@ -15,7 +15,7 @@ module.exports = {
 			tables.id
 			, tables.is_view      
 			, tables.cnt         
-			, COALESCE (tables.note, tables.remark || ' [их комментарий]') AS note
+			, COALESCE (tables.note, tables.remark) AS note
 			, pk.name AS pk
     	FROM
     		tables

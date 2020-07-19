@@ -56,6 +56,24 @@ darn (data.columns)
 
         },
         
+        onSearchOpen: function (e) {
+        
+        	e.done (function () {
+        	
+        		let $outer = $('#w2ui-overlay-dataGrid-searchOverlay'), $inner = $('div.w2ui-grid-searches', $outer)
+        		
+        		let {style} = $outer [0], gap = parseInt (style.top.slice (0, -2)); if (gap < 0) {
+        		
+        			style.top = '0px'
+
+        			$inner.height ($inner.height () + gap)
+
+        		}
+
+        	})
+        
+        },
+        
         onLoad: function (e) {
         
         	dia2w2ui (e)

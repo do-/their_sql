@@ -20,7 +20,7 @@ darn (data.columns)
         
     	toolbar: {
 			items: [
-		        {type: 'button', id: 'printButton', caption: 'MS Excel', onClick: function (e) {this.owner.saveAsXLS ()}},        
+		        {type: 'button', id: 'printButton', caption: 'MS Excel', onClick: function (e) {this.owner.saveAsXLS (data.id + '-data.xls')}},
 		    ],
 		},
 

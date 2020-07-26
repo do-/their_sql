@@ -10,8 +10,10 @@ darn (data.columns)
 
     $panel.w2regrid ({ 
     
-        name: 'dataGrid',             
-        
+        name: 'dataGrid',
+
+        selectType : 'cell',
+
         show: {
             toolbar: true,
             toolbarInput: false,

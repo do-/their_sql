@@ -1,3 +1,23 @@
+
+////////////////////////////////////////////////////////////////////////////////
+
+$_DO.drop_fk_table_columns = async function (e) {
+
+	let id = e.recid
+
+	if (!this.get (id) ['ref.id']) return
+
+	if (!confirm ('Вы действительно хотите удалить ссылку с этого поля?')) return
+	
+	this.lock ()
+		
+	await response ({type: 'columns', id, action: 'update'}, {data: {id_ref_table: ''}})
+
+	this.unlock ()
+	this.reload ()
+
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 $_DO.set_pk_table_columns = async function (e) {

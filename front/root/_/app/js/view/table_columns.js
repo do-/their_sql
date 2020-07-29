@@ -7,9 +7,7 @@ $_DRAW.table_columns = async function (data) {
     $panel.w2regrid ({ 
     
         name: 'columnsGrid',             
-        
-        multiSelect: false,
-        
+                
         show: {
             toolbar: true,
             toolbarInput: false,
@@ -60,6 +58,8 @@ $_DRAW.table_columns = async function (data) {
         		case 'id_ref_table':
         			this.select (e.recid)
         			return show_block ('set_ref_columns_popup')
+        		case 'ref.note': 
+        			return $_DO.drop_fk_table_columns.call (this, e)
         	}
 
         },

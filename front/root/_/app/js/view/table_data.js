@@ -53,6 +53,7 @@ darn (data.columns)
         onDblClick: function (e) {
         
         	if (!data.pk) return alert ('Первичного ключа нет - непонятно, как показывать')
+        	if (/\,/.test (data.pk)) return alert ('Извините, составной первичный ключ пока не поддерживается')
 
         	open_tab ('/record/' + data.src [1].id_table + '.' + e.recid)
 

@@ -11,18 +11,27 @@ module.exports = {
     },
     
     sql: `
+		WITH pk AS (
+			SELECT
+			id_table id
+			, STRING_AGG (name, ', ') pk
+		FROM
+			columns
+		WHERE
+			is_pk = 1
+		GROUP BY
+			id_table
+		ORDER BY
+			id_table
+		)
     	SELECT
 			tables.id
 			, tables.is_view      
 			, tables.cnt         
 			, COALESCE (tables.note, tables.remark) AS note
-			, pk.name AS pk
+      , (SELECT pk FROM pk WHERE id = tables.id) pk
     	FROM
     		tables
-    		LEFT JOIN columns AS pk ON (
-    			pk.id LIKE tables.id || '.%'
-    			AND pk.is_pk = 1
-    		)
     `
 
 }

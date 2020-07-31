@@ -1,0 +1,38 @@
+<span
+	data-popup-width=700
+	data-popup-height=200
+>
+
+	<style>
+		input[data-block-name=table_new] {
+			width: 520px !important;
+		}
+	</style>
+
+	<div class="w2ui-reset w2ui-form" style="height:150px; margin:8px 0 0 0;">
+
+        <div class="w2ui-page page-0">
+
+			<div class="w2ui-field">
+				<label>Имя:</label>
+				<div>
+					<input name=name required pattern="^[a-z_][a-z_0-9]*$">
+				</div>
+			</div>
+
+			<div class="w2ui-field">
+				<label>Примечание:</label>
+				<div>
+					<input name=note required>
+				</div>
+			</div>
+
+        </div>
+
+        <div class="w2ui-buttons">
+			<button class=w2ui-btn name=update data-hotkey=Ctrl-Enter>Создать...</button>
+        </div>
+
+	</div>
+
+</span>

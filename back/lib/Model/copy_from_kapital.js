@@ -10,19 +10,22 @@ module.exports = {
 			id,
 			is_view, 
 			cnt, 
-			remark
+			remark,
+			is_confirmed
     	)
     	SELECT
 			id,
 			is_view, 
 			cnt, 
-			remark
+			remark,
+			1
     	FROM
     		"k.tables"
     	ON CONFLICT (id) DO UPDATE SET
 			is_view = EXCLUDED.is_view, 
 			cnt     = EXCLUDED.cnt, 
-			remark  = EXCLUDED.remark
+			remark  = EXCLUDED.remark,
+			is_confirmed = 1
     	;
     	
     	INSERT INTO columns (

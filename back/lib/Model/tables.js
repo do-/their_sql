@@ -8,6 +8,13 @@ module.exports = {
         cnt          : 'int                                         // Число записей', 
         remark       : 'string                                      // Их комментарий',
         note         : 'string                                      // Наш комментарий',
+        is_confirmed : 'int=0                                       // 1, если есть в БД', 
     },
+
+    on_after_add_column: {
+
+        is_confirmed: [{sql: `UPDATE tables SET is_confirmed = 1`, params: []}],
+
+    }
 
 }

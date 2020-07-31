@@ -66,5 +66,85 @@ do_update_tables:
         await this.db.update ('tables', data)
 
 	},
+	
+////////////////////////////////////////////////////////////////////////////////
+
+do_delete_tables: 
+
+    async function () {
+    
+    	let {db, rq} = this
+            
+        await db.do ('DELETE FROM columns WHERE id_table = ? AND is_confirmed = 0', [rq.id])
+        await db.do ('DELETE FROM tables WHERE id = ? AND is_confirmed = 0', [rq.id])
+
+	},
+
+////////////////////////////////////////////////////////////////////////////////
+
+do_clone_tables: 
+
+    async function () {
+    
+        let {db, rq} = this, {id, data} = rq, {name, note} = data
+        
+        let [b, t] = id.split ('.'), new_id = b + '.' + name
+        
+        try {
+
+            await db.do (`
+		    
+		    	INSERT INTO tables (
+					id,
+					is_view,
+					cnt,
+					note,
+					is_confirmed
+		    	)
+		    	SELECT
+					? id, 
+					is_view,
+					0 cnt, 
+					? note, 
+					0 is_confirmed 
+		    	FROM
+		    		tables
+		    	WHERE
+		    		id = ?
+		    
+		    `, [new_id, note, id])
+
+        }
+        catch (e) {
+        
+        	throw !db.is_pk_violation (e) ? e : '#name#: Таблица с таким именем уже существует'
+        
+        }
+
+        return db.do (`
+		
+			INSERT INTO columns (
+				id           , 
+				is_pk        ,  
+				type         , 
+				note         , 
+				id_ref_table , 
+				is_confirmed 
+			)
+			SELECT
+				? || name  id, 
+				0 is_pk      ,  
+				type         , 
+				? note       , 
+				id_ref_table , 
+				0 is_confirmed 
+			FROM
+				columns
+			WHERE
+				id_table = ?
+		
+		`, [new_id + '.', note, id])
+        
+	},
 
 }

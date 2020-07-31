@@ -19,8 +19,8 @@ $_DRAW.tables = async function (data) {
 			{field: 'cnt', caption: '~К-во строк', type: 'int'},
 		],
 		        
-        columns: [                
-            {field: 'id',      caption: 'Имя',    size: 50, sortable: true, attr: 'data-ref=1'},
+        columns: [
+            {field: 'id',      caption: 'Имя',    size: 50, sortable: true, attr: 'data-ref=1 data-status'},
             {field: 'note',    caption: 'Комментарий',    size: 100},
             {field: 'pk',      caption: 'ПК',  size: 20},
             {field: 'cnt',     caption: '~К-во строк',  size: 20,  sortable: true, render: 'int'},

@@ -8,14 +8,26 @@
 
         <div class="w2ui-page page-0">
 
-			<header>
-				<span data-off="is_view">Таблица</span>
-				<span data-on="is_view">SQL View</span>
-				<span data-text="id" />
-				<span data-off="is_view">
-					(строк примерно <span data-text="cnt" data-digits />)
-				</span>
-			</header>
+
+				<table border=0 cellpadding=0 cellspacing=0 width=100%>
+					<tr>
+						<td>
+							<header>
+								<span data-off="is_view">Таблица</span>
+								<span data-on="is_view">SQL View</span>
+								<span data-text="id" />
+								<span data-off="is_view">
+									(строк примерно <span data-text="cnt" data-digits />)
+								</span>
+							</header>
+						</td>
+						<td align=right>
+							<button class=w2ui-btn name=clone>Клонировать</button>
+							<button class=w2ui-btn name=delete data-off=is_confirmed>Удалить</button>
+						</td>
+					</tr>
+				</table>
+				<br>
 
             <div class="w2ui-field">
                 <label>Комментарий</label>

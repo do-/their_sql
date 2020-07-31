@@ -1,12 +1,12 @@
 $_DRAW.table_data = async function (data) {
 
-darn (data.columns)
-
 	var layout = w2ui ['main']
 	
 	$('#layout_main_panel_bottom .w2ui-panel-title').text (data.sql)
 
-	var $panel = $(layout.el ('bottom'))               
+	var $panel = $(layout.el ('bottom')) 
+	
+	let columns = data.columns.filter (i => i.is_confirmed == 1)
 
     $panel.w2regrid ({ 
     
@@ -26,7 +26,7 @@ darn (data.columns)
 		    ],
 		},
 
-        searches: data.columns.map (i => {
+        searches: columns.filter (i => i.is_confirmed == 1).map (i => {
         
         	let {name, type} = i
         
@@ -42,7 +42,7 @@ darn (data.columns)
         	}
         }),         
 
-        columns: data.columns.map (i => ({
+        columns: columns.map (i => ({
         	field: i.name, 
         	caption: i.name,  
         	size: 50
@@ -101,7 +101,7 @@ darn (data.columns)
 
         		let sh = {hideColumn: [], showColumn: []}
         		
-        		for (let {name} of data.columns) sh [ids [name] ? 'showColumn' : 'hideColumn'].push (name)
+        		for (let {name} of columns) sh [ids [name] ? 'showColumn' : 'hideColumn'].push (name)
         		
         		for (let [k, v] of Object.entries (sh)) this [k].apply (this, v)
 

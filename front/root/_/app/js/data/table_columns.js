@@ -1,3 +1,37 @@
+////////////////////////////////////////////////////////////////////////////////
+
+$_DO.delete_table_columns = async function (e) {
+
+	e.preventDefault ()
+
+	let ids = this.getSelection ()
+
+	for (let id of ids) {
+
+		let r = this.get (id)
+
+		if (r.is_confirmed == 1) die ('foo', 'Поле ' + r.name + ' уже есть в БД: его удалять нельзя') 
+
+	}
+	
+	if (!confirm ('Правда удалить? Совсем?')) return
+
+	this.lock ()
+
+	await Promise.all (ids.map (id => response ({type: 'columns', id, action: 'delete'})))
+
+	this.unlock ()
+	this.reload ()
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+$_DO.clone_table_columns = async function (e) {
+
+	show_block ('column_new', this.get (e.recid))
+
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 

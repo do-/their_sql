@@ -14,6 +14,7 @@ select_table_data:
         
         let cols = (await this.db.list ({columns: {
         	'id LIKE': id_table + '.%',
+        	is_confirmed: 1,
         }}))
         
         let [pk] = cols.filter (i => i.is_pk).map (i => i.name)

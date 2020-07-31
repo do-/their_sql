@@ -76,4 +76,61 @@ do_update_columns:
 
 	},
 
+////////////////////////////////////////////////////////////////////////////////
+
+do_delete_columns: 
+
+    async function () {
+    
+    	let {db, rq} = this
+            
+        await db.do ('DELETE FROM columns WHERE id = ? AND is_confirmed = 0', [rq.id])
+
+	},
+
+////////////////////////////////////////////////////////////////////////////////
+
+do_clone_columns: 
+
+    async function () {
+    
+        let {db, rq} = this, {id, data} = rq, {name, note} = data
+        
+        let [b, t, c] = id.split ('.')
+        
+        try {
+
+            await db.do (`
+		    
+		    	INSERT INTO columns (
+					id           , 
+					is_pk        ,  
+					type         , 
+					note         , 
+					id_ref_table , 
+					is_confirmed 
+		    	)
+		    	SELECT
+					? id         , 
+					0 is_pk      ,  
+					type         , 
+					? note       , 
+					id_ref_table , 
+					0 is_confirmed 
+		    	FROM
+		    		columns
+		    	WHERE
+		    		id = ?
+		    
+		    `, [[b, t, name].join ('.'), note, id])
+
+        }
+        catch (e) {
+        
+        	throw !db.is_pk_violation (e) ? e : '#name#: Поле с таким именем уже существует'
+        
+        }
+        
+	},
+
 }

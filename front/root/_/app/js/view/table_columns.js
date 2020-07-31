@@ -2,7 +2,9 @@ $_DRAW.table_columns = async function (data) {
 
 	var layout = w2ui ['main']
 
-	var $panel = $(layout.el ('main'))               
+	var $panel = $(layout.el ('main'))              
+	
+	w2utils.settings.phrases.Edit = 'Клонировать'
 
     $panel.w2regrid ({ 
     
@@ -10,6 +12,8 @@ $_DRAW.table_columns = async function (data) {
                 
         show: {
             toolbar: true,
+            toolbarEdit: true,
+            toolbarDelete: true,
             toolbarInput: false,
             toolbarReload: false,
             footer: true,
@@ -30,9 +34,9 @@ $_DRAW.table_columns = async function (data) {
     
         columns: [
         
-            {field: 'name',     caption: 'Поле',    size: 50, sortable: true},
+            {field: 'name',     caption: 'Поле',    size: 50, sortable: true, attr: 'data-status'},
 
-            {field: 'type',     caption: 'Тип',    size: 50},
+            {field: 'type',     caption: 'Тип',    size: 50, editable: {type: 'text'}},
             {field: 'is_pk',    caption: 'ПК?',    size: 10, render: r => r.is_pk ? 'ПК' : '', off: data.is_view},
             
             {field: 'note',     caption: 'Комментарий',    size: 100, editable: {type: 'text'}},
@@ -77,6 +81,14 @@ $_DRAW.table_columns = async function (data) {
         
         },
         
+        onEditField: function (e) {
+        
+        	let {field} = this.columns [e.column], {is_confirmed} = this.get (e.recid)
+
+        	if (field == 'type' && is_confirmed == 1) return e.preventDefault ()
+
+        },
+        
         onLoad: function (e) {
         
         	dia2w2ui (e)
@@ -85,7 +97,7 @@ $_DRAW.table_columns = async function (data) {
         	
         		let data = $('body').data ('data')
         		
-        		data.columns = this.records
+        		data.columns = this.records				
         		
         		let pk = data.columns.filter (i => i.is_pk)
         		
@@ -104,7 +116,11 @@ $_DRAW.table_columns = async function (data) {
         	
         	})
         
-        }
+        },
+        
+        onEdit: $_DO.clone_table_columns,
+
+        onDelete: $_DO.delete_table_columns,
 
     }).refresh ();
     

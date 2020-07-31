@@ -11,6 +11,7 @@ module.exports = {
         note         : 'string                                      // Наш комментарий',
         id_table     : '(tables)                                    // Таблица',           
         id_ref_table : 'string                                      // Ссылка',           
+        is_confirmed : 'int=0                                       // 1, если есть в БД', 
     },
     
     keys: {
@@ -34,9 +35,15 @@ module.exports = {
         		RETURN NEW;
         	
         	END;        
-        
+
         `
 
     },
+
+    on_after_add_column: {
+
+        is_confirmed: [{sql: `UPDATE columns SET is_confirmed = 1`, params: []}],
+
+    }
 
 }

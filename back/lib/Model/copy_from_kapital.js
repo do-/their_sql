@@ -30,23 +30,26 @@ module.exports = {
 			is_pk, 
 			type,
 			remark,
-			id_ref_table
+			id_ref_table,
+			is_confirmed
     	)
     	SELECT
 			id,
 			is_pk, 
 			type,
 			remark,
-			id_ref_table
+			id_ref_table,
+			1
     	FROM
     		"k.columns"
     	ON CONFLICT (id) DO UPDATE SET
 			is_pk        = EXCLUDED.is_pk, 
 			type         = EXCLUDED.type, 
 			remark       = EXCLUDED.remark,
-			id_ref_table = COALESCE (EXCLUDED.id_ref_table, columns.id_ref_table)
-    	;    	
-    	
+			id_ref_table = COALESCE (EXCLUDED.id_ref_table, columns.id_ref_table),
+			is_confirmed = 1
+    	;
+
     	RETURN '';
 
     `

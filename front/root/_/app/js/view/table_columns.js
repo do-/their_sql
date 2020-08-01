@@ -104,8 +104,12 @@ $_DRAW.table_columns = async function (data) {
         		if (pk.length) {
 
 					$('body').data ('data', data)
+					
+					w2ui ['main'].show ('bottom')
+					$('button[name=show_data]').unbind ('click' ).click ($_DO.show_data_table)
 
-					show_block ('table_data', {id_table: data.id})
+
+//					show_block ('table_data', {id_table: data.id})
 
         		}
         		else {

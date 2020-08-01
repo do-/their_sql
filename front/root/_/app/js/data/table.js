@@ -1,5 +1,15 @@
 ////////////////////////////////////////////////////////////////////////////////
 
+$_DO.show_data_table = function (e) {
+
+	w2ui ['main'].sizeTo ('bottom', 200, true)
+
+	show_block ('table_data', {id_table: $_REQUEST.id})
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 $_DO.clone_table = function (e) {
 
 	show_block ('table_new', clone ($('body').data ('data')))

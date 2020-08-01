@@ -22,7 +22,7 @@ $_DRAW.table_data = async function (data) {
         
     	toolbar: {
 			items: [
-		        {type: 'button', id: 'printButton', caption: 'MS Excel', onClick: function (e) {this.owner.saveAsXLS (data.id + '-data.xls')}},
+		        {type: 'button', id: 'printButton', caption: 'MS Excel', onClick: function (e) {this.owner.saveAsXLS (data.id + '-data')}},
 		    ],
 		},
 

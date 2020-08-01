@@ -1,5 +1,21 @@
 ////////////////////////////////////////////////////////////////////////////////
 
+$_DO.dump_table_columns = async function (e) {
+
+	let grid = this.owner
+	
+	let ids = grid.getSelection ()
+	
+	if (!ids.length) ids = grid.records.filter (i => i.is_confirmed == 0).map (i => i.id)
+	
+	if (!ids.length) return alert ('Непонятно, какие нужны поля: новых нет и явно ни одно не отмечено')
+	
+	show_block ('columns_dump', clone (ids.map (id => grid.get (id))))
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 $_DO.delete_table_columns = async function (e) {
 
 	e.preventDefault ()

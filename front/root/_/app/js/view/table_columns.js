@@ -21,7 +21,8 @@ $_DRAW.table_columns = async function (data) {
 
     	toolbar: {
 			items: [
-		        {type: 'button', id: 'printButton', caption: 'MS Excel', onClick: function (e) {this.owner.saveAsXLS (data.id + '.xls')}},        
+		        {type: 'button', id: 'printButton', caption: 'MS Excel', onClick: function (e) {this.owner.saveAsXLS (data.id)}},        
+		        {type: 'button', id: 'dumpButton', caption: 'Model', onClick: $_DO.dump_table_columns},
 		    ],
 		},
         

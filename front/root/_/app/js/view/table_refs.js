@@ -17,7 +17,7 @@ $_DRAW.table_refs = async function (data) {
         
     	toolbar: {
 			items: [
-		        {type: 'button', id: 'printButton', caption: 'MS Excel', onClick: function (e) {this.owner.saveAsXLS (data.id + '-links.xls')}},
+		        {type: 'button', id: 'printButton', caption: 'MS Excel', onClick: function (e) {this.owner.saveAsXLS (data.id + '-links')}},
 		    ],
 		},
 

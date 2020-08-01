@@ -127,6 +127,7 @@ do_clone_tables:
 				id           , 
 				is_pk        ,  
 				type         , 
+				remark       , 
 				note         , 
 				id_ref_table , 
 				is_confirmed 
@@ -135,7 +136,8 @@ do_clone_tables:
 				? || name  id, 
 				0 is_pk      ,  
 				type         , 
-				? note       , 
+				remark       , 
+				note         , 
 				id_ref_table , 
 				0 is_confirmed 
 			FROM
@@ -143,7 +145,7 @@ do_clone_tables:
 			WHERE
 				id_table = ?
 		
-		`, [new_id + '.', note, id])
+		`, [new_id + '.', id])
         
 	},
 

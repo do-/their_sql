@@ -39,24 +39,28 @@ select_table_data:
         	return sql
         
         })} FROM ` + (is_mysql ? id_table : table_name) + ' WHERE 1=1', p = []
-        
+
         for (let [t, v] of Object.entries (filter)) {
         
         	if (v === null) {
         	
-        		let [col] = cols.filter (i => i.name == t)
+        		let [name, op] = t.split (' ')
+        	
+        		let [col] = cols.filter (i => i.name == name)
         		
-        		if (/(str|cha|tex)/.test (col.type)) {
+        		q += ' AND (' + name + ' IS'
+
+        		if (op) q += ' NOT'
         		
-        			q += ` AND (${t} IS NULL OR ${t} = '' OR TRIM(${t}) = '')`
+        		q += ' NULL'
         		
-        		}
-        		else {
+        		if (/(str|cha|tex)/.test (col.type)) q += 
         		
-        			q += ` AND ${t} IS NULL`
-        		
-        		}
-        	        	
+        			op  ? ` AND ${name} <> '' AND TRIM(${name}) <> ''`
+        				: ` OR  ${name}  = ''  OR TRIM(${name})  = ''`
+
+        		q += ')'
+
         	}
         	else {
 

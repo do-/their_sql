@@ -7,6 +7,8 @@ $_DRAW.table_data = async function (data) {
 	var $panel = $(layout.el ('bottom')) 
 	
 	let columns = data.columns.filter (i => i.is_confirmed == 1)
+	
+	w2utils.settings.phrases ['not null'] = 'непусто'
 
     $panel.w2regrid ({ 
     
@@ -39,11 +41,10 @@ $_DRAW.table_data = async function (data) {
 
         	}
         	
-        	switch (o.type) {
-        		case 'text':
-        			o.operators = ['is', 'begins', 'contains', 'ends', 'null']
-        			break
-        	}
+        	o.operators =
+        		o.type == 'text' ? ['is', 'begins', 'contains', 'ends', 'null', 'not null'] :
+        		o.type == 'date' ? ['is', 'between', {oper: 'less', text: 'before'}, {oper: 'more', text: 'after'}, 'null', 'not null'] :
+        		                   ['is', 'between', {oper: 'less', text: 'less than'}, {oper: 'more', text: 'more than'}, 'null', 'not null']
         	
         	return o
         	
@@ -117,7 +118,7 @@ $_DRAW.table_data = async function (data) {
         }
 
     }).refresh ();
-    
+        
     $('#grid_dataGrid_search_all').focus ()
 
 }

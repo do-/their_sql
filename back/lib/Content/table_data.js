@@ -41,15 +41,35 @@ select_table_data:
         })} FROM ` + (is_mysql ? id_table : table_name) + ' WHERE 1=1', p = []
         
         for (let [t, v] of Object.entries (filter)) {
-
-        	if (/\?\%/.test (t)) v += '%'
-        	if (/\%\?/.test (t)) v  = '%' + v
+        
+        	if (v === null) {
         	
-        	if (is_mysql) t = t.replace ('ILIKE', 'LIKE')
+        		let [col] = cols.filter (i => i.name == t)
+        		
+        		if (/(str|cha|tex)/.test (col.type)) {
+        		
+        			q += ` AND (${t} IS NULL OR ${t} = '' OR TRIM(${t}) = '')`
+        		
+        		}
+        		else {
+        		
+        			q += ` AND ${t} IS NULL`
+        		
+        		}
+        	        	
+        	}
+        	else {
 
-        	q += ' AND ' + t.replace (/\%/g, '')
-        	
-        	p.push (v)
+				if (/\?\%/.test (t)) v += '%'
+				if (/\%\?/.test (t)) v  = '%' + v
+
+				if (is_mysql) t = t.replace ('ILIKE', 'LIKE')
+
+				q += ' AND ' + t.replace (/\%/g, '')
+
+				p.push (v)
+
+        	}
         
         }
 

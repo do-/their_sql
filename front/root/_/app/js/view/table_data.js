@@ -28,9 +28,7 @@ $_DRAW.table_data = async function (data) {
 
         searches: columns.filter (i => i.is_confirmed == 1).map (i => {
         
-        	let {name, type} = i
-        
-        	return {
+        	let {name, type} = i, o = {
 				field: name, 
 				caption: name,  
 				type: 
@@ -40,6 +38,15 @@ $_DRAW.table_data = async function (data) {
 					'text'
 
         	}
+        	
+        	switch (o.type) {
+        		case 'text':
+        			o.operators = ['is', 'begins', 'contains', 'ends', 'null']
+        			break
+        	}
+        	
+        	return o
+        	
         }),         
 
         columns: columns.map (i => ({

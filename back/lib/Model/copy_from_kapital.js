@@ -6,6 +6,9 @@ module.exports = {
 
     body: `
     
+    	UPDATE tables  SET is_confirmed=0 WHERE id LIKE 'k.%';
+    	UPDATE columns SET is_confirmed=0 WHERE id LIKE 'k.%';
+    
     	INSERT INTO tables (
 			id,
 			is_view, 

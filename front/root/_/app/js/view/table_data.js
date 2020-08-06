@@ -97,7 +97,7 @@ $_DRAW.table_data = async function (data) {
         		        			
         			for (let k in r) {
 
-        				let v = r [k]; if (v == null) continue
+        				let v = r [k]; if (v == null || /^\s*$/.test (v)) continue
 
         				if (!ids [k]) ids [k] = 1
         				

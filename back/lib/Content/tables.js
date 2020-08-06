@@ -86,10 +86,8 @@ do_clone_tables:
 
     async function () {
     
-        let {db, rq} = this, {id, data} = rq, {name, note} = data
-        
-        let [b, t] = id.split ('.'), new_id = b + '.' + name
-        
+        let {db, rq} = this, {id, data} = rq, {name, note} = data, new_id = name
+
         try {
 
             await db.do (`

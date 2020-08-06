@@ -21,7 +21,7 @@ $_GET.columns_dump = async function (o) {
 	
 	for (let {name, type, id_ref_table, note} of o)
 	
-		src += `${name}${' '.repeat (mn - name.length)}: '${type}${' '.repeat (mt - type.length)} // ${note}';\n`
+		src += `${name}${' '.repeat (mn - name.length)}: '${type}${' '.repeat (mt - type.length)} // ${note}',\n`
 		
     return {src}
     

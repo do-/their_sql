@@ -1,3 +1,5 @@
+const fs = require ('fs')
+
 module.exports = {
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -55,17 +57,59 @@ get_item_of_tables:
     
 ////////////////////////////////////////////////////////////////////////////////
 
-do_update_tables: 
+do_reload_kapital_tables: 
 
     async function () {
     
-        let {id, data} = this.rq
+    	let n2s = {}, root = '../../../kapital/', js = 'back.js/lib/Model/kapital/', pm = 'back/lib/Model/' //root = '../../../kapital/back.js/lib/Model/kapital/'
+    	
+		for (let fn of fs.readdirSync (root + pm)) {
+		
+			let n = fn.replace ('.pm', '')
+			
+			n2s ['k.' + n] = pm + fn
+
+		}
+
+    	for (let dir of fs.readdirSync (root + js)) {
+
+			for (let fn of fs.readdirSync (root + js + dir)) {
+			
+				let n = fn.replace ('.js', '')
+				
+				if (/\./.test (n)) continue
+
+				n2s ['k.' + n] = js + dir + '/' + fn
+
+			}
+
+    	}
+
+        await this.db.do ('SELECT copy_from_kapital()')
         
-        data.id = id
+        await this.db.do ('UPDATE tables SET path = NULL WHERE id LIKE ?', ['k.%'])
         
-        await this.db.update ('tables', data)
+		return Promise.all (Object.entries (n2s).map (ns => 
+		
+			this.db.do ('UPDATE tables SET path = ? WHERE id = ?', ns.reverse ())
+		
+		))
 
 	},
+
+////////////////////////////////////////////////////////////////////////////////
+	
+do_update_tables: 
+	
+	    async function () {
+	    
+	        let {id, data} = this.rq
+	        
+	        data.id = id
+	        
+	        await this.db.update ('tables', data)
+	
+		},
 	
 ////////////////////////////////////////////////////////////////////////////////
 

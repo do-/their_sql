@@ -9,6 +9,7 @@ module.exports = {
         remark       : 'string                                      // Их комментарий',
         note         : 'string                                      // Наш комментарий',
         is_confirmed : 'int=0                                       // 1, если есть в БД', 
+        path         : 'string                                      // Путь файла-описания в Model',
     },
 
     on_after_add_column: {

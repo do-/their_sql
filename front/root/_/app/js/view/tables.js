@@ -5,12 +5,20 @@ $_DRAW.tables = async function (data) {
     $('main').w2regrid ({ 
     
         name: 'tablesGrid',             
-        
+
         show: {
             toolbar: true,
             footer: true,
-        },            
+        },
         
+    	toolbar: {
+
+			items: [
+		        {type: 'button', id: 'refreshKapitalButton', caption: 'Обновить KAPITAL', onClick: $_DO.refresh_kapital_tables},
+		    ],
+
+		},
+
         searches: [
 			{field: 'id',  caption: 'Имя', type: 'text'},
 			{field: 'remark',  caption: 'Их комментарий', type: 'text'},

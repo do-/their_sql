@@ -18,10 +18,12 @@ get_vocs_of_tables:
 select_tables: 
     
     function () {
+    
+    	let {rq} = this
    
-        this.rq.sort = this.rq.sort || [{field: "id", direction: "asc"}]
+        rq.sort = rq.sort || [{field: "id", direction: "asc"}]
 
-        if (this.rq.searchLogic == 'OR') {
+        if (rq.searchLogic == 'OR') {
 
             let q = this.rq.search [0].value
 
@@ -34,6 +36,8 @@ select_tables:
         }
     
         let filter = this.w2ui_filter ()
+        
+        let {pre} = rq; if (pre) filter ['id SIMILAR TO ?'] = `(${pre}).%`
         
         return this.db.add_all_cnt ({}, [{tables_vw: filter}])
 

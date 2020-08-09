@@ -14,8 +14,23 @@ $_DRAW.tables = async function (data) {
     	toolbar: {
 
 			items: [
+			
+				{type: 'break' },
+				
+				{type: 'check', id: 'k', text: 'Наша БД', checked: true},
+				{type: 'check', id: 'eias', text: 'ЕИАС ЖКХ МО', checked: true},
+				{type: 'check', id: 'fkr|mkd_service', text: 'MySQL'},
+				
+				{type: 'break' },
+				
 		        {type: 'button', id: 'refreshKapitalButton', caption: 'Обновить KAPITAL', onClick: $_DO.refresh_kapital_tables},
 		    ],
+		    
+		    onClick: function (e) {
+
+				if (this.get (e.target).type == 'check') e.done (() => this.owner.reload ())
+
+		    },
 
 		},
 
@@ -38,6 +53,12 @@ $_DRAW.tables = async function (data) {
         
         onDblClick: null,
 
+        onRequest: function (e) {
+        
+        	e.postData.pre = this.toolbar.items.filter (i => i.type == 'check' && i.checked).map (i => i.id).join ('|')
+
+        },
+        
         onClick: function (e) {
         
         	let r = this.get (e.recid), {field} = this.columns [e.column]

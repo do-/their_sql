@@ -1,7 +1,7 @@
 $_DRAW.tables = async function (data) {
 
     $('title').text ('Таблицы')
-
+    
     $('main').w2regrid ({ 
     
         name: 'tablesGrid',             
@@ -36,15 +36,16 @@ $_DRAW.tables = async function (data) {
 
         searches: [
 			{field: 'id',  caption: 'Имя', type: 'text'},
-			{field: 'remark',  caption: 'Их комментарий', type: 'text'},
-			{field: 'note',  caption: 'Наш комментарий', type: 'text'},
+			{field: 'note',  caption: 'Комментарий', type: 'text'},
+            {field: 'id_status', caption: 'Статус', type: 'enum', options: {items: data.voc_table_status.items}},
 			{field: 'pk',  caption: 'Первичный ключ', type: 'text'},
 			{field: 'cnt', caption: '~К-во строк', type: 'int'},
 		],
 		        
         columns: [
-            {field: 'id',      caption: 'Имя',    size: 50, sortable: true, attr: 'data-ref=1 data-status'},
+            {field: 'id',      caption: 'Имя',    size: 50, sortable: true, attr: 'data-ref=1'},
             {field: 'note',    caption: 'Комментарий',    size: 100},
+            {field: 'id_status', caption: 'Статус', size: 50, voc: data.voc_table_status, attr: 'data-status'},
             {field: 'pk',      caption: 'ПК',  size: 20},
             {field: 'cnt',     caption: '~К-во строк',  size: 20,  sortable: true, render: 'int'},
         ],

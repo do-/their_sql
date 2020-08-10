@@ -9,7 +9,8 @@ module.exports = {
         note         : 'string                                      // Наш комментарий',
         pk           : 'string                                      // Первичный ключ',
         is_confirmed : 'int=0                                       // 1, если есть в БД', 
-        _status      : 'int                                         // 1, если нет в БД', 
+        path         : 'string                                      // Путь файла-описания в Model',
+        id_status    : 'int                                         // 1, если нет в БД', 
     },
     
     sql: `
@@ -33,7 +34,12 @@ module.exports = {
 			, COALESCE (tables.note, tables.remark) AS note
       		, (SELECT pk FROM pk WHERE id = tables.id) pk
 			, is_confirmed
-			, 1-is_confirmed _status
+			, path
+			, CASE
+				WHEN id LIKE 'k.%' AND path IS NULL THEN 2
+				WHEN is_confirmed = 0 THEN 1
+				ELSE 0
+			END AS id_status
     	FROM
     		tables
     `

@@ -18,7 +18,7 @@ $_GET.tables = async function (o) {
 
     let data = await response ({type: 'tables', part: 'vocs'})
     
-    add_vocabularies (data, {})
+    add_vocabularies (data, {voc_table_status: {}})
     
     $('body').data ('data', data)
             

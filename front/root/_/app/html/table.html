@@ -20,21 +20,39 @@
 									(строк примерно <span data-text="cnt" data-digits />)
 								</span>
 							</header>
+
 						</td>
 						<td align=right>
 							<button class=w2ui-btn name=clone>Клонировать</button>
-							<button class=w2ui-btn name=delete data-off=is_confirmed>Удалить</button>
+							<button class=w2ui-btn name=delete data-on=id_status>Удалить</button>
 						</td>
 					</tr>
 				</table>
 				<br>
 
-            <div class="w2ui-field">
-                <label>Комментарий</label>
-                <div>
-                    <input name=note />
-                </div>
-            </div>
+
+				<table border=0 cellpadding=0 cellspacing=0 width=100%>
+					<tr>
+						<td>
+							<div class="w2ui-field">
+								<label>Комментарий</label>
+								<div>
+									<input name=note />
+								</div>
+							</div>
+						</td>
+						<td data-on=path>
+							<div class="w2ui-field">
+								<label>Исходные тексты:</label>
+								<label style="width:auto">
+									&nbsp;
+									<span data-text=path>
+								</label>
+							</div>
+						</td>
+					</tr>
+				</table>
+
 
         </div>
 

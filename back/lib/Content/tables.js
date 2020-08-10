@@ -9,6 +9,7 @@ get_vocs_of_tables:
     function () {
 
         return this.db.add_vocabularies ({_fields: this.db.model.tables.tables.columns}, {
+        	voc_table_status: {},
         })
 
     },
@@ -39,7 +40,7 @@ select_tables:
         
         let {pre} = rq; if (pre) filter ['id SIMILAR TO ?'] = `(${pre}).%`
         
-        return this.db.add_all_cnt ({}, [{tables_vw: filter}])
+        return this.db.add_all_cnt ({}, [{'tables_vw(*, id_status AS _status)': filter}])
 
     },
 
@@ -123,8 +124,8 @@ do_delete_tables:
     
     	let {db, rq} = this
             
-        await db.do ('DELETE FROM columns WHERE id_table = ? AND is_confirmed = 0', [rq.id])
-        await db.do ('DELETE FROM tables WHERE id = ? AND is_confirmed = 0', [rq.id])
+        await db.do ('DELETE FROM columns WHERE id_table IN (SELECT id FROM tables_vw WHERE id = ? AND id_status > 0)', [rq.id])
+        await db.do ('DELETE FROM tables WHERE id IN (SELECT id FROM tables_vw WHERE id = ? AND id_status > 0)', [rq.id])
 
 	},
 

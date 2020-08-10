@@ -1,5 +1,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 
+$_DO.open_src_table = function (e) {
+
+	open_tab (`http://srv-gitolite.cheby.local:8080/?p=kapital.git;a=blob;f=${$('body').data ('data').path};hb=refs/heads/billing`)
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 $_DO.show_data_table = function (e) {
 
 	w2ui ['main'].sizeTo ('bottom', 200, true)
@@ -23,7 +31,12 @@ $_DO.delete_table = async function (e) {
 	if (!confirm ('Правда удалить? Совсем?')) return
 
     await response ({type: 'tables', action: 'delete'})
-    
+
+    try {
+	    window.opener.w2_first_grid ().reload ()
+    }
+    catch (x) {}
+
     window.close ()
 
 }
@@ -36,8 +49,9 @@ $_DO.edit_table = function (e) {
 	
 	w2_panel_form ().refresh ()
 	
-	$('button[name=clone]').unbind ('click' ).click ($_DO.clone_table)
-	$('button[name=delete]').unbind ('click' ).click ($_DO.delete_table)
+	$('button[name=clone]').unbind ('click').click ($_DO.clone_table)
+	$('button[name=delete]').unbind ('click').click ($_DO.delete_table)
+	clickOn ($('span[data-text=path]'), $_DO.open_src_table)
 
 }
 

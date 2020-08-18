@@ -49,7 +49,7 @@ $_DRAW.record = async function (data) {
     
         columns: [
         
-            {field: 'name',     caption: 'Имя',    size: 50},
+            {field: 'name',     caption: 'Имя',    size: 50, editable: {type: 'text'}},
             {field: 'value',    caption: 'Значение',    size: 100, editable: {type: 'text'}},
 
             {field: 'note',     caption: 'Комментарий',    size: 100, editable: {type: 'text'}},
@@ -63,9 +63,13 @@ $_DRAW.record = async function (data) {
         
 		onChange: function (e) {
 		
-			if (this.columns [e.column].field == 'value') return e.preventDefault ()
-	
-			$_DO.patch_columns.call (this, e)
+			switch (this.columns [e.column].field) {
+				case 'name':
+				case 'value':
+					return e.preventDefault ()
+				default:
+					$_DO.patch_columns.call (this, e)
+			}
 
 		},
 

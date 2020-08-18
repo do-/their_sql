@@ -33,15 +33,17 @@ $_DRAW.table_data = async function (data) {
         	let {name, type} = i, o = {
 				field: name, 
 				caption: name,  
+				operator: 'is',
 				type: 
-					/^date/    .test (type) ? 'date'  : 
-					/^decimal/ .test (type) ? 'float' : 
-					/int/      .test (type) ? 'int'   : 
+					/^date/      .test (type) ? 'date'  : 
+					/^(dec|num)/ .test (type) ? 'float' : 
+					/int/        .test (type) ? 'int'   : 
 					'text'
 
         	}
-        	
+
         	o.operators =
+        		  type == 'uuid' ? ['is', 'null', 'not null'] :
         		o.type == 'text' ? ['is', 'begins', 'contains', 'ends', 'null', 'not null'] :
         		o.type == 'date' ? ['is', 'between', {oper: 'less', text: 'before'}, {oper: 'more', text: 'after'}, 'null', 'not null'] :
         		                   ['is', 'between', {oper: 'less', text: 'less than'}, {oper: 'more', text: 'more than'}, 'null', 'not null']

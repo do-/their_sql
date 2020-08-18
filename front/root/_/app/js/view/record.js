@@ -50,12 +50,9 @@ $_DRAW.record = async function (data) {
         columns: [
         
             {field: 'name',     caption: 'Имя',    size: 50},
-            {field: 'value',    caption: 'Значение',    size: 100},
+            {field: 'value',    caption: 'Значение',    size: 100, editable: {type: 'text'}},
 
             {field: 'note',     caption: 'Комментарий',    size: 100, editable: {type: 'text'}},
-
-//            {field: 'type',     caption: 'Тип',    size: 50},
-//            {field: 'is_pk',    caption: 'ПК?',    size: 10, render: r => r.is_pk ? 'ПК' : '', off: data.is_view},
             
             {field: 'id_ref_table',    caption: 'Имя',    size: 50, attr: 'data-ref=1'},
             {field: 'ref.note',     caption: 'Комментарий',    size: 100, render: r => r ['ref.note']},
@@ -64,7 +61,13 @@ $_DRAW.record = async function (data) {
                     
 		records: data.columns.filter (i => 'value' in i),
         
-		onChange: $_DO.patch_columns,        
+		onChange: function (e) {
+		
+			if (this.columns [e.column].field == 'value') return e.preventDefault ()
+	
+			$_DO.patch_columns.call (this, e)
+
+		},
 
         onDblClick: function (e) {
         

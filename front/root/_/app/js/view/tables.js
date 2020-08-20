@@ -24,6 +24,7 @@ $_DRAW.tables = async function (data) {
 				{type: 'break' },
 				
 		        {type: 'button', id: 'refreshKapitalButton', caption: 'Обновить KAPITAL', onClick: $_DO.refresh_kapital_tables},
+				{type: 'button', id: 'printButton', caption: 'MS Excel', onClick: function (e) {this.owner.saveAsXLS (data.id)}},        
 		    ],
 		    
 		    onClick: function (e) {

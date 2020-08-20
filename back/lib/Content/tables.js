@@ -24,7 +24,7 @@ select_tables:
    
         rq.sort = rq.sort || [{field: "id", direction: "asc"}]
 
-        if (rq.searchLogic == 'OR') {
+        if (rq.searchLogic == 'OR' && rq.search.length) {
 
             let q = this.rq.search [0].value
 

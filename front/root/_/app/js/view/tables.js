@@ -2,6 +2,8 @@ $_DRAW.tables = async function (data) {
 
     $('title').text ('Таблицы')
     
+	w2utils.settings.phrases ['not null'] = 'непусто'
+
     $('main').w2regrid ({ 
     
         name: 'tablesGrid',             
@@ -37,7 +39,7 @@ $_DRAW.tables = async function (data) {
 
         searches: [
 			{field: 'id',  caption: 'Имя', type: 'text'},
-			{field: 'note',  caption: 'Комментарий', type: 'text'},
+			{field: 'note',  caption: 'Комментарий', type: 'text', operators: ['contains', 'begins', 'is', 'ends', 'null', 'not null'], operator: 'contains'},
             {field: 'id_status', caption: 'Статус', type: 'enum', options: {items: data.voc_table_status.items}},
 			{field: 'pk',  caption: 'Первичный ключ', type: 'text'},
 			{field: 'cnt', caption: '~К-во строк', type: 'int'},

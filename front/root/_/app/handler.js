@@ -1,5 +1,7 @@
 (function () {
 
+	w2obj.grid.prototype.operators.text = ['is', 'begins', 'contains', 'misses', 'ends']
+
     clearTimeout (window.alarm)
     
     $(window).keydown (check_hotkeys)

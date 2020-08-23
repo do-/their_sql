@@ -34,5 +34,37 @@ module.exports = class extends Dia.HTTP.Handler {
     }
     
     w2ui_filter () {return new DiaW2uiFilter (this.rq)}
+    
+    async db_sign_transaction () {
+
+        return this.db.do ("SELECT set_config ('their_sql.request', ?, true)", [JSON.stringify ({
+
+        	_id_rq:     this.uuid,
+
+        	_id_user:   (this.user || {}).id,
+
+        	_type:      this.rq.type,
+
+        	_id:        this.rq.id,
+
+        	_action:    this.rq.action,
+
+        })])
+
+    }
+
+    async get_user () {
+        
+        let user = await super.get_user (), {type, action, id} = this.rq
+
+        if (!this.is_transactional () || !user) return user
+
+        this.user = user
+
+    	await this.db_sign_transaction ()
+        
+        return user
+        
+    }
 
 }

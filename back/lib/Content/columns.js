@@ -45,6 +45,22 @@ select_columns:
         ])
 
     },
+    
+////////////////////////////////////////////////////////////////////////////////
+
+get_versions_of_columns: 
+    
+    function () {
+   
+        this.rq.sort = this.rq.sort || [{field: "_ts", direction: "asc"}]
+
+        let filter = this.w2ui_filter ()       
+        return this.db.add_all_cnt ({}, [
+        	{'columns_versions': filter},
+        	'users ON _id_user'
+        ])
+
+    },    
 
 ////////////////////////////////////////////////////////////////////////////////
     

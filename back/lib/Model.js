@@ -2,6 +2,26 @@ const Dia = require ('./Ext/Dia/Dia.js')
 
 module.exports = class extends Dia.DB.Model {
 
+    constructor (o) {
+
+        super (o)
+
+        this.add_versioning ()
+
+	}
+
+	add_versioning () {
+
+    	let {_versions} = this.tables; delete this.tables._versions
+
+    	for (let table of Object.values (this.tables)) 
+    	
+    		if (table.log) 
+
+    			_versions.add_to.call (_versions, table)
+    			
+	}
+
     trg_check_column_values (tab) {
     	let sql = ''
     	for (let name in tab.columns) sql += this.trg_check_column_value (tab, name)

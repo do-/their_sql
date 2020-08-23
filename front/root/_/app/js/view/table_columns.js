@@ -35,7 +35,7 @@ $_DRAW.table_columns = async function (data) {
     
         columns: [
         
-            {field: 'name',     caption: 'Поле',    size: 50, sortable: true, attr: 'data-status'},
+            {field: 'name',     caption: 'Поле',    size: 50, sortable: true, attr: 'data-status', attr: 'data-ref=1'},
 
             {field: 'type',     caption: 'Тип',    size: 50, editable: {type: 'text'}},
             {field: 'is_pk',    caption: 'ПК?',    size: 10, render: r => r.is_pk ? 'ПК' : '', off: data.is_view},
@@ -74,6 +74,8 @@ $_DRAW.table_columns = async function (data) {
         	let r = this.get (e.recid), {field} = this.columns [e.column]
         
         	switch (field) {
+        		case 'name':
+        			return open_tab (`/column/${r.id}`)
         		case 'id_table':
         		case 'id_ref_table':
         			let id = r [field]

@@ -3,6 +3,7 @@ module.exports = {
     label : 'Поля',
 
     columns : {
+        uuid         : 'uuid=uuid_generate_v4()',
         id           : 'string                                      // Полное имя',
         is_pk        : 'int=0                                       // 1, если первичный ключ', 
         name         : 'string                                      // Имя',
@@ -17,6 +18,8 @@ module.exports = {
     keys: {
     	id_ref_table: 'id_ref_table',
     },
+    
+    log: {},
 
     triggers : {
 

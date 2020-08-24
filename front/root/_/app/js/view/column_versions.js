@@ -16,9 +16,11 @@ $_DRAW.column_versions = async function (data) {
     
         columns: [
         
-            {field: '_ts',     caption: 'Дата/время',    size: 20, render: r => dt_dmyhms (r._ts)},
-            {field: 'note',     caption: 'Комментарий',    size: 100},
-            {field: 'users.label',     caption: 'Автор',    size: 50},
+            {field: '_ts',     caption: 'Дата/время',    size: 35, min: 35, render: r => dt_dmyhms (r._ts)},
+            {field: 'remark',     caption: 'Комментарий в модели',    size: 100},
+            {field: 'note',     caption: 'Комментарий аналитика',    size: 100},
+            {field: '_action',     caption: 'Действие',    size: 50},
+            {field: 'users.label',     caption: 'Пользователь',    size: 50},
 
         ].filter (not_off),
         

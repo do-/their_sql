@@ -8,7 +8,7 @@ $_DO.edit_column = function (e) {
 	
 //	$('button[name=clone]').unbind ('click').click ($_DO.clone_column)
 //	$('button[name=delete]').unbind ('click').click ($_DO.delete_column)
-//	clickOn ($('span[data-text=path]'), $_DO.open_src_column)
+	clickOn ($('span[data-text=id_table]'), () => open_tab ('/table/' + $('body').data ('data').id_table))
 
 }
 

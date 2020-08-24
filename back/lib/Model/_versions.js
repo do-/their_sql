@@ -7,7 +7,6 @@ module.exports = {
         _id_rq   : 'uuid            // Запрос',
         _id_user : 'uuid            // Пользователь',
         _type    : 'string          // Тип объекта, с которым производится действие',
-        _id      : 'string          // Уникальный номер объекта, с которым производится действие',
         _action  : 'string          // Символическое имя действия',
         _ts      : 'timestamp=now() // Дата/время',
     },
@@ -19,21 +18,18 @@ module.exports = {
         	SELECT 
         		_id_user 
         		, _type
-        		, _id
         		, _action
         		, _id_rq
         	FROM 
         		json_to_record (current_setting ('their_sql.request')::json) AS t (
         			_id_user uuid
         			, _type    text
-        			, _id      text
         			, _action  text
 	        		, _id_rq   text
         		) 
         	INTO 
         		NEW._id_user
         		, NEW._type
-        		, NEW._id
         		, NEW._action
         		, NEW._id_rq
         	;

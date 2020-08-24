@@ -54,7 +54,10 @@ get_versions_of_columns:
    
         this.rq.sort = this.rq.sort || [{field: "_ts", direction: "asc"}]
 
-        let filter = this.w2ui_filter ()       
+        let filter = this.w2ui_filter ()  
+        
+        filter._id = this.rq._id
+        
         return this.db.add_all_cnt ({}, [
         	{'columns_versions': filter},
         	'users ON _id_user'

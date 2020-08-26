@@ -35,12 +35,12 @@ $_DRAW.table_columns = async function (data) {
     
         columns: [
         
-            {field: 'name',     caption: 'Поле',    size: 50, sortable: true, attr: 'data-status', attr: 'data-ref=1'},
+            {field: 'name',     caption: 'Поле',    size: 50, sortable: true, attr: 'data-status data-ref=1'},
 
-            {field: 'type',     caption: 'Тип',    size: 50, editable: {type: 'text'}},
-            {field: 'is_pk',    caption: 'ПК?',    size: 10, render: r => r.is_pk ? 'ПК' : '', off: data.is_view},
+            {field: 'type',     caption: 'Тип',    size: 50, editable: {type: 'text'}, attr: 'data-status'},
+            {field: 'is_pk',    caption: 'ПК?',    size: 10, render: r => r.is_pk ? 'ПК' : '', off: data.is_view, attr: 'data-status'},
             
-            {field: 'note',     caption: 'Комментарий',    size: 100, editable: {type: 'text'}},
+            {field: 'note',     caption: 'Комментарий',    size: 100, editable: {type: 'text'}, attr: 'data-status'},
             
             {field: 'id_ref_table',    caption: 'Имя',    size: 50, attr: 'data-ref=1'},
             {field: 'ref.note',     caption: 'Комментарий',    size: 100},

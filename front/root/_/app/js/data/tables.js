@@ -1,10 +1,24 @@
 ////////////////////////////////////////////////////////////////////////////////
 
+$_DO.refresh_oviont_tables = async function () {
+
+	let grid = this.owner
+	
+	grid.lock ('Обновляем схемы MySQL...')
+	
+	await response ({action: 'reload_oviont'})
+	
+	grid.reload ()
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 $_DO.refresh_kapital_tables = async function () {
 
 	let grid = this.owner
 	
-	grid.lock ('Обновляем KAPITAL...')
+	grid.lock ('Обновляем схему KAPITAL...')
 	
 	await response ({action: 'reload_kapital'})
 	

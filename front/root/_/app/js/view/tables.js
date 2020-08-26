@@ -21,11 +21,12 @@ $_DRAW.tables = async function (data) {
 				
 				{type: 'check', id: 'k', text: 'Наша БД', checked: true},
 				{type: 'check', id: 'eias', text: 'ЕИАС ЖКХ МО', checked: true},
-				{type: 'check', id: 'fkr|mkd_service', text: 'MySQL'},
+				{type: 'check', id: 'fkr|fkr_rr|mkd_service', text: 'MySQL'},
 				
 				{type: 'break' },
 				
 		        {type: 'button', id: 'refreshKapitalButton', caption: 'Обновить KAPITAL', onClick: $_DO.refresh_kapital_tables},
+		        {type: 'button', id: 'refreshOviontButton', caption: 'Обновить MySQL', onClick: $_DO.refresh_oviont_tables},
 				{type: 'button', id: 'printButton', caption: 'MS Excel', onClick: function (e) {this.owner.saveAsXLS (data.id)}},        
 		    ],
 		    

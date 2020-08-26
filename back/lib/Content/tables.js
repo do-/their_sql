@@ -62,6 +62,46 @@ get_item_of_tables:
     
 ////////////////////////////////////////////////////////////////////////////////
 
+do_reload_oviont_tables: 
+
+    async function () {
+    
+    	let {db, db_o} = this
+
+    	await db.do ('UPDATE tables SET is_confirmed = 0 WHERE id SIMILAR TO ?', ['(fkr|fkr_rr|mkd_service).%'])
+
+  		await db.upsert ('tables', await db_o.select_all (`
+			SELECT
+			  CONCAT(t.table_schema, '.', t.table_name) id
+			  , CASE t.table_type WHEN 'VIEW' THEN 1 ELSE 0 END is_view
+			  , IFNULL(t.table_rows, 0) cnt
+			  , CASE t.table_comment WHEN '' THEN NULL ELSE t.table_comment END remark
+			  , 1 is_confirmed
+			FROM
+			  information_schema.tables t
+			WHERE 1=1
+			  AND t.table_schema IN ('fkr', 'fkr_rr', 'mkd_service')
+  		`))
+
+    	await db.do ('UPDATE columns SET is_confirmed = 0 WHERE id SIMILAR TO ?', ['(fkr|fkr_rr|mkd_service).%'])
+
+  		await db.upsert ('columns', await db_o.select_all (`
+			SELECT
+			  CONCAT(t.table_schema, '.', t.table_name, '.', LOWER(t.column_name)) id
+			  , CASE t.column_key WHEN 'PRI' THEN 1 ELSE 0 END is_pk
+			  , t.column_type type
+			  , CASE t.column_comment WHEN '' THEN NULL ELSE t.column_comment END remark
+			  , 1 is_confirmed
+			FROM
+			  information_schema.columns t
+			WHERE 1=1
+			  AND t.table_schema IN ('fkr', 'fkr_rr', 'mkd_service')
+  		`))
+
+    },
+
+////////////////////////////////////////////////////////////////////////////////
+
 do_reload_kapital_tables: 
 
     async function () {

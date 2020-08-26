@@ -4,6 +4,10 @@ const DiaW2uiFilter = require ('../../Ext/Dia/Content/Handler/HTTP/Ext/w2ui/Filt
 
 module.exports = class extends Dia.HTTP.Handler {
     
+    get_ttl () {
+    	return 50000
+    }
+
     check () {
         super.check ()
         let m = this.http.request.method

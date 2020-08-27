@@ -2,6 +2,8 @@
 
 $_DO.refresh_oviont_tables = async function () {
 
+	if (!confirm ('Вы уверены, что это необходимо?')) return
+
 	let grid = this.owner
 	
 	grid.lock ('Синхронизация...')
@@ -26,13 +28,25 @@ $_DO.refresh_oviont_tables = async function () {
 
 $_DO.refresh_kapital_tables = async function () {
 
+	if (!confirm ('Вы уверены, что это необходимо?')) return
+
 	let grid = this.owner
 	
 	grid.lock ('Синхронизация...')
 	
-	await response ({action: 'reload_kapital'})
+	let id = new_uuid ()
 	
-	grid.reload ()
+	await response ({type: 'kapital_imports', action: 'create', id}, {})
+	
+	let t = setInterval (async () => {
+	
+		let data = await response ({type: 'kapital_imports', id})
+
+		if (!data.is_over) return
+		
+		grid.reload (clearInterval (t))
+	
+	}, 1000)
 
 }
 

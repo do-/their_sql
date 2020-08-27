@@ -4,7 +4,7 @@ $_DO.refresh_oviont_tables = async function () {
 
 	let grid = this.owner
 	
-	grid.lock ('Обновляем fkr...')
+	grid.lock ('Синхронизация...')
 	
 	let id = new_uuid ()
 	
@@ -28,7 +28,7 @@ $_DO.refresh_kapital_tables = async function () {
 
 	let grid = this.owner
 	
-	grid.lock ('Обновляем KAPITAL...')
+	grid.lock ('Синхронизация...')
 	
 	await response ({action: 'reload_kapital'})
 	

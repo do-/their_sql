@@ -1,3 +1,25 @@
+$_DO.check_toolbar_tables = function (e) {
+
+	if (e.type == 'click' && e.item.type != 'check') return
+
+	let grid = w2ui ['tablesGrid']; if (!grid) return 
+	
+	let {toolbar} = grid
+		
+	e.done (() => {
+	
+		for (let i of toolbar.items) if (i.type == 'button') toolbar.hide (i.id)
+		
+		let checked = toolbar.items.filter (i => i.type == 'check' && i.checked)
+		
+		if (checked.length == 1) toolbar.show ('refresh_' + checked [0].id)
+		
+		if (e.type == 'click') grid.reload ()
+
+	})
+
+}
+
 $_DRAW.tables = async function (data) {
 
     $('title').text ('Таблицы')
@@ -25,16 +47,14 @@ $_DRAW.tables = async function (data) {
 				
 				{type: 'break' },
 				
-		        {type: 'button', id: 'refreshKapitalButton', caption: 'Обновить KAPITAL', onClick: $_DO.refresh_kapital_tables},
-		        {type: 'button', id: 'refreshOviontButton', caption: 'Обновить MySQL', onClick: $_DO.refresh_oviont_tables},
+		        {type: 'button', id: 'refresh_k', caption: 'Обновить', onClick: $_DO.refresh_kapital_tables, hidden: true},
+		        {type: 'button', id: 'refresh_fkr|fkr_rr|mkd_service', caption: 'Обновить', onClick: $_DO.refresh_oviont_tables, hidden: true},
+
 				{type: 'button', id: 'printButton', caption: 'MS Excel', onClick: function (e) {this.owner.saveAsXLS (data.id)}},        
+		    
 		    ],
 		    
-		    onClick: function (e) {
-
-				if (this.get (e.target).type == 'check') e.done (() => this.owner.reload ())
-
-		    },
+		    onClick: $_DO.check_toolbar_tables,
 
 		},
 
@@ -74,9 +94,11 @@ $_DRAW.tables = async function (data) {
         	}
         
         },
+        
+        onRefresh: $_DO.check_toolbar_tables,
 
     }).refresh ();
-    
+        
     $('#grid_tablesGrid_search_all').focus ()
 
 }

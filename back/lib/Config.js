@@ -38,6 +38,20 @@ module.exports = class {
 		})
 
     }
+
+	async response (tia, data, pools, user = {}) {
+
+		if (!pools) pools = this.pools
+
+		return new Promise (function (resolve, reject) {
+
+			let h = new (require ('./Content/Handler/Async')) ({user, conf: this, rq: {...tia, ...data}, pools}, resolve, reject)
+
+			setImmediate (() => h.run ())        
+
+		})
+
+	}	
     
     async init () {
     

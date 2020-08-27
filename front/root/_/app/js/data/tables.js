@@ -4,11 +4,21 @@ $_DO.refresh_oviont_tables = async function () {
 
 	let grid = this.owner
 	
-	grid.lock ('Обновляем схемы MySQL...')
+	grid.lock ('Обновляем fkr...')
 	
-	await response ({action: 'reload_oviont'})
+	let id = new_uuid ()
 	
-	grid.reload ()
+	await response ({type: 'mysql_imports', action: 'create', id}, {})
+	
+	let t = setInterval (async () => {
+	
+		let data = await response ({type: 'mysql_imports', id})
+
+		if (!data.is_over) return
+		
+		grid.reload (clearInterval (t))
+	
+	}, 1000)
 
 }
 
@@ -18,7 +28,7 @@ $_DO.refresh_kapital_tables = async function () {
 
 	let grid = this.owner
 	
-	grid.lock ('Обновляем схему KAPITAL...')
+	grid.lock ('Обновляем KAPITAL...')
 	
 	await response ({action: 'reload_kapital'})
 	

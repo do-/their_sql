@@ -4,8 +4,9 @@ const DiaW2uiFilter = require ('../../Ext/Dia/Content/Handler/HTTP/Ext/w2ui/Filt
 
 module.exports = class extends Dia.HTTP.Handler {
     
-    get_ttl () {
-    	return 50000
+    constructor (o, resolve, reject) {
+    	super (o, resolve, reject)
+    	this.import ((require ('./Base')), ['get_method_name', 'get_log_banner', 'db_sign_transaction'])
     }
 
     check () {
@@ -38,24 +39,6 @@ module.exports = class extends Dia.HTTP.Handler {
     }
     
     w2ui_filter () {return new DiaW2uiFilter (this.rq)}
-    
-    async db_sign_transaction () {
-
-        return this.db.do ("SELECT set_config ('their_sql.request', ?, true)", [JSON.stringify ({
-
-        	_id_rq:     this.uuid,
-
-        	_id_user:   (this.user || {}).id,
-
-        	_type:      this.rq.type,
-
-        	_id:        this.rq.id,
-
-        	_action:    this.rq.action,
-
-        })])
-
-    }
 
     async get_user () {
         

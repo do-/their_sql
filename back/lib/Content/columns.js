@@ -52,7 +52,7 @@ get_versions_of_columns:
     
     function () {
    
-        this.rq.sort = this.rq.sort || [{field: "_ts", direction: "asc"}]
+        this.rq.sort = this.rq.sort || [{field: "_ts", direction: "desc"}]
 
         let filter = this.w2ui_filter ()  
         
@@ -73,7 +73,7 @@ get_item_of_columns:
     
     	let {id} = this.rq
 
-        let data = await this.db.get ([{columns: {id}}])
+        let data = await this.db.get ([{columns_vw: {id}}])
 
         data._fields = this.db.model.tables.columns.columns
         

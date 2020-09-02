@@ -55,11 +55,17 @@ module.exports = class {
     
     async init () {
     
-		let db = this.pools.db
+		let {db} = this.pools
 		
-		await db.load_schema ()
+		await db.load_schema ()		
 		
-		await db.update_model ()
+		let patch = db.gen_sql_patch ()
+		
+		patch.push ({sql: 'ALTER TABLE IF EXISTS columns_versions DROP CONSTRAINT IF EXISTS columns_versions_id_table_fkey', params: []})
+		    	
+		if (!patch.length) return
+		    	
+		return db.run (patch)
 		
     }
 

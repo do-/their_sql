@@ -6,7 +6,7 @@ get_item_of_mysql_imports:
 
     async function () {
         
-        return this.db.get ({mysql_imports: this.rq.id})
+        return this.db.get ({imports: this.rq.id})
 
     },
     
@@ -19,7 +19,7 @@ do_create_mysql_imports:
     
     	let uuid = this.rq.id
             
-        await this.db.insert_if_absent ('mysql_imports', {uuid})
+        await this.db.insert_if_absent ('imports', {uuid})
         
         setImmediate (() => this.conf.response ({type: 'mysql_imports', id: uuid, action: 'execute'}, {}, null, this.user))
         
@@ -83,7 +83,7 @@ do_execute_mysql_imports:
     	
     	`)
     	
-    	await db.do ('UPDATE mysql_imports SET is_over = 1 WHERE uuid = ?', [this.rq.id])
+    	await db.do ('UPDATE imports SET is_over = 1 WHERE uuid = ?', [this.rq.id])
 
     },
 

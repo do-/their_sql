@@ -15,8 +15,6 @@ module.exports = class {
         	db_o     : Dia.DB.Pool (this.db_o),
         	db_k     : Dia.DB.Pool (this.db_k),
         	db_h     : Dia.DB.Pool (this.db_h),
-
-            sessions : this.setup_sessions (),
             
 			pwd_calc: new (require ('./Ext/Dia/Crypto/FileSaltHashCalculator.js')) ({
 				salt_file: this.auth.salt_file,
@@ -25,17 +23,6 @@ module.exports = class {
 			}),
 
         }
-
-    }
-    
-    setup_sessions () {
-    	
-    	let s = this.auth.sessions
-
-		return new (require ('./Ext/Dia/Cache/MapTimer.js')) ({
-	      	name: 'session',
-        	ttl : s.timeout * 60 * 1000,
-		})
 
     }
 

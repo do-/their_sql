@@ -1,7 +1,7 @@
 const fs     = require ('fs')
 const crypto = require ('crypto')
 
-module.exports = class extends require ('../../../Ext/Dia/Content/Handler/HTTP/Session/CachedCookieSession.js') {
+module.exports = class extends require ('../../../Ext/Dia/Content/Handler/HTTP/Session/JWTCookieSession.js') {
 
 	async password_hash (salt, password) {
 	

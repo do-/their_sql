@@ -39,7 +39,7 @@ do_execute_kapital_imports:
     
     	let {db} = this
 
-        await db.do ('SELECT copy_from_kapital()')    
+        await db.do ('SELECT copy_from_kapital(?)', [this.rq.id])
     
     	let n2s = {}, root = '../../../kapital/', js = 'back.js/lib/Model/kapital/', pm = 'back/lib/Model/' //root = '../../../kapital/back.js/lib/Model/kapital/'
     	
@@ -73,11 +73,21 @@ do_execute_kapital_imports:
 
 		await Promise.all ([
 		
-			`UPDATE tables t SET path = b.path FROM ${tmp} b WHERE t.id = b.id`,
-			
-			`UPDATE tables   SET path = NULL                 WHERE id NOT IN (SELECT id FROM ${tmp})`,
+			...[
+
+				`UPDATE tables t SET path = b.path FROM ${tmp} b WHERE t.id = b.id`,
+
+				`UPDATE tables   SET path = NULL                 WHERE id NOT IN (SELECT id FROM ${tmp})`,
+
+			].map (sql => db.do (sql)),
 		
-		].map (sql => db.do (sql)))
+			...['tables', 'columns']
+
+				.map (t => `UPDATE ${t} SET is_confirmed = CASE WHEN id_import = ? THEN 1 ELSE 0 END WHERE id LIKE ?`)
+
+				.map (sql => db.do (sql, [this.rq.id, 'k.%'])),
+		
+		])				
 
     	await db.do ('UPDATE imports SET is_over = 1 WHERE uuid = ?', [this.rq.id])
 

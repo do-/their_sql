@@ -92,6 +92,25 @@ module.exports = {
     	
     	table.triggers.before_update_insert_delete = `
     	
+    		DECLARE __action text;
+    		
+    		BEGIN
+    	
+				SELECT _action INTO __action FROM (
+					SELECT 
+						_id_user 
+						, _type
+						, _action
+						, _id_rq
+					FROM 
+						json_to_record (current_setting ('their_sql.request')::json) AS t (
+							_id_user uuid
+							, _type    text
+							, _action  text
+							, _id_rq   text
+						) 
+				) t;
+    	
 			IF TG_OP = 'DELETE' THEN 
 		        	
 				INSERT INTO
@@ -104,7 +123,7 @@ module.exports = {
 					
         		RETURN OLD; 
 		        		
-        	ELSIF (TG_OP = 'INSERT') OR ${names
+        	ELSIF __action <> 'execute' AND ((TG_OP = 'INSERT') OR ${names
 
 					.map (name => table.columns [name].TYPE_NAME == 'json' ? name + '::text' : name)
 
@@ -112,7 +131,7 @@ module.exports = {
 
         			.join (' OR ')
 
-				} THEN
+				}) THEN
 
 				INSERT INTO
 
@@ -133,6 +152,8 @@ module.exports = {
 				RETURN NEW;
 
 			END IF;
+
+			END;
         
         `
     

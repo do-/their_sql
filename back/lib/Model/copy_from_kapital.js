@@ -3,32 +3,33 @@ module.exports = {
     label: 'Копирование текущей схемы KAPITAL',
 
     returns: 'text',
+    
+	arg: {
+		_id_import: 'uuid',
+	},
 
     body: `
-    
-    	UPDATE tables  SET is_confirmed=0 WHERE id LIKE 'k.%';
-    	UPDATE columns SET is_confirmed=0 WHERE id LIKE 'k.%';
-    
+        
     	INSERT INTO tables (
 			id,
 			is_view, 
 			cnt, 
 			remark,
-			is_confirmed
+			id_import
     	)
     	SELECT
 			id,
 			is_view, 
 			cnt, 
 			remark,
-			1
+			_id_import
     	FROM
     		"k.tables"
     	ON CONFLICT (id) DO UPDATE SET
-			is_view = EXCLUDED.is_view, 
-			cnt     = EXCLUDED.cnt, 
-			remark  = EXCLUDED.remark,
-			is_confirmed = 1
+			is_view   = EXCLUDED.is_view, 
+			cnt       = EXCLUDED.cnt, 
+			remark    = EXCLUDED.remark,
+			id_import = _id_import
     	;
     	
     	INSERT INTO columns (
@@ -37,7 +38,7 @@ module.exports = {
 			type,
 			remark,
 			id_ref_table,
-			is_confirmed
+			id_import
     	)
     	SELECT
 			id,
@@ -45,7 +46,7 @@ module.exports = {
 			type,
 			remark,
 			id_ref_table,
-			1
+			_id_import
     	FROM
     		"k.columns"
     	ON CONFLICT (id) DO UPDATE SET
@@ -53,7 +54,7 @@ module.exports = {
 			type         = EXCLUDED.type, 
 			remark       = EXCLUDED.remark,
 			id_ref_table = COALESCE (EXCLUDED.id_ref_table, columns.id_ref_table),
-			is_confirmed = 1
+			id_import    = _id_import
     	;
 
     	RETURN '';

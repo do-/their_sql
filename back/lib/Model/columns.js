@@ -13,13 +13,16 @@ module.exports = {
         id_table     : '(tables)                                    // Таблица',           
         id_ref_table : 'string                                      // Ссылка',           
         is_confirmed : 'int=0                                       // 1, если есть в БД', 
+        id_import    : '(imports)                                   // Последний импорт',
     },
     
     keys: {
     	id_ref_table: 'id_ref_table',
     },
     
-    log: {},
+    log: {
+    	except_columns: ['id_import'],
+    },
 
     triggers : {
 
@@ -42,11 +45,5 @@ module.exports = {
         `
 
     },
-
-    on_after_add_column: {
-
-        is_confirmed: [{sql: `UPDATE columns SET is_confirmed = 1`, params: []}],
-
-    }
 
 }

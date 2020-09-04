@@ -12,7 +12,7 @@ module.exports = class {
         this.pools = {
         
         	db       : Dia.DB.Pool (this.db, new (require ('./Model.js')) ({path: './Model'})),
-        	db_o     : Dia.DB.Pool (this.db_o),
+//        	db_o     : Dia.DB.Pool (this.db_o),
         	db_k     : Dia.DB.Pool (this.db_k),
         	db_h     : Dia.DB.Pool (this.db_h),
             
@@ -23,6 +23,8 @@ module.exports = class {
 			}),
 
         }
+        
+        let {db_o} = this; if (db_o) this.pools.db_o = Dia.DB.Pool (db_o)
 
     }
 

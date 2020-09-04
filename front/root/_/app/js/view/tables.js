@@ -10,10 +10,14 @@ $_DO.check_toolbar_tables = function (e) {
 	
 		for (let i of toolbar.items) if (i.type == 'button') toolbar.hide (i.id)
 		
-		let checked = toolbar.items.filter (i => i.type == 'check' && i.checked)
-		
-		if (checked.length == 1) toolbar.show ('refresh_' + checked [0].id)
-		
+		if ($_USER.role == 'admin') {
+
+			let checked = toolbar.items.filter (i => i.type == 'check' && i.checked)
+
+			if (checked.length == 1) toolbar.show ('refresh_' + checked [0].id)
+
+		}
+
 		if (e.type == 'click') grid.reload ()
 
 	})

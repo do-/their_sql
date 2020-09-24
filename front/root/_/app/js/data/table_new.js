@@ -16,7 +16,9 @@ $_DO.update_table_new = async function (e) {
 
 $_GET.table_new = async function (o) {
 
-	o.name = o.id
+	let parts = o.id.split ('.'); parts [0] = 'bf_50'
+
+	o.name = parts.join ('.')
 
     return o
     

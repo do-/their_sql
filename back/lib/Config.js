@@ -15,6 +15,7 @@ module.exports = class {
 //        	db_o     : Dia.DB.Pool (this.db_o),
         	db_k     : Dia.DB.Pool (this.db_k),
         	db_h     : Dia.DB.Pool (this.db_h),
+        	db_b     : Dia.DB.Pool (this.db_b),
             
 			pwd_calc: new (require ('./Ext/Dia/Crypto/FileSaltHashCalculator.js')) ({
 				salt_file: this.auth.salt_file,

@@ -22,8 +22,9 @@ select_table_data:
         let [prefix, table_name] = id_table.split ('.')
         
         let db = 
-        	prefix == 'k'    ? this.db_k : 
-        	prefix == 'eias' ? this.db_h : 
+        	prefix == 'k'     ? this.db_k : 
+        	prefix == 'eias'  ? this.db_h : 
+        	prefix == 'bf_50' ? this.db_b : 
         	this.db_o
         
         let is_mysql = db.product == 'mysql', quot = is_mysql ? '`' : '"' // "` 

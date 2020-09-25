@@ -53,6 +53,7 @@ $_DRAW.tables = async function (data) {
 				{type: 'break' },
 				
 //		        {type: 'button', id: 'refresh_k', caption: 'Обновить', onClick: $_DO.refresh_kapital_tables, hidden: true},
+		        {type: 'button', id: 'refresh_bf_50', caption: 'Обновить', onClick: $_DO.refresh_bf_50_tables, hidden: true},
 		        {type: 'button', id: 'refresh_fkr|fkr_rr|mkd_service', caption: 'Обновить', onClick: $_DO.refresh_oviont_tables, hidden: true},
 
 				{type: 'button', id: 'printButton', caption: 'MS Excel', onClick: function (e) {this.owner.saveAsXLS (data.id)}},        

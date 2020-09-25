@@ -52,6 +52,32 @@ $_DO.refresh_kapital_tables = async function () {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+$_DO.refresh_bf_50_tables = async function () {
+
+	if (!confirm ('Вы уверены, что это необходимо?')) return
+
+	let grid = this.owner
+	
+	grid.lock ('Синхронизация...')
+	
+	let id = new_uuid ()
+	
+	await response ({type: 'bf_50_imports', action: 'create', id}, {})
+	
+	let t = setInterval (async () => {
+	
+		let data = await response ({type: 'bf_50_imports', id})
+
+		if (!data.is_over) return
+		
+		grid.reload (clearInterval (t))
+	
+	}, 1000)
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 $_GET.tables = async function (o) {
 
     let data = await response ({type: 'tables', part: 'vocs'})

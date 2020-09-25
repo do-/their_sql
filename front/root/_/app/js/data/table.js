@@ -2,7 +2,14 @@
 
 $_DO.open_src_table = function (e) {
 
-	open_tab (`http://srv-gitolite.cheby.local:8080/?p=kapital.git;a=blob;f=${$('body').data ('data').path};hb=refs/heads/billing`)
+	let {id, path} = $('body').data ('data')
+	
+	switch (id.split ('.') [0]) {
+		case 'k':
+			return open_tab (`http://srv-gitolite.cheby.local:8080/?p=kapital.git;a=blob;f=${path};hb=refs/heads/billing`)
+		case 'bf_50':
+			return open_tab (`http://srv-gitolite.cheby.local:8080/?p=bf_50.git;a=blob;f=${path}`)
+	}
 
 }
 

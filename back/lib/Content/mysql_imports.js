@@ -50,7 +50,7 @@ do_execute_mysql_imports:
 				ON CONFLICT (id) DO UPDATE SET ${cols.filter (k => k != 'id').map (k => k + '=EXCLUDED.' + k)}
 			`)
 
-			await db.do (`UPDATE ${table} SET is_confirmed = 0 WHERE id SIMILAR TO ? AND id NOT IN (SELECT id FROM ${tmp})`, ['(fkr|fkr_rr|mkd_service).%'])
+			await db.do (`UPDATE ${table} SET is_confirmed = 0 WHERE id SIMILAR TO ? AND id NOT IN (SELECT id FROM ${tmp})`, ['(fkr|fkr_rr|mkd_service|fkr_event|fkr_tasks).%'])
 			await db.do (`UPDATE ${table} SET is_confirmed = 1 WHERE id IN (SELECT id FROM ${tmp})`)
 
     	}
@@ -79,7 +79,7 @@ do_execute_mysql_imports:
 			FROM
 				information_schema.columns t
 			WHERE
-				t.table_schema IN ('fkr', 'fkr_rr', 'mkd_service')
+				t.table_schema IN ('fkr', 'fkr_rr', 'mkd_service', 'fkr_event', 'fkr_tasks')
     	
     	`)
     	

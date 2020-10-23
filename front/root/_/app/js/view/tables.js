@@ -48,13 +48,13 @@ $_DRAW.tables = async function (data) {
 				{type: 'check', id: 'bf_50', text: 'bf_50', checked: true},
 				{type: 'check', id: 'k', text: 'АСУ ФКР'},
 				{type: 'check', id: 'eias', text: 'ЕИАС ЖКХ МО'},
-				{type: 'check', id: 'fkr|fkr_rr|mkd_service', text: 'MySQL'},
+				{type: 'check', id: 'fkr|fkr_rr|mkd_service|fkr_event|fkr_tasks', text: 'MySQL'},
 				
 				{type: 'break' },
 				
 //		        {type: 'button', id: 'refresh_k', caption: 'Обновить', onClick: $_DO.refresh_kapital_tables, hidden: true},
 		        {type: 'button', id: 'refresh_bf_50', caption: 'Обновить', onClick: $_DO.refresh_bf_50_tables, hidden: true},
-		        {type: 'button', id: 'refresh_fkr|fkr_rr|mkd_service', caption: 'Обновить', onClick: $_DO.refresh_oviont_tables, hidden: true},
+		        {type: 'button', id: 'refresh_fkr|fkr_rr|mkd_service|fkr_event|fkr_tasks', caption: 'Обновить', onClick: $_DO.refresh_oviont_tables, hidden: true},
 
 				{type: 'button', id: 'printButton', caption: 'MS Excel', onClick: function (e) {this.owner.saveAsXLS (data.id)}},        
 		    

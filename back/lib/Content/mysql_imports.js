@@ -65,7 +65,7 @@ do_execute_mysql_imports:
 			FROM
 				information_schema.tables t
 			WHERE
-				t.table_schema IN ('fkr', 'fkr_rr', 'mkd_service')
+				t.table_schema IN ('fkr', 'fkr_rr', 'mkd_service', 'fkr_event', 'fkr_tasks')
     	
     	`)
 

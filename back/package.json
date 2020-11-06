@@ -10,6 +10,7 @@
     "generic-pool": "^3.7.1",
     "jsonwebtoken": "^8.5.1",
     "memcached": "^2.2.2",
+    "mssql": "^6.2.3",
     "mysql": "^2.18.1",
     "pg": "^7.0.0",
     "pg-copy-streams": "^5.1.1",

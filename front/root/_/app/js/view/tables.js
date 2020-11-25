@@ -17,6 +17,8 @@ $_DO.check_toolbar_tables = function (e) {
 			if (checked.length == 1) toolbar.show ('refresh_' + checked [0].id)
 
 		}
+		
+		toolbar.show ('printButton')
 
 		if (e.type == 'click') grid.reload ()
 

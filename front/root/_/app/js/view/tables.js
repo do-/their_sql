@@ -47,11 +47,11 @@ $_DRAW.tables = async function (data) {
 
 				{type: 'break' },
 
-				{type: 'check', id: 'bf_50', text: 'bf_50'},
+				{type: 'check', id: 'bf_50', text: 'bf_50', checked: true},
 				{type: 'check', id: 'k', text: 'АСУ ФКР'},
 				{type: 'check', id: 'eias', text: 'ЕИАС ЖКХ МО'},
 				{type: 'check', id: 'fkr|fkr_rr|mkd_service|fkr_event|fkr_tasks', text: 'MySQL'},
-				{type: 'check', id: 'app_foab', text: 'MSSQL', checked: true},
+				{type: 'check', id: 'app_foab', text: 'MSSQL'},
 
 				{type: 'break' },
 

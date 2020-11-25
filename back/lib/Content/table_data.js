@@ -95,8 +95,6 @@ select_table_data:
 
 		let all = await db.select_all (q, p), n = 0
 
-        let item = await db.select_hash (`SELECT * FROM ${table_name} WHERE id = 7`)
-
 		for (let i of all) if (!i.uuid) i.uuid = pk ? i [pk] : 'X3_' + (n ++)
 
 		return {all, cnt: all.length}

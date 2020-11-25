@@ -69,7 +69,7 @@ do_execute_bf_50_imports:
 			FROM 
 				pg_class t
 			WHERE
-				t.relkind IN ('r', 'v')
+				t.relkind IN ('r', 'v', 'p')
 				AND t.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname = 'public')
 				AND t.relname NOT LIKE '%.%'
     	
@@ -89,7 +89,7 @@ do_execute_bf_50_imports:
 					, pg_description.description remark
 				FROM 
 					pg_namespace
-					LEFT JOIN pg_class ON (pg_class.relnamespace = pg_namespace.oid AND pg_class.relkind IN ('r', 'v'))
+					LEFT JOIN pg_class ON (pg_class.relnamespace = pg_namespace.oid AND pg_class.relkind IN ('r', 'v', 'p'))
 					LEFT JOIN pg_attribute ON (pg_attribute.attrelid = pg_class.oid AND pg_attribute.attnum > 0 AND NOT pg_attribute.attisdropped)
 					LEFT JOIN pg_type ON pg_attribute.atttypid = pg_type.oid
 					LEFT JOIN pg_description ON (pg_description.objoid = pg_attribute.attrelid AND pg_description.objsubid = pg_attribute.attnum)

@@ -20,13 +20,17 @@ select_columns:
         this.rq.sort = this.rq.sort || [{field: "id", direction: "asc"}]
 
         if (this.rq.searchLogic == 'OR') {
+        
+        	let {search} = this.rq; if (search && search.length) {
 
-            let q = this.rq.search [0].value
+				let {value} = search [0]
 
-            this.rq.search = [
-                {field: 'name',   operator: 'is', value: q},
-                {field: 'note',   operator: 'contains', value: q},
-            ]
+				this.rq.search = [
+					{field: 'name',   operator: 'is', value},
+					{field: 'note',   operator: 'contains', value},
+				]
+
+        	}
 
         }
     
@@ -37,6 +41,8 @@ select_columns:
         if (id_table) filter ['id LIKE'] = id_table + '.%'
         
         if (id_ref_table) filter.id_ref_table = id_ref_table
+        
+        let {pre} = this.rq; if (pre) filter ['id SIMILAR TO ?'] = `(${pre}).%`        
 
         return this.db.add_all_cnt ({}, [
         	{'columns_vw AS columns': filter},

@@ -20,6 +20,12 @@ $_DRAW.set_ref_columns_popup = async function (data) {
 				{field: 'note',    caption: 'Наш комментарий',    size: 100},
 				{field: 'cnt',     caption: '~К-во строк',  size: 20,  sortable: true, render: 'int'},
 			],
+			
+			onRequest: function (e) {
+			
+				e.postData.pre = $_REQUEST.id.split ('.') [0]
+			
+			},
 
 			src: 'tables',
 			

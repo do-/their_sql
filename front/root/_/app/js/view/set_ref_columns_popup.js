@@ -23,7 +23,9 @@ $_DRAW.set_ref_columns_popup = async function (data) {
 			
 			onRequest: function (e) {
 			
-				e.postData.pre = $_REQUEST.id.split ('.') [0]
+				let [id] = $_REQUEST.id.split ('.')
+			
+				e.postData.pre = /^(fkr|mkd)/.test (id) ? "fkr|fkr_rr|mkd_service|fkr_event|fkr_tasks" : id
 			
 			},
 

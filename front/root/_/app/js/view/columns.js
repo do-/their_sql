@@ -44,8 +44,15 @@ $_DRAW.columns = async function (data) {
 
 		    onClick: $_DO.check_toolbar_columns,
 
-		},		
-        
+		},
+		
+        searches: [
+			{field: 'id_table',  caption: 'Наименование таблицы', type: 'text'},
+			{field: 'table_note',  caption: 'Комментарий к таблице', type: 'text'},
+			{field: 'id',  caption: 'Наименование колонки', type: 'text'},
+			{field: 'note',  caption: 'Комментарий к колонке', type: 'text'},
+		],		
+
 		columnGroups : [
 			{span: 2, caption: 'ID'},
 			{span: 2, caption: 'Опции'},
@@ -61,11 +68,11 @@ $_DRAW.columns = async function (data) {
             {field: 'type',     caption: 'Тип',    size: 50},
             {field: 'is_pk',    caption: 'ПК?',    size: 10, render: r => r.is_pk ? 'ПК' : ''},
             
-            {field: 'tables.note',   caption: 'К таблице',    size: 100},
+            {field: 'table_note',   caption: 'К таблице',    size: 100},
             {field: 'note',     caption: 'К полю',    size: 100, editable: {type: 'text'}},
             
             {field: 'id_ref_table',    caption: 'Имя',    size: 50, attr: 'data-ref=1'},
-            {field: 'ref.note',     caption: 'Комментарий',    size: 100},
+            {field: 'ref_note',     caption: 'Комментарий',    size: 100},
             
         ],
                     

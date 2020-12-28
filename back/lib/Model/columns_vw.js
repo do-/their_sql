@@ -12,21 +12,28 @@ module.exports = {
         id_ref_table : 'string                                      // Ссылка',           
         is_confirmed : 'int=0                                       // 1, если есть в БД', 
         _status      : 'int                                         // 1, если нет в БД', 
+        table_note   : 'string                                      // Комментарий к таблице',
+        ref_note     : 'string                                      // Комментарий к таблице по ссылке',
     },
     
     sql: `
     	SELECT
-			id           
-			, is_pk        
-			, name         
-			, type         
-			, COALESCE (note, remark) AS note
-			, id_table      
-			, id_ref_table 
-			, is_confirmed
-			, 1-is_confirmed _status
+			t.id           
+			, t.is_pk        
+			, t.name         
+			, t.type         
+			, COALESCE (t.note, t.remark) AS note
+			, t.id_table      
+			, t.id_ref_table 
+			, t.is_confirmed
+			, 1 - t.is_confirmed _status
+			, tables.note table_note
+			, ref.note ref_note
     	FROM
-    		columns
+    		columns t
+    		LEFT JOIN tables_vw AS tables ON t.id_table    = tables.id
+    		LEFT JOIN tables_vw AS ref   ON t.id_ref_table = ref.id
+
     `
 
 }

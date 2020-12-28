@@ -44,11 +44,7 @@ select_columns:
         
         let {pre} = this.rq; if (pre) filter ['id SIMILAR TO ?'] = `(${pre}).%`        
 
-        return this.db.add_all_cnt ({}, [
-        	{'columns_vw AS columns': filter},
-        	'tables_vw(note) AS tables ON id_table',
-        	'tables_vw(note) AS ref ON id_ref_table',
-        ])
+        return this.db.add_all_cnt ({}, {'columns_vw AS columns': filter})
 
     },
     

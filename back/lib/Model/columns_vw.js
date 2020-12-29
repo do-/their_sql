@@ -12,6 +12,8 @@ module.exports = {
         id_ref_table : 'string                                      // Ссылка',           
         is_confirmed : 'int=0                                       // 1, если есть в БД', 
         _status      : 'int                                         // 1, если нет в БД', 
+        table_name   : 'string                                      // Имя таблицы',
+        ref_name     : 'string                                      // Имя таблицы по ссылке',
         table_note   : 'string                                      // Комментарий к таблице',
         ref_note     : 'string                                      // Комментарий к таблице по ссылке',
     },
@@ -27,6 +29,8 @@ module.exports = {
 			, t.id_ref_table 
 			, t.is_confirmed
 			, 1 - t.is_confirmed _status
+			, tables.name table_name
+			, ref.name ref_name
 			, tables.note table_note
 			, ref.note ref_note
     	FROM

@@ -11,6 +11,7 @@ module.exports = {
         is_confirmed : 'int=0                                       // 1, если есть в БД', 
         path         : 'string                                      // Путь файла-описания в Model',
         id_status    : 'int                                         // 1, если нет в БД', 
+        name         : 'string                                      // Локальное имя',
     },
     
     sql: `
@@ -40,6 +41,7 @@ module.exports = {
 				WHEN is_confirmed = 0 THEN 1
 				ELSE 0
 			END AS id_status
+			, (PARSE_IDENT (id)) [2] AS name
     	FROM
     		tables
     `

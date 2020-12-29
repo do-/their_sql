@@ -47,9 +47,9 @@ $_DRAW.columns = async function (data) {
 		},
 		
         searches: [
-			{field: 'id_table',  caption: 'Наименование таблицы', type: 'text'},
+			{field: 'table_name',  caption: 'Наименование таблицы', type: 'text'},
 			{field: 'table_note',  caption: 'Комментарий к таблице', type: 'text'},
-			{field: 'id',  caption: 'Наименование колонки', type: 'text'},
+			{field: 'name',  caption: 'Наименование колонки', type: 'text'},
 			{field: 'note',  caption: 'Комментарий к колонке', type: 'text'},
 		],		
 

@@ -9,9 +9,7 @@ module.exports = class extends require ('./Ext/Dia/Content/Handler/HTTP/Router.j
 
 		if (url.match (/^\/(\?|_back)/)) {
 		
-			let {conf} = this, pools = {...conf.pools}
-
-			if (!url.match (/type=table_data/)) for (let k of [/*'db_o', */'db_k', 'db_h']) delete pools [k]
+			let {conf} = this, {pools} = conf
 				
 			return new back ({conf, pools, http})
 		

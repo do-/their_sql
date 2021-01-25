@@ -1,12 +1,11 @@
 const Dia = require ('../../Ext/Dia/Dia.js')
 const Session = require ('./HTTP/Session.js')
-const DiaW2uiFilter = require ('../../Ext/Dia/Content/Handler/HTTP/Ext/w2ui/Filter.js')
 
 module.exports = class extends Dia.HTTP.Handler {
     
     constructor (o, resolve, reject) {
     	super (o, resolve, reject)
-    	this.import ((require ('./Base')), ['get_method_name', 'get_log_banner', 'db_sign_transaction'])
+    	this.import ((require ('./Base')), ['get_method_name', 'get_log_banner', 'db_sign_transaction', 'w2ui_filter'])
     }
 
     check () {
@@ -30,8 +29,6 @@ module.exports = class extends Dia.HTTP.Handler {
         return (rq.id ? 'get_item_of_' : 'select_') + rq.type
     }
     
-    w2ui_filter () {return new DiaW2uiFilter (this.rq)}
-
     async get_user () {
         
         let user = await super.get_user (), {type, action, id} = this.rq

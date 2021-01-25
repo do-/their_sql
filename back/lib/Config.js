@@ -1,22 +1,14 @@
-const fs  = require ('fs')
 const Dia = require ('./Ext/Dia/Dia.js')
 
-module.exports = class {
+module.exports = class extends Dia.Config {
 
     constructor () {
-
-        const conf = JSON.parse (fs.readFileSync ('../conf/elud.json', 'utf8'))
-
-        for (let k in conf) this [k] = conf [k]
+    
+    	super ()
 
         this.pools = {
 
-        	db       : Dia.DB.Pool (this.db, new (require ('./Model.js')) ({path: './Model'})),
-//        	db_o     : Dia.DB.Pool (this.db_o),
-        	db_k     : Dia.DB.Pool (this.db_k),
-        	db_nn     : Dia.DB.Pool (this.db_nn),
-        	db_h     : Dia.DB.Pool (this.db_h),
-        	db_b     : Dia.DB.Pool (this.db_b),
+        	db: Dia.DB.Pool (this.db, new (require ('./Model.js')) ({path: './Model'})),
 
 			pwd_calc: new (require ('./Ext/Dia/Crypto/FileSaltHashCalculator.js')) ({
 				salt_file: this.auth.salt_file,
@@ -26,7 +18,7 @@ module.exports = class {
 
         }
 
-        let {db_o} = this; if (db_o) this.pools.db_o = Dia.DB.Pool (db_o)
+        this.ext_pools = {}; for (let k in this) if (/^db_/.test (k)) this.ext_pools [k] = Dia.DB.Pool (this [k])
 
     }
 
@@ -34,7 +26,7 @@ module.exports = class {
 
 		if (!pools) pools = this.pools
 
-		return new Promise (function (resolve, reject) {
+		return new Promise ((resolve, reject) => {
 
 			let h = new (require ('./Content/Handler/Async')) ({user, conf: this, rq: {...tia, ...data}, pools}, resolve, reject)
 

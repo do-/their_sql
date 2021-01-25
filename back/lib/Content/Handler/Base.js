@@ -1,4 +1,5 @@
 const Dia = require ('../../Ext/Dia/Dia.js')
+const DiaW2uiFilter = require ('../../Ext/Dia/Content/Handler/HTTP/Ext/w2ui/Filter.js')
 
 module.exports = class {
 
@@ -13,6 +14,8 @@ module.exports = class {
         if (rq.action) return 'do_'  + rq.action + '_' + rq.type
         return (rq.id ? 'get_item_of_' : 'select_') + rq.type
     }
+	    
+    w2ui_filter () {return new DiaW2uiFilter (this.rq)}
 	    
     async db_sign_transaction () {
 

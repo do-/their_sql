@@ -2,7 +2,45 @@ module.exports = {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-select_table_data:
+select_table_data: 
+
+    async function () {
+    
+		let {conf, rq} = this, {id_table} = rq, [prefix] = id_table.split ('.')
+
+		let k = (() => {switch (prefix) {
+		
+			case 'k'           : 
+				return 'db_k'
+
+			case 'eias'        : 
+				return 'db_h'
+
+			case 'bf_50'       : 
+				return 'db_b'
+
+			case 'app_foab'    : 
+				return 'db_nn'
+
+			case 'fkr'         : 
+			case 'fkr_rr'      : 
+			case 'fkr_event'   : 
+			case 'fkr_tasks'   : 
+			case 'mkd_service' : 			
+				return 'db_o'
+
+			default: 
+				throw 'Unknown db name: ' + prefix
+
+		}}) ()
+
+		return conf.response ({type: 'table_data', part: 'records'}, rq, {db: conf.pools.db, db_ext: conf.ext_pools [k]})
+
+	},
+
+////////////////////////////////////////////////////////////////////////////////
+
+get_records_of_table_data:
 
     async function () {
 
@@ -10,9 +48,13 @@ select_table_data:
 
         let [portion, start] = filter.LIMIT; delete filter.LIMIT
 
-        let {id_table, aaand} = this.rq
+        let {db, db_ext, rq} = this, {product} = db_ext, {id_table, aaand} = rq
+        
+        let is_mysql = product == 'mysql', quot = is_mysql ? '`' : '"' // "`
 
-        let cols = (await this.db.list ({columns: {
+        let is_mssql = product == 'mssql'
+
+        let cols = (await db.list ({columns: {
         	'id LIKE': id_table + '.%',
         	is_confirmed: 1,
         }}))
@@ -20,17 +62,6 @@ select_table_data:
         let [pk] = cols.filter (i => i.is_pk).map (i => i.name)
 
         let [prefix, table_name] = id_table.split ('.')
-
-        let db =
-        	prefix == 'k'        ? this.db_k :
-        	prefix == 'eias'     ? this.db_h :
-        	prefix == 'bf_50'    ? this.db_b :
-            prefix == 'app_foab' ? this.db_nn :
-        	this.db_o
-
-        let is_mysql = db.product == 'mysql', quot = is_mysql ? '`' : '"' // "`
-
-        let is_mssql = db.product == 'mssql'
 
         let q = `SELECT ${cols.map (i => {
 
@@ -93,7 +124,7 @@ select_table_data:
 
 		q += is_mysql ? ` LIMIT ${start}, ${portion}` : is_mssql ? ` OFFSET ${start} ROWS FETCH NEXT ${portion} ROWS ONLY` : ` LIMIT ${portion} OFFSET ${start}`
 
-		let all = await db.select_all (q, p), n = 0
+		let all = await db_ext.select_all (q, p), n = 0
 
 		for (let i of all) if (!i.uuid) i.uuid = pk ? i [pk] : 'X3_' + (n ++)
 

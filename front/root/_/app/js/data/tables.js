@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
-$_DO.refresh_nn_tables = async function () {
+$_DO.refresh_tables = async function (e) {
 
 	if (!confirm ('Вы уверены, что это необходимо?')) return
 
@@ -8,90 +8,13 @@ $_DO.refresh_nn_tables = async function () {
 
 	grid.lock ('Синхронизация...')
 
-	let id = new_uuid ()
+	let ti = {type: 'imports', id: new_uuid ()}
 
-	await response ({type: 'mssql_imports', action: 'create', id}, {})
-
-	let t = setInterval (async () => {
-
-		let data = await response ({type: 'mssql_imports', id})
-
-		if (!data.is_over) return
-
-		grid.reload (clearInterval (t))
-
-	}, 1000)
-
-}
-////////////////////////////////////////////////////////////////////////////////
-
-$_DO.refresh_oviont_tables = async function () {
-
-	if (!confirm ('Вы уверены, что это необходимо?')) return
-
-	let grid = this.owner
-
-	grid.lock ('Синхронизация...')
-
-	let id = new_uuid ()
-
-	await response ({type: 'mysql_imports', action: 'create', id}, {})
+	await response ({...ti, action: 'create'}, {data: {id_src: e.target.slice (8)}})
 
 	let t = setInterval (async () => {
 
-		let data = await response ({type: 'mysql_imports', id})
-
-		if (!data.is_over) return
-
-		grid.reload (clearInterval (t))
-
-	}, 1000)
-
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-$_DO.refresh_kapital_tables = async function () {
-
-	if (!confirm ('Вы уверены, что это необходимо?')) return
-
-	let grid = this.owner
-
-	grid.lock ('Синхронизация...')
-
-	let id = new_uuid ()
-
-	await response ({type: 'kapital_imports', action: 'create', id}, {})
-
-	let t = setInterval (async () => {
-
-		let data = await response ({type: 'kapital_imports', id})
-
-		if (!data.is_over) return
-
-		grid.reload (clearInterval (t))
-
-	}, 1000)
-
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-$_DO.refresh_bf_50_tables = async function () {
-
-	if (!confirm ('Вы уверены, что это необходимо?')) return
-
-	let grid = this.owner
-
-	grid.lock ('Синхронизация...')
-
-	let id = new_uuid ()
-
-	await response ({type: 'bf_50_imports', action: 'create', id}, {})
-
-	let t = setInterval (async () => {
-
-		let data = await response ({type: 'bf_50_imports', id})
+		let data = await response (ti)
 
 		if (!data.is_over) return
 
@@ -106,8 +29,16 @@ $_DO.refresh_bf_50_tables = async function () {
 $_GET.tables = async function (o) {
 
     let data = await response ({type: 'tables', part: 'vocs'})
+    
+    data.src [0].checked = true
 
-    add_vocabularies (data, {voc_table_status: {}})
+    add_vocabularies (data, {
+    
+    	src: {},
+    
+    	voc_table_status: {},
+    
+    })
 
     $('body').data ('data', data)
 

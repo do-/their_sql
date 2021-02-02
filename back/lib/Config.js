@@ -18,7 +18,15 @@ module.exports = class extends Dia.Config {
 
         }
 
-        this.ext_pools = {}; for (let k in this) if (/^db_/.test (k)) this.ext_pools [k] = Dia.DB.Pool (this [k])
+        this.ext_pools = {}; for (let s of this.src) {
+        
+        	let {connectionString} = s
+        
+        	s.pool = Dia.DB.Pool ({connectionString})
+        	
+        	for (let k of s.id.split ('|')) this.ext_pools [k] = s.pool
+        
+        }
 
     }
 

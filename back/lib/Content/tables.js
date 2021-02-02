@@ -8,9 +8,19 @@ module.exports = {
 get_vocs_of_tables: 
 
     function () {
+    
+    	let {conf, db} = this
 
-        return this.db.add_vocabularies ({_fields: this.db.model.tables.tables.columns}, {
+        return db.add_vocabularies ({
+        
+        	_fields: this.db.model.tables.tables.columns,
+        	
+        	src: conf.src.map (({id, label}) => ({id, label})),
+        	
+        }, {
+
         	voc_table_status: {},
+
         })
 
     },

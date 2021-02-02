@@ -3,7 +3,9 @@ module.exports = {
     label: 'Импорты KAPITAL',
 
     columns: {
-        is_over  : 'int=0',
+        id_src     : 'text',
+        ts_created : 'timestamp=now()',
+        is_over    : 'int=0',
     },
 
 }

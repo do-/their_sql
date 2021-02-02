@@ -5,36 +5,16 @@ module.exports = {
 select_table_data: 
 
     async function () {
-    
+
 		let {conf, rq} = this, {id_table} = rq, [prefix] = id_table.split ('.')
 
-		let k = (() => {switch (prefix) {
-		
-			case 'k'           : 
-				return 'db_k'
+		return conf.response ({type: 'table_data', part: 'records'}, rq, {
 
-			case 'eias'        : 
-				return 'db_h'
+			db: conf.pools.db, 
 
-			case 'bf_50'       : 
-				return 'db_b'
+			db_ext: conf.ext_pools [prefix],
 
-			case 'app_foab'    : 
-				return 'db_nn'
-
-			case 'fkr'         : 
-			case 'fkr_rr'      : 
-			case 'fkr_event'   : 
-			case 'fkr_tasks'   : 
-			case 'mkd_service' : 			
-				return 'db_o'
-
-			default: 
-				throw 'Unknown db name: ' + prefix
-
-		}}) ()
-
-		return conf.response ({type: 'table_data', part: 'records'}, rq, {db: conf.pools.db, db_ext: conf.ext_pools [k]})
+		})
 
 	},
 

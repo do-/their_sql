@@ -45,20 +45,19 @@ $_DRAW.tables = async function (data) {
 
 			items: [
 
-				{type: 'break' },
+				{type: 'break'},
+				
+				...data.src.items.map (i => ({type: 'check', ...i})),
 
-				{type: 'check', id: 'bf_50', text: 'bf_50', checked: true},
-				{type: 'check', id: 'k', text: 'АСУ ФКР'},
-				{type: 'check', id: 'eias', text: 'ЕИАС ЖКХ МО'},
-				{type: 'check', id: 'fkr|fkr_rr|mkd_service|fkr_event|fkr_tasks', text: 'MySQL'},
-				{type: 'check', id: 'app_foab', text: 'MSSQL'},
+				{type: 'break'},
 
-				{type: 'break' },
-
-//		        {type: 'button', id: 'refresh_k', caption: 'Обновить', onClick: $_DO.refresh_kapital_tables, hidden: true},
-		        {type: 'button', id: 'refresh_bf_50', caption: 'Обновить', onClick: $_DO.refresh_bf_50_tables, hidden: true},
-		        {type: 'button', id: 'refresh_fkr|fkr_rr|mkd_service|fkr_event|fkr_tasks', caption: 'Обновить', onClick: $_DO.refresh_oviont_tables, hidden: true},
-		        {type: 'button', id: 'refresh_app_foab', caption: 'Обновить', onClick: $_DO.refresh_nn_tables, hidden: true},
+				...data.src.items.map (({id}) => ({
+					type: 'button', 
+					id: 'refresh_' + id, 
+					caption: 'Обновить', 
+					onClick: $_DO.refresh_tables, 
+					hidden: true
+				})),
 
 				{type: 'button', id: 'printButton', caption: 'MS Excel', onClick: function (e) {this.owner.saveAsXLS (data.id)}},
 

@@ -282,4 +282,68 @@ do_execute_postgresql_imports:
 
     },
 
+////////////////////////////////////////////////////////////////////////////////
+
+do_execute_clickhouse_imports:
+
+    async function () {
+
+    	let {db, db_src, rq} = this, {id, data} = rq, {database} = db_src, {id_src} = data
+
+    	async function imp (table, cols, sql) {
+
+	    	let tmp = await db.create_temp_as (table, cols)
+	    	let str = await db_src.select_stream (sql)
+	    	
+			await db.load (str, tmp, cols)
+
+			await db.do (`
+				INSERT INTO ${table} (${cols}) 
+				SELECT ${cols}
+				FROM ${tmp}
+				ON CONFLICT (id) DO UPDATE SET ${cols.filter (k => k != 'id').map (k => k + '=EXCLUDED.' + k)}
+			`)
+
+			await db.do (`UPDATE ${table} SET is_confirmed = 0 WHERE id SIMILAR TO ? AND id NOT IN (SELECT id FROM ${tmp})`, [`(${id_src}).%`])
+
+			await db.do (`UPDATE ${table} SET is_confirmed = 1 WHERE id IN (SELECT id FROM ${tmp})`)
+
+    	}
+    	
+    	await imp ('tables', ['id', 'is_view', 'cnt', 'remark'], `
+    	
+    		SELECT 
+    			CONCAT ('${id_src}.', name) id, 
+    			0 is_view, 
+    			total_rows cnt, 
+    			NULL remark 
+    		FROM 
+    			system.tables 
+    		WHERE 
+    			database='${database}'
+    	
+    	`)
+
+    	await imp ('columns', ['id', 'is_pk', 'type', 'remark'], `
+				
+			SELECT 
+				CONCAT ('${id_src}.', t.table, '.', t.name) id,
+				countSubstrings (CONCAT (', ', s.primary_key, ', '), CONCAT (', ', t.name, ', ')) is_pk, 
+				t.type, 
+				NULL remark 
+			FROM 
+				system.columns t 
+				JOIN system.tables s ON (
+					t.database = s.database 
+					AND t.table = s.name
+				)
+			WHERE
+    			t.database = '${database}'
+
+    	`)
+
+    	await db.do ('UPDATE imports SET is_over = 1 WHERE uuid = ?', [this.rq.id])
+
+    },    
+
 }

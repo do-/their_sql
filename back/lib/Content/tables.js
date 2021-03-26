@@ -32,7 +32,7 @@ select_tables:
     function () {
     
     	let {rq} = this
-darn ({rq})   
+
         rq.sort = rq.sort || [{field: "id", direction: "asc"}]
 
         if (rq.searchLogic == 'OR' && rq.search.length) {
@@ -48,7 +48,7 @@ darn ({rq})
         }
     
         let filter = this.w2ui_filter ()
-darn (filter)        
+
         let {pre} = rq; if (pre) filter ['id SIMILAR TO ?'] = `(${pre}).%`
         
         return this.db.add_all_cnt ({}, [{'tables_vw(*, id_status AS _status)': filter}])

@@ -10,7 +10,9 @@ $_DRAW.table = async function (data) {
             {type: 'top', size: 100},
             {type: 'main', size: '*', title: 'Поля этой таблицы'},
             {type: 'right', size: '50%', title: 'Ссылки сюда', resizable: true, off: data.is_view},
-            {type: 'bottom', size: 36, hidden: true, resizable: true, title: '<button name=show_data>Показать данные...</button>', off: data.is_view},
+            {type: 'bottom', size: 36, hidden: true, resizable: true, title: '<button name=show_data>Показать данные...</button>', 
+            	off: data.is_view || data.product == 'clickhouse'
+            },
         ].filter (not_off),
                 
     })

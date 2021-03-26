@@ -61,11 +61,13 @@ get_item_of_tables:
 
     async function () {
     
-    	let {id} = this.rq
+    	let {id} = this.rq, [id_src] = id.split ('.'), src = this.conf.src.find (i => i.id == id_src), {product} = src.pool
 
         let data = await this.db.get ([{tables_vw: {id}}])
-
+        
         data._fields = this.db.model.tables.tables.columns
+        
+        data.product = product
         
         return data
 

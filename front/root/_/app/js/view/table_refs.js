@@ -29,7 +29,7 @@ $_DRAW.table_refs = async function (data) {
         columns: [
             {field: 'id_table', caption: 'Таблица',    size: 50, sortable: true, attr: 'data-ref=1'},
             {field: 'name',     caption: 'Поле',    size: 50, sortable: true},
-            {field: 'tables.note',     caption: 'К таблице',    size: 100},
+            {field: 'table_note',     caption: 'К таблице',    size: 100},
             {field: 'note',     caption: 'К полю',    size: 100},
         ],
                     

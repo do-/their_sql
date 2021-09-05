@@ -16,6 +16,9 @@ module.exports = {
         ref_name     : 'string                                      // Имя таблицы по ссылке',
         table_note   : 'string                                      // Комментарий к таблице',
         ref_note     : 'string                                      // Комментарий к таблице по ссылке',
+        ref_pk_id    : 'string                                      // ПК таблицы по ссылке',
+        ref_pk_name  : 'string                                      // локальное имя поля ПК таблицы по ссылке',
+        ref_pk_note  : 'string                                      // Комментарий к ПК таблицы по ссылке',
     },
     
     sql: `
@@ -33,10 +36,14 @@ module.exports = {
 			, ref.name ref_name
 			, tables.note table_note
 			, ref.note ref_note
+			, ref_pk.id ref_pk_id
+			, ref_pk.name ref_pk_name
+			, COALESCE (ref_pk.note, ref_pk.remark) AS ref_pk_note
     	FROM
     		columns t
-    		LEFT JOIN tables_vw AS tables ON t.id_table    = tables.id
-    		LEFT JOIN tables_vw AS ref   ON t.id_ref_table = ref.id
+    		LEFT JOIN tables_vw AS tables ON t.id_table     = tables.id
+    		LEFT JOIN tables_vw AS ref    ON t.id_ref_table = ref.id
+ 	  		LEFT JOIN columns   AS ref_pk ON ref_pk.id      = ref.id || '.' || ref.pk
 
     `
 

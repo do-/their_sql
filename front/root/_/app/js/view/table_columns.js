@@ -42,8 +42,8 @@ $_DRAW.table_columns = async function (data) {
             
             {field: 'note',     caption: 'Комментарий',    size: 100, editable: {type: 'text'}, attr: 'data-status'},
             
-            {field: 'id_ref_table',    caption: 'Имя',    size: 50, attr: 'data-ref=1'},
-            {field: 'ref.note',     caption: 'Комментарий',    size: 100},
+            {field: 'id_ref_table',    caption: 'Таблица',    size: 50, attr: 'data-ref=1', title: i => i.ref_note || null},
+            {field: 'ref_pk_name',    caption: 'Столбец',    size: 20, attr: 'data-ref=1', title: i => i.ref_pk_note || null},
             
         ].filter (not_off),
                     
@@ -63,8 +63,8 @@ $_DRAW.table_columns = async function (data) {
         		case 'id_ref_table':
         			this.select (e.recid)
         			return show_block ('set_ref_columns_popup')
-        		case 'ref.note': 
-        			return $_DO.drop_fk_table_columns.call (this, e)
+//        		case 'ref.note': 
+//        			return $_DO.drop_fk_table_columns.call (this, e)
         	}
 
         },
@@ -76,6 +76,8 @@ $_DRAW.table_columns = async function (data) {
         	switch (field) {
         		case 'name':
         			return open_tab (`/column/${r.id}`)
+        		case 'ref_pk_name':
+        			return open_tab (`/column/${r.ref_pk_id}`)
         		case 'id_table':
         		case 'id_ref_table':
         			let id = r [field]

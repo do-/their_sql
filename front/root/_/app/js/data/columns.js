@@ -58,7 +58,9 @@ $_GET.columns = async function (o) {
 
     let data = await response ({type: 'columns', part: 'vocs'})
     
-    add_vocabularies (data, {})
+    data.src [0].checked = true
+
+    add_vocabularies (data, {src: {}})
     
     $('body').data ('data', data)
             

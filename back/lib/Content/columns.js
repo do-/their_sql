@@ -6,7 +6,10 @@ get_vocs_of_columns:
 
     function () {
 
-        return this.db.add_vocabularies ({_fields: this.db.model.tables.columns.columns}, {
+        return this.db.add_vocabularies ({
+        	_fields: this.db.model.tables.columns.columns,
+        	src: this.conf.src.map (({id, label}) => ({id, label})),
+        }, {
         })
 
     },

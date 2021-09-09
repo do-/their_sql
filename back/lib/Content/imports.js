@@ -170,7 +170,7 @@ do_execute_mssql_imports:
 				information_schema.columns t
 				LEFT JOIN sys.extended_properties prop
 					ON prop.major_id = object_id(t.table_schema + '.' + t.table_name)
-					AND prop.minor_id = 0
+					AND prop.minor_id = t.ordinal_position
 					AND prop.name = 'MS_Description'
 			WHERE
 				t.table_catalog = UPPER('${id_src}')

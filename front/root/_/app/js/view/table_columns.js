@@ -23,6 +23,7 @@ $_DRAW.table_columns = async function (data) {
 			items: [
 		        {type: 'button', id: 'printButton', caption: 'MS Excel', onClick: function (e) {this.owner.saveAsXLS (data.id)}},        
 		        {type: 'button', id: 'dumpButton', caption: 'Model', onClick: $_DO.dump_table_columns},
+		        {type: 'button', id: 'htmlButton', caption: 'HTML', onClick: $_DO.html_table_columns},
 		    ],
 		},
         

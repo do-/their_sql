@@ -1,5 +1,19 @@
 ////////////////////////////////////////////////////////////////////////////////
 
+$_DO.html_table_columns = async function (e) {
+		
+	let grid = this.owner
+
+	let ids = grid.getSelection ()
+	
+	if (!ids.length) ids = grid.records.map (i => i.id)
+	
+	show_block ('columns_html', clone (ids.map (id => grid.get (id))))
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 $_DO.dump_table_columns = async function (e) {
 
 	let grid = this.owner

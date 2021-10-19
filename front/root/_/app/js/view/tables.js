@@ -8,8 +8,12 @@ $_DO.check_toolbar_tables = function (e) {
 
 	e.done (() => {
 
-		for (let i of toolbar.items) if (i.type == 'button') toolbar.hide (i.id)
+		for (let {type, id} of toolbar.items) 
+		
+			if (type == 'button' && !/^w2ui-/.test (id) && id != 'printButton') 
 
+				toolbar.hide (id)
+		
 		if ($_USER.role == 'admin') {
 
 			let checked = toolbar.items.filter (i => i.type == 'check' && i.checked)
@@ -18,8 +22,6 @@ $_DO.check_toolbar_tables = function (e) {
 
 		}
 		
-		toolbar.show ('printButton')
-
 		if (e.type == 'click') grid.reload ()
 
 	})

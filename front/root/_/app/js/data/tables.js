@@ -29,18 +29,15 @@ $_DO.refresh_tables = async function (e) {
 $_GET.tables = async function (o) {
 
     let data = await response ({type: 'tables', part: 'vocs'})
-    
-    data.src [0].checked = true
 
     add_vocabularies (data, {
-    
     	src: {},
-    
     	voc_table_status: {},
-    
     })
-
+        
     $('body').data ('data', data)
+    
+    await $_DO.apply_src_checked ()
 
     return data
 

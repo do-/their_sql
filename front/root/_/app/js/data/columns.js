@@ -58,11 +58,11 @@ $_GET.columns = async function (o) {
 
     let data = await response ({type: 'columns', part: 'vocs'})
     
-    data.src [0].checked = true
-
     add_vocabularies (data, {src: {}})
     
     $('body').data ('data', data)
+
+    await $_DO.apply_src_checked ()
             
     return data
 

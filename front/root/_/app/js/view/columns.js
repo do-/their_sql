@@ -6,7 +6,15 @@ $_DO.check_toolbar_columns = function (e) {
 
 	let {toolbar} = grid
 
-	if (e.type == 'click') e.done (() => grid.reload ())
+	if (e.type == 'click') e.done (() => {
+	
+		let {target} = e, {checked} = toolbar.get (target)
+
+		$_DO.toggle_src_checked (target, checked)
+
+		grid.reload ()
+	
+	})
 
 }
 
@@ -82,11 +90,7 @@ $_DRAW.columns = async function (data) {
                     
         src: 'columns',
 
-        onRequest: function (e) {
-
-        	e.postData.pre = this.toolbar.items.filter (i => i.type == 'check' && i.checked).map (i => i.id).join ('|')
-
-        },
+        onRequest: $_DO.inject_src_checked,
 
         onDblClick: null,
         

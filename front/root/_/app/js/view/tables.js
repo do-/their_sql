@@ -22,7 +22,15 @@ $_DO.check_toolbar_tables = function (e) {
 
 		}
 		
-		if (e.type == 'click') grid.reload ()
+		if (e.type == 'click') {
+
+			let {target} = e, {checked} = toolbar.get (target)
+
+			$_DO.toggle_src_checked (target, checked)
+
+			grid.reload ()
+
+		}
 
 	})
 
@@ -90,11 +98,7 @@ $_DRAW.tables = async function (data) {
 
         onDblClick: null,
 
-        onRequest: function (e) {
-
-        	e.postData.pre = this.toolbar.items.filter (i => i.type == 'check' && i.checked).map (i => i.id).join ('|')
-
-        },
+        onRequest: $_DO.inject_src_checked,
 
         onClick: function (e) {
 

@@ -29,28 +29,32 @@ return {"_fields":{"id":{"REMARK":"Имя","NULLABLE":false,"TYPE_NAME":"TEXT","
     
 ////////////////////////////////////////////////////////////////////////////////
 
-select_tables: 
+select_tables:
     
     async function () {
-    
-    	const {db, rq} = this, {offset, limit} = rq
+
+    	const {db, rq} = this, {offset, limit, sort, pre} = rq
+
+    	let filter = 'true', params = []
+
+    	if (pre) {
+			filter += ' AND id SIMILAR TO ?'
+			params.push (`(${pre}).%`)
+    	}
 
 		const [tables_vw, cnt] = await Promise.all ([
-			db.getArray ('SELECT t.* FROM tables t ORDER BY id', [], {limit, offset}),
-			db.getScalar ('SELECT COUNT (*) FROM tables'),
+
+			db.getArray (`SELECT t.* FROM tables_vw t WHERE ${filter} ORDER BY ${(sort || [{field: "id", direction: "asc"}]).map (i => i.field + ' ' + i.direction)}`, params, {limit, offset}),
+
+			db.getScalar (`SELECT COUNT (*) FROM tables WHERE ${filter}`, [...params]),
+
 		])
-    	
+
+		for (const r of tables_vw) r._status = r.id_status
+
     	return {tables_vw, cnt, portion: limit}
-    	
-//console.log ({tables_vw})
 
 /*    
-return {"tables_vw":[
-	{"id":"bf_50.accounts_imports","is_view":0,"cnt":46,"note":"Файлы импорта лицевых счетов по прямым договорам","pk":"uuid","is_confirmed":1,"path":null,"id_status":0,"name":"accounts_imports","_status":0},
-	{"id":"bf_50.accounts_imports_versions","is_view":0,"cnt":285,"note":"Файлы импорта лицевых счетов по прямым договорам / история изменения","pk":"_uuid_version","is_confirmed":1,"path":null,"id_status":0,"name":"accounts_imports_versions","_status":0},
-	{"id":"bf_50.vw_accounts_imports","is_view":1,"cnt":0,"note":null,"pk":null,"is_confirmed":1,"path":null,"id_status":0,"name":"vw_accounts_imports","_status":0}
-],"cnt":"3","portion":100}    
-    
     	let {rq} = this
 
         rq.sort = rq.sort || [{field: "id", direction: "asc"}]

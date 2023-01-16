@@ -7,15 +7,16 @@
   "license": "MIT",
   "dependencies": {
     "content-disposition": "^0.5.3",
+    "doix": "^0.0.34",
+    "doix-db": "^0.0.1",
+    "doix-db-postgresql": "^0.0.15",
+    "doix-http": "^0.0.8",
     "generic-pool": "^3.7.1",
     "jsonwebtoken": "^8.5.1",
-    "memcached": "^2.2.2",
-    "mssql": "^6.2.3",
-    "mysql": "^2.18.1",
     "odata-parser": "^1.4.1",
-    "pg": "^7.0.0",
+    "pg": "^8.8.0",
     "pg-copy-streams": "^5.1.1",
     "pg-query-stream": "^3.2.3",
-    "sqlite3": "^4.1.0"
+    "winston": "^3.8.2"
   }
 }

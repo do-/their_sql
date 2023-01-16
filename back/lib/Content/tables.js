@@ -9,6 +9,8 @@ get_vocs_of_tables:
 
     function () {
     
+return {"_fields":{"id":{"REMARK":"Имя","NULLABLE":false,"TYPE_NAME":"TEXT","name":"id","TYPE_NAME_ORIGINAL":"string"},"is_view":{"REMARK":"1, если VIEW","NULLABLE":false,"COLUMN_DEF":"0","TYPE_NAME":"INT4","name":"is_view","TYPE_NAME_ORIGINAL":"int"},"cnt":{"REMARK":"Число записей","NULLABLE":true,"TYPE_NAME":"INT4","name":"cnt","TYPE_NAME_ORIGINAL":"int"},"remark":{"REMARK":"Их комментарий","NULLABLE":true,"TYPE_NAME":"TEXT","name":"remark","TYPE_NAME_ORIGINAL":"string"},"note":{"REMARK":"Наш комментарий","NULLABLE":true,"TYPE_NAME":"TEXT","name":"note","TYPE_NAME_ORIGINAL":"string"},"is_confirmed":{"REMARK":"1, если есть в БД","NULLABLE":false,"COLUMN_DEF":"0","TYPE_NAME":"INT4","name":"is_confirmed","TYPE_NAME_ORIGINAL":"int"},"path":{"REMARK":"Путь файла-описания в Model","NULLABLE":true,"TYPE_NAME":"TEXT","name":"path","TYPE_NAME_ORIGINAL":"string"},"id_import":{"REMARK":"Последний импорт","NULLABLE":true,"ref":"imports","name":"id_import","TYPE_NAME":"UUID","TYPE_NAME_ORIGINAL":"UUID"}},"src":[{"id":"bf_50","label":"Биллинг МО"}],"voc_table_status":[{"id":0,"label":"OK"},{"id":1,"label":"Нет в БД"},{"id":2,"label":"Не описана"}]}
+    
     	let {conf, db} = this
 
         return db.add_vocabularies ({
@@ -30,6 +32,12 @@ get_vocs_of_tables:
 select_tables: 
     
     function () {
+    
+return {"tables_vw":[
+	{"id":"bf_50.accounts_imports","is_view":0,"cnt":46,"note":"Файлы импорта лицевых счетов по прямым договорам","pk":"uuid","is_confirmed":1,"path":null,"id_status":0,"name":"accounts_imports","_status":0},
+	{"id":"bf_50.accounts_imports_versions","is_view":0,"cnt":285,"note":"Файлы импорта лицевых счетов по прямым договорам / история изменения","pk":"_uuid_version","is_confirmed":1,"path":null,"id_status":0,"name":"accounts_imports_versions","_status":0},
+	{"id":"bf_50.vw_accounts_imports","is_view":1,"cnt":0,"note":null,"pk":null,"is_confirmed":1,"path":null,"id_status":0,"name":"vw_accounts_imports","_status":0}
+],"cnt":"3","portion":100}    
     
     	let {rq} = this
 

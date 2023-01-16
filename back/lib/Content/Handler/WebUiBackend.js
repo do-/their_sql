@@ -19,7 +19,7 @@ module.exports = class extends Dia.HTTP.Handler {
     }
 
     is_anonymous () {
-        return this.rq.type == 'sessions' && this.rq.action == 'create'
+        return true//this.rq.type == 'sessions' && this.rq.action == 'create'
     }
 
     get_method_name () {

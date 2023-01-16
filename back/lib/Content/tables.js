@@ -31,8 +31,20 @@ return {"_fields":{"id":{"REMARK":"Имя","NULLABLE":false,"TYPE_NAME":"TEXT","
 
 select_tables: 
     
-    function () {
+    async function () {
     
+    	const {db, rq} = this, {offset, limit} = rq
+
+		const [tables_vw, cnt] = await Promise.all ([
+			db.getArray ('SELECT t.* FROM tables t ORDER BY id', [], {limit, offset}),
+			db.getScalar ('SELECT COUNT (*) FROM tables'),
+		])
+    	
+    	return {tables_vw, cnt, portion: limit}
+    	
+//console.log ({tables_vw})
+
+/*    
 return {"tables_vw":[
 	{"id":"bf_50.accounts_imports","is_view":0,"cnt":46,"note":"Файлы импорта лицевых счетов по прямым договорам","pk":"uuid","is_confirmed":1,"path":null,"id_status":0,"name":"accounts_imports","_status":0},
 	{"id":"bf_50.accounts_imports_versions","is_view":0,"cnt":285,"note":"Файлы импорта лицевых счетов по прямым договорам / история изменения","pk":"_uuid_version","is_confirmed":1,"path":null,"id_status":0,"name":"accounts_imports_versions","_status":0},
@@ -60,7 +72,7 @@ return {"tables_vw":[
         let {pre} = rq; if (pre) filter ['id SIMILAR TO ?'] = `(${pre}).%`
         
         return this.db.add_all_cnt ({}, [{'tables_vw(*, id_status AS _status)': filter}])
-
+*/
     },
 
 ////////////////////////////////////////////////////////////////////////////////

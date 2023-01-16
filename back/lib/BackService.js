@@ -11,10 +11,7 @@ module.exports = class extends WebService {
 			reader: new HttpParamReader ({
 				from: {
 					searchParams: true,
-					bodyString: (body, job) => {			
-						job.body = body					
-						return {}
-					}				
+					bodyString: s => JSON.parse (s),	
 				}
 			}),
 

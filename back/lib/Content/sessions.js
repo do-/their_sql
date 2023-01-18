@@ -6,6 +6,8 @@ do_create_sessions:
 
     async function () {
     
+		const u = {uuid: '00000000-0000-0000-0000-000000000000', id_role: 1}
+/*        
         let u = await this.db.get ([{users: {
             login: this.rq.data.login,
         }}, 'roles(name)'])
@@ -21,7 +23,7 @@ do_create_sessions:
         else {
             return {}
         }
-        
+*/        
         let user = {
 			id    : u.uuid,
 			uuid  : u.uuid,
@@ -30,7 +32,7 @@ do_create_sessions:
 			role  : u ['roles.name'],
         }
         
-		user.opt = await this.db.fold ([
+		user.opt = {}/*await this.db.fold ([
 
             {'user_options()': {
                 is_on: 1,
@@ -44,8 +46,8 @@ do_create_sessions:
         this.session.user = user
         
         await this.session.start ()
-
-        return {user, timeout: this.session.o.timeout}
+*/
+        return {user, timeout: 60/*this.session.o.timeout*/}
 
     },
     

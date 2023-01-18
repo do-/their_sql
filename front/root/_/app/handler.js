@@ -6,7 +6,7 @@
     
     $(window).keydown (check_hotkeys)
 
-//    if (!$_USER) return show_block ('login')
+    if (!$_USER) return show_block ('login')
 
     let [type, id] = location.pathname.split ('/').filter ((i) => i)
 

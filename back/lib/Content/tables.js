@@ -9,9 +9,7 @@ get_vocs_of_tables:
 
     function () {
 
-    	const {conf, db} = this
-
-    	const {model} = this.app.pools.get ('db')
+    	const {conf, db: {model}} = this
 
 		const _fields = {}; for (const {name, type, comment} of Object.values (model.map.get ('tables').columns)) 
 

@@ -8,6 +8,8 @@ module.exports = {
         label    : 'string // Наименование',
     },
 
+    pk: 'id',
+
     keys : {
         label    : 'label',
     },

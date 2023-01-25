@@ -16,6 +16,12 @@ const db  = new DbPoolPg ({
 
 const app = new Application (conf, db, appLogger)
 
-const {listen} = conf; new HttpRouter ({listen, logger: appLogger})
-	.add (app.createBackService ())
-	.listen ()
+app.init ().then (() => {
+
+	const {listen} = conf;
+
+	new HttpRouter ({listen, logger: appLogger})
+		.add (app.createBackService ())
+		.listen ()
+
+})

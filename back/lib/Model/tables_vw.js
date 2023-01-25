@@ -15,25 +15,12 @@ module.exports = {
     },
     
     sql: `
-		WITH pk AS (
-			SELECT
-			id_table id
-			, STRING_AGG (name, ', ') pk
-		FROM
-			columns
-		WHERE
-			is_pk = 1
-		GROUP BY
-			id_table
-		ORDER BY
-			id_table
-		)
     	SELECT
 			tables.id
 			, tables.is_view      
 			, tables.cnt         
 			, COALESCE (tables.note, tables.remark) AS note
-      		, (SELECT pk FROM pk WHERE id = tables.id) pk
+			, (SELECT STRING_AGG (name, ', ') FROM columns WHERE id_table = tables.id AND is_pk = 1) pk
 			, is_confirmed
 			, path
 			, CASE

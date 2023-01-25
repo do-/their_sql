@@ -10,6 +10,8 @@ module.exports = {
         is_own   : 'int=0  // Доступна ли для самостоятельной настройки',
     },
 
+    pk       : 'id',
+
     keys: {
         label    : 'label',
     },

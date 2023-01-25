@@ -14,7 +14,7 @@ module.exports = class extends Application {
 		})
 		
 		m.loadModules ()
-		
+
 	    super ({
 	    	
 	    	logger,
@@ -45,6 +45,16 @@ module.exports = class extends Application {
 	createBackService (o) {
 	
 		return new BackService (this, o)
+	
+	}
+	
+	async init () {
+	
+		const job = this.createJob ()
+		
+		job.rq = {type: 'app', action: 'init'}
+		
+		await job.toComplete ()
 	
 	}
 

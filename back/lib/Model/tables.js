@@ -12,5 +12,7 @@ module.exports = {
         path         : 'string                                      // Путь файла-описания в Model',
         id_import    : '(imports)                                   // Последний импорт',
     },
+    
+    pk: 'id',
 
 }

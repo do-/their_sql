@@ -51,19 +51,20 @@ select_tables:
     async function () {
 
     	const {db, rq} = this, {offset, limit, sort, pre} = rq
+    	
+    	const filters = []; if (pre) filters.push (['id', 'SIMILAR TO', `(${pre}).%`])
 
-    	let filter = 'true', params = []
+		const q = db.model.createQuery ([['tables_vw', {filters}]])
 
-    	if (pre) {
-			filter += ' AND id SIMILAR TO ?'
-			params.push (`(${pre}).%`)
-    	}
+		for (const {field, direction} of sort || [{field: 'id'}]) q.orderBy (field, direction === 'desc')
+
+		const qc = q.toQueryCount (), ps = q.toParamsSql (), psc = qc.toParamsSql ()
 
 		const [tables_vw, cnt] = await Promise.all ([
 
-			db.getArray (`SELECT t.* FROM tables_vw t WHERE ${filter} ORDER BY ${(sort || [{field: "id", direction: "asc"}]).map (i => i.field + ' ' + i.direction)}`, params, {limit, offset}),
+			db.getArray (ps.pop (), ps, {limit, offset}),
 
-			db.getScalar (`SELECT COUNT (*) FROM tables WHERE ${filter}`, [...params]),
+			db.getScalar (psc.pop (), psc),
 
 		])
 

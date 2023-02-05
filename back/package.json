@@ -8,8 +8,8 @@
   "dependencies": {
     "content-disposition": "^0.5.3",
     "doix": "^0.0.36",
-    "doix-db": "^0.0.19",
-    "doix-db-postgresql": "^0.0.21",
+    "doix-db": "^0.0.20",
+    "doix-db-postgresql": "^0.0.22",
     "doix-http": "^0.0.8",
     "generic-pool": "^3.7.1",
     "jsonwebtoken": "^8.5.1",

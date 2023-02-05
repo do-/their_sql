@@ -50,19 +50,29 @@ select_tables:
     
     async function () {
 
-    	const {db, rq} = this, {offset, limit, sort, pre} = rq
+    	const {db, rq} = this
     	
+    	if (!rq.sort) rq.sort = [{field: 'id'}]
+    	
+    	const {offset, limit, sort, pre} = rq
+
     	const filters = []; if (pre) filters.push (['id', 'SIMILAR TO', `(${pre}).%`])
 
-		const q = db.model.createQuery ([['tables_vw', {filters}]])
-
-		for (const {field, direction} of sort || [{field: 'id'}]) q.orderBy (field, direction === 'desc')
+		const q = db.model.createQuery (
+			[
+				['tables_vw', {filters}]
+			], 
+			{			
+				limit, offset,
+				order: sort.map (o => ([o.field, o.direction === 'desc']))
+			}
+		)
 
 		const qc = q.toQueryCount (), ps = q.toParamsSql (), psc = qc.toParamsSql ()
 
 		const [tables_vw, cnt] = await Promise.all ([
 
-			db.getArray (ps.pop (), ps, {limit, offset}),
+			db.getArray (ps.pop (), ps),
 
 			db.getScalar (psc.pop (), psc),
 

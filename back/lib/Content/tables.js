@@ -68,13 +68,11 @@ select_tables:
 			}
 		)
 
-		const qc = q.toQueryCount (), ps = q.toParamsSql (), psc = qc.toParamsSql ()
-
 		const [tables_vw, cnt] = await Promise.all ([
 
-			db.getArray (ps.pop (), ps),
+			db.getArray (q),
 
-			db.getScalar (psc.pop (), psc),
+			db.getScalar (q.toQueryCount ()),
 
 		])
 

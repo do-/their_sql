@@ -67,18 +67,12 @@ select_tables:
 				order: sort.map (o => ([o.field, o.direction === 'desc']))
 			}
 		)
+		
+		const list = await db.getArray (q)
 
-		const [tables_vw, cnt] = await Promise.all ([
+		for (const r of list) r._status = r.id_status
 
-			db.getArray (q),
-
-			db.getScalar (q.toQueryCount ()),
-
-		])
-
-		for (const r of tables_vw) r._status = r.id_status
-
-    	return {tables_vw, cnt, portion: limit}
+    	return {tables_vw: list, cnt: list [Symbol.for ('count')], portion: limit}
 
 /*    
     	let {rq} = this

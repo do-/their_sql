@@ -52,27 +52,23 @@ select_tables:
 
     	const {db, rq} = this
     	
-    	if (!rq.sort) rq.sort = [{field: 'id'}]
-    	
-    	const {offset, limit, sort, pre} = rq
+		const q = db.w2uiQuery ([['tables_vw']], {order: ['id']})
 
-		const q = db.model.createQuery (
-			[
-				['tables_vw']
-			],
-			{			
-				limit, offset,
-				order: sort.map (o => ([o.field, o.direction === 'desc']))
-			}
-		)
-		
-		if (pre) q.tables [0].addColumnComparison ('id', 'SIMILAR TO', `(${pre}).%`)
-		
+		{
+
+			const {pre} = rq
+
+			if (pre) q.tables [0].addColumnComparison ('id', 'SIMILAR TO', `(${pre}).%`)
+
+		}
+
 		const list = await db.getArray (q)
 
 		for (const r of list) r._status = r.id_status
+		
+		return q.eluGrid (list)
 
-    	return {tables_vw: list, cnt: list [Symbol.for ('count')], portion: limit}
+//    	return {tables_vw: list, cnt: list [Symbol.for ('count')], portion: q.options.limit}
 
 /*    
     	let {rq} = this

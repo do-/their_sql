@@ -56,17 +56,17 @@ select_tables:
     	
     	const {offset, limit, sort, pre} = rq
 
-    	const filters = []; if (pre) filters.push (['id', 'SIMILAR TO', `(${pre}).%`])
-
 		const q = db.model.createQuery (
 			[
-				['tables_vw', {filters}]
-			], 
+				['tables_vw']
+			],
 			{			
 				limit, offset,
 				order: sort.map (o => ([o.field, o.direction === 'desc']))
 			}
 		)
+		
+		if (pre) q.tables [0].addColumnComparison ('id', 'SIMILAR TO', `(${pre}).%`)
 		
 		const list = await db.getArray (q)
 

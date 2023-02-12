@@ -18,16 +18,6 @@ const db  = new DbPoolPg ({
 
 w2ui.plugInto (db)
 
-DbQuery.prototype.eluGrid = function (list) {
-
-	return {
-		[this.tables [0].alias]: list, 
-		cnt: list [Symbol.for ('count')], 
-		portion: this.options.limit,
-	}
-
-}
-
 const app = new Application (conf, db, appLogger)
 
 app.init ().then (() => {

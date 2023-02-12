@@ -1,5 +1,8 @@
 const {WebService, HttpParamReader, HttpResultWriter} = require ('doix-http')
 
+const QUERY = Symbol.for ('query')
+const COUNT = Symbol.for ('count')
+
 module.exports = class extends WebService {
 
 	constructor (app, o = {}) {
@@ -16,11 +19,24 @@ module.exports = class extends WebService {
 			}),
 
 			writer: new HttpResultWriter ({
+
 				type: 'application/json',
-				stringify: content => JSON.stringify ({
-					success: true, 
-					content, 
-				})
+
+				stringify: content => {
+
+					if (COUNT in content) content = {
+						[content [QUERY].tables [0].alias]: content,
+						cnt: content [COUNT],
+						portion: content [QUERY].options.limit,
+					}				
+				
+					return JSON.stringify ({
+						success: true, 
+						content, 
+					})
+				
+				}
+
 			}),
 
 			dumper: new HttpResultWriter ({

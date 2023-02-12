@@ -73,7 +73,7 @@ select_tables:
 
 		for (const r of list) r._status = r.id_status
 		
-		return q.eluGrid (list)
+		return list
 
     },
 

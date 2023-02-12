@@ -52,15 +52,22 @@ select_tables:
 
     	const {db, rq} = this
     	
-		const q = db.w2uiQuery ([['tables_vw']], {order: ['id']})
+        if (rq.searchLogic === 'OR') {
 
-		{
+            const {value} = rq.search [0]
 
-			const {pre} = rq
+            rq.search = ['id', 'note'].map (field => ({field, operator: 'contains', value}))
 
-			if (pre) q.tables [0].addColumnComparison ('id', 'SIMILAR TO', `(${pre}).%`)
+        }
 
-		}
+		const q = db.w2uiQuery (
+			[
+				['tables_vw', {filters: [
+					['id', 'SIMILAR TO', `(${rq.pre}).%`]
+				].filter (i => 'pre' in rq)}]
+			], 
+			{order: ['id']}
+		)
 
 		const list = await db.getArray (q)
 
@@ -68,31 +75,6 @@ select_tables:
 		
 		return q.eluGrid (list)
 
-//    	return {tables_vw: list, cnt: list [Symbol.for ('count')], portion: q.options.limit}
-
-/*    
-    	let {rq} = this
-
-        rq.sort = rq.sort || [{field: "id", direction: "asc"}]
-
-        if (rq.searchLogic == 'OR' && rq.search.length) {
-
-            let q = this.rq.search [0].value
-
-            this.rq.search = [
-                {field: 'id',     operator: 'contains', value: q},
-                {field: 'pk',     operator: 'is', value: q},
-                {field: 'note',   operator: 'contains', value: q},
-            ]
-
-        }
-    
-        let filter = this.w2ui_filter ()
-
-        let {pre} = rq; if (pre) filter ['id SIMILAR TO ?'] = `(${pre}).%`
-        
-        return this.db.add_all_cnt ({}, [{'tables_vw(*, id_status AS _status)': filter}])
-*/
     },
 
 ////////////////////////////////////////////////////////////////////////////////

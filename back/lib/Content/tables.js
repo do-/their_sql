@@ -83,14 +83,16 @@ get_item_of_tables:
 
     async function () {
     
-    	let {id} = this.rq, [id_src] = id.split ('.')
+    	const {conf: {src}, db, rq: {id}} = this, [id_src] = id.split ('.')
 
-    	let src = this.conf.src.find (i => i.id.split ('|').includes (id_src)), {product} = src.pool
+    	const {product} = src.find (i => i.id.split ('|').includes (id_src))
 
-        let data = await this.db.get ([{tables_vw: {id}}])
+        const data = await db.getObject ('SELECT * FROM tables_vw WHERE id = ?', [id])
         
-        data._fields = this.db.model.tables.tables.columns
-        
+		data._fields = {}; for (const {name, type, comment} of Object.values (db.model.map.get ('tables').columns)) 
+
+			data._fields [name] = {name, "REMARK": comment, "TYPE_NAME": type}
+
         data.product = product
         
         return data

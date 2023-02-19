@@ -5,12 +5,22 @@ module.exports = {
 get_vocs_of_columns: 
 
     function () {
+    
+    	const {conf, db: {model}} = this
 
-        return this.db.add_vocabularies ({
-        	_fields: this.db.model.tables.columns.columns,
-        	src: this.conf.src.map (({id, label}) => ({id, label})),
-        }, {
-        })
+		const _fields = {}; for (const {name, type, comment} of Object.values (model.map.get ('columns').columns)) 
+
+			_fields [name] = {name, "REMARK": comment, "TYPE_NAME": type}
+
+		const data = {
+		
+			_fields,
+		
+			src: conf.src.map (({id, label}) => ({id, label})),
+		
+		}
+
+		return data    
 
     },
     
@@ -19,35 +29,30 @@ get_vocs_of_columns:
 select_columns: 
     
     function () {
-   
-        this.rq.sort = this.rq.sort || [{field: "id", direction: "asc"}]
 
-        if (this.rq.searchLogic == 'OR') {
-        
-        	let {search} = this.rq; if (search && search.length) {
+    	const {db, rq} = this
+    	
+        if (rq.searchLogic === 'OR') {
 
-				let {value} = search [0]
+            const {value} = rq.search [0]
 
-				this.rq.search = [
-					{field: 'name',   operator: 'is', value},
-					{field: 'note',   operator: 'contains', value},
-				]
-
-        	}
+			rq.search = [
+				{field: 'name', operator: 'is', value},
+				{field: 'note', operator: 'contains', value},
+			]
 
         }
-    
-        let filter = this.w2ui_filter ()
-        
-        let {id_table, id_ref_table} = this.rq; 
-        
-        if (id_table) filter ['id LIKE'] = id_table + '.%'
-        
-        if (id_ref_table) filter.id_ref_table = id_ref_table
-        
-        let {pre} = this.rq; if (pre) filter ['id SIMILAR TO ?'] = `(${pre}).%`        
 
-        return this.db.add_all_cnt ({}, {'columns_vw AS columns': filter})
+		const q = db.w2uiQuery (
+			[
+				['columns_vw', {filters: [
+					['id', 'SIMILAR TO', `(${rq.pre}).%`]
+				].filter (i => 'pre' in rq)}]
+			], 
+			{order: ['id']}
+		)
+
+		return db.getArray (q)
 
     },
     

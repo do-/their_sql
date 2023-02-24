@@ -1,18 +1,14 @@
-const Path = require ('path')
+const Path          = require ('path')
 const {Application} = require ('doix')
-const {DbModel} = require ('doix-db')
 
-const BackService = require ('./BackService.js')
+const Model         = require ('./Model.js')
+const BackService   = require ('./BackService.js')
 
 module.exports = class extends Application {
 
 	constructor (conf, db, logger) {
 	
-		const m = new DbModel ({
-			db,
-			dir: {root: [__dirname], filter: (str, arr) => arr.at (-1) === 'Model'},
-		})
-		
+		const m = new Model (db)
 		m.loadModules ()
 
 	    super ({

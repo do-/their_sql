@@ -1,15 +1,33 @@
-const Dia = require ('./Ext/Dia/Dia.js')
+const {DbModel} = require ('doix-db')
 
-module.exports = class extends Dia.DB.Model {
+module.exports = class extends DbModel {
 
-    constructor (o) {
+    constructor (db) {
 
-        super (o)
+        super ({
+			db,
+			dir: {root: [__dirname], filter: (str, arr) => arr.at (-1) === 'Model'},
+		})
 
-        this.add_versioning ()
+//        this.add_versioning ()
 
 	}
+	
+	getFields (relationName) {
 
+		const o = {}, {columns} = this.map.get (relationName)
+		
+		for (const {name, type, comment} of Object.values (columns)) o [name] = {
+			name, 
+			"REMARK": comment, 
+			"TYPE_NAME": type,
+		}
+			
+		return o
+
+	}
+	
+/*
 	add_versioning () {
 
     	let {_versions} = this.tables; delete this.tables._versions
@@ -21,39 +39,6 @@ module.exports = class extends Dia.DB.Model {
     			_versions.add_to.call (_versions, table)
     			
 	}
-
-    trg_check_column_values (tab) {
-    	let sql = ''
-    	for (let name in tab.columns) sql += this.trg_check_column_value (tab, name)
-    	return sql
-    }
-    
-    trg_check_column_value (tab, name) {
-    
-    	let col = tab.columns [name]
-    	let sql = ''
-
-    	let re = col.PATTERN; if (re) sql += `
-			IF NEW.${name} IS NOT NULL AND NEW.${name} !~ '${re}' THEN
-				RAISE '#${name}#: Проверьте, пожалуйста, правильность заполнения поля "${col.REMARK}"';
-			END IF;
-    	`
-
-    	return sql
-
-    }
-
-    on_before_parse_table_columns (table) {
-
-        let cols = table.columns
-        
-        if (cols.id) {
-            table.pk = 'id'
-        } 
-        else {
-            cols [table.pk = 'uuid'] = 'uuid'
-        }
-        
-    }
+*/
 
 }

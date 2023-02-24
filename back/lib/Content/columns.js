@@ -6,15 +6,11 @@ get_vocs_of_columns:
 
     function () {
     
-    	const {conf, db: {model}} = this
-
-		const _fields = {}; for (const {name, type, comment} of Object.values (model.map.get ('columns').columns)) 
-
-			_fields [name] = {name, "REMARK": comment, "TYPE_NAME": type}
+    	const {conf, db: {model}, rq: {type}} = this
 
 		const data = {
 		
-			_fields,
+			_fields: model.getFields (type),
 		
 			src: conf.src.map (({id, label}) => ({id, label})),
 		
@@ -81,11 +77,11 @@ get_item_of_columns:
 
     async function () {
     
-    	let {id} = this.rq
+    	const {db, rq: {type, id}} = this
+    
+        const data = await db.getObject ('SELECT * FROM columns_vw WHERE id = ?', [id])
 
-        let data = await this.db.get ([{columns_vw: {id}}])
-
-        data._fields = this.db.model.tables.columns.columns
+        data._fields = db.model.getFields (type)
         
         return data
 

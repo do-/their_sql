@@ -9,15 +9,11 @@ get_vocs_of_tables:
 
     function () {
 
-    	const {conf, db: {model}} = this
-
-		const _fields = {}; for (const {name, type, comment} of Object.values (model.map.get ('tables').columns)) 
-
-			_fields [name] = {name, "REMARK": comment, "TYPE_NAME": type}
+    	const {conf, db: {model}, rq: {type}} = this
 
 		const data = {
 		
-			_fields,
+			_fields: model.getFields (type),
 		
 			src: conf.src.map (({id, label}) => ({id, label})),
 		
@@ -27,21 +23,6 @@ get_vocs_of_tables:
 
 		return data
 
-/*    
-return {"_fields":{"id":{"REMARK":"Имя","NULLABLE":false,"TYPE_NAME":"TEXT","name":"id","TYPE_NAME_ORIGINAL":"string"},"is_view":{"REMARK":"1, если VIEW","NULLABLE":false,"COLUMN_DEF":"0","TYPE_NAME":"INT4","name":"is_view","TYPE_NAME_ORIGINAL":"int"},"cnt":{"REMARK":"Число записей","NULLABLE":true,"TYPE_NAME":"INT4","name":"cnt","TYPE_NAME_ORIGINAL":"int"},"remark":{"REMARK":"Их комментарий","NULLABLE":true,"TYPE_NAME":"TEXT","name":"remark","TYPE_NAME_ORIGINAL":"string"},"note":{"REMARK":"Наш комментарий","NULLABLE":true,"TYPE_NAME":"TEXT","name":"note","TYPE_NAME_ORIGINAL":"string"},"is_confirmed":{"REMARK":"1, если есть в БД","NULLABLE":false,"COLUMN_DEF":"0","TYPE_NAME":"INT4","name":"is_confirmed","TYPE_NAME_ORIGINAL":"int"},"path":{"REMARK":"Путь файла-описания в Model","NULLABLE":true,"TYPE_NAME":"TEXT","name":"path","TYPE_NAME_ORIGINAL":"string"},"id_import":{"REMARK":"Последний импорт","NULLABLE":true,"ref":"imports","name":"id_import","TYPE_NAME":"UUID","TYPE_NAME_ORIGINAL":"UUID"}},"src":[{"id":"bf_50","label":"Биллинг МО"}],"voc_table_status":[{"id":0,"label":"OK"},{"id":1,"label":"Нет в БД"},{"id":2,"label":"Не описана"}]}    
-
-        return db.add_vocabularies ({
-        
-        	_fields: this.db.model.tables.tables.columns,
-        	
-        	src: conf.src.map (({id, label}) => ({id, label})),
-        	
-        }, {
-
-        	voc_table_status: {},
-
-        })
-*/
     },
     
 ////////////////////////////////////////////////////////////////////////////////
@@ -83,15 +64,13 @@ get_item_of_tables:
 
     async function () {
     
-    	const {conf: {src}, db, rq: {id}} = this, [id_src] = id.split ('.')
+    	const {conf: {src}, db, rq: {id, type}} = this, [id_src] = id.split ('.')
 
     	const {product} = src.find (i => i.id.split ('|').includes (id_src))
 
         const data = await db.getObject ('SELECT * FROM tables_vw WHERE id = ?', [id])
         
-		data._fields = {}; for (const {name, type, comment} of Object.values (db.model.map.get ('tables').columns)) 
-
-			data._fields [name] = {name, "REMARK": comment, "TYPE_NAME": type}
+		data._fields = db.model.getFields (type)
 
         data.product = product
         

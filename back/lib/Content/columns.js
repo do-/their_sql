@@ -27,7 +27,7 @@ select_columns:
     function () {
 
     	const {db, rq} = this
-    	
+    	    	
         if (rq.searchLogic === 'OR') {
 
             const {value} = rq.search [0]
@@ -38,15 +38,14 @@ select_columns:
 			]
 
         }
+        
+        const filters = []
+        
+    	if ('id_table' in rq) rq.pre = rq.id_table
+        if ('pre' in rq)          filters.push (['id', 'SIMILAR TO', `(${rq.pre}).%`])
+        if ('id_ref_table' in rq) filters.push (['id_ref_table', '=', rq.id_ref_table])
 
-		const q = db.w2uiQuery (
-			[
-				['columns_vw', {filters: [
-					['id', 'SIMILAR TO', `(${rq.pre}).%`]
-				].filter (i => 'pre' in rq)}]
-			], 
-			{order: ['id']}
-		)
+		const q = db.w2uiQuery ([['columns_vw', {filters}]], {order: ['id']})
 
 		return db.getArray (q)
 
@@ -78,8 +77,12 @@ get_item_of_columns:
     async function () {
     
     	const {db, rq: {type, id}} = this
+    	
+        const data = await db.getObject (
+        	db.model.createQuery ([['columns_vw', {filters: [['id', '=', id]]}]])
+        )
     
-        const data = await db.getObject ('SELECT * FROM columns_vw WHERE id = ?', [id])
+//        const data = await db.getObject ('SELECT * FROM columns_vw WHERE id = ?', [id])
 
         data._fields = db.model.getFields (type)
         

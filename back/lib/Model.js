@@ -8,8 +8,10 @@ module.exports = class extends DbModel {
 			db,
 			dir: {root: [__dirname], filter: (str, arr) => arr.at (-1) === 'Model'},
 		})
-
-//        this.add_versioning ()
+		
+		this.loadModules ()
+		
+        this.addVersioning ()
 
 	}
 	
@@ -27,18 +29,20 @@ module.exports = class extends DbModel {
 
 	}
 	
-/*
-	add_versioning () {
 
-    	let {_versions} = this.tables; delete this.tables._versions
-
-    	for (let table of Object.values (this.tables)) 
-    	
-    		if (table.log) 
-
-    			_versions.add_to.call (_versions, table)
-    			
+	addVersioning () {
+	
+		const K = '_versions', {map} = this
+		
+		const _versions = map.get (K); map.delete (K)
+		
+		for (const table of map.values ()) 
+		
+			if ('log' in table)
+			
+				_versions.add_to (table)
+		
 	}
-*/
+
 
 }

@@ -45,9 +45,7 @@ select_columns:
         if ('pre' in rq)          filters.push (['id', 'SIMILAR TO', `(${rq.pre}).%`])
         if ('id_ref_table' in rq) filters.push (['id_ref_table', '=', rq.id_ref_table])
 
-		const q = db.w2uiQuery ([['columns_vw', {filters}]], {order: ['id']})
-
-		return db.getArray (q)
+		return db.getArray (db.w2uiQuery ([['columns_vw', {filters}]], {order: ['id']}))
 
     },
     
@@ -56,17 +54,13 @@ select_columns:
 get_versions_of_columns: 
     
     function () {
-   
-        this.rq.sort = this.rq.sort || [{field: "_ts", direction: "desc"}]
 
-        let filter = this.w2ui_filter ()  
-        
-        filter._id = this.rq._id
-        
-        return this.db.add_all_cnt ({}, [
-        	{'columns_versions': filter},
-        	'users ON _id_user'
-        ])
+    	const {db, rq} = this
+
+		return db.getArray (db.w2uiQuery ([
+			['columns_versions', {filters: [['_id', '=', rq.id]]}],
+			['users', {on: 'columns_versions._id_user = users.uuid'}],
+		], {order: [['_ts', true]]}))
 
     },    
 
@@ -77,12 +71,8 @@ get_item_of_columns:
     async function () {
     
     	const {db, rq: {type, id}} = this
-    	
-        const data = await db.getObject (
-        	db.model.createQuery ([['columns_vw', {filters: [['id', '=', id]]}]])
-        )
-    
-//        const data = await db.getObject ('SELECT * FROM columns_vw WHERE id = ?', [id])
+    	    
+		const data = await db.getObject ('columns_vw', [id])
 
         data._fields = db.model.getFields (type)
         

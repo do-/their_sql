@@ -9,7 +9,6 @@ module.exports = class extends Application {
 	constructor (conf, db, logger) {
 	
 		const m = new Model (db)
-		m.loadModules ()
 
 	    super ({
 	    	

@@ -1,3 +1,5 @@
+const {DbTable, DbColumn} = require ('doix-db')
+
 module.exports = {
 
     label: 'История редактирования',
@@ -11,6 +13,7 @@ module.exports = {
         _ts      : 'timestamp=now() // Дата/время',
     },
 
+/*
     _triggers: {
 
         before_insert: function () {return `
@@ -41,9 +44,34 @@ module.exports = {
         `},
 
     },
+*/
 
-    add_to: function (table) {
+    add_to: function (target) {
 
+		const {model} = this, columns = {}, {except_columns} = target.log
+
+		for (const t of [this, target])
+
+			for (const [k, v] of Object.entries (t.columns))
+			
+				if (!except_columns.includes (k))
+
+					columns [k] = v
+
+    	const log_table = new DbTable ({
+    		model,
+			name: target.name + '_versions',
+			columns,
+			pk: ['_id', '_ts']
+    	})
+    	
+    	log_table.qName = model.lang.quoteName (log_table.name)
+
+		model.map.set (log_table.name, log_table)
+
+//console.log ([this.columns, table])		
+
+/*
     	let {model} = this; delete this.model
     	
     	let log_table = {
@@ -156,7 +184,8 @@ module.exports = {
 			END;
         
         `
-    
+*/    
+
     }
 
 }

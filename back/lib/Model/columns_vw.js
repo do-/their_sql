@@ -21,6 +21,8 @@ module.exports = {
         ref_pk_note  : 'string                                      // Комментарий к ПК таблицы по ссылке',
     },
     
+    pk: ['id'],
+    
     sql: `
     	SELECT
 			t.id           

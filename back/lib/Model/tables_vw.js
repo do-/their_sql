@@ -13,6 +13,8 @@ module.exports = {
         id_status    : 'int                                         // 1, если нет в БД', 
         name         : 'string                                      // Локальное имя',
     },
+
+    pk: ['id'],
     
     sql: `
     	SELECT

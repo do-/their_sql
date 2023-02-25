@@ -68,7 +68,7 @@ get_item_of_tables:
 
     	const {product} = src.find (i => i.id.split ('|').includes (id_src))
 
-        const data = await db.getObject ('SELECT * FROM tables_vw WHERE id = ?', [id])
+        const data = await db.getObject ('tables_vw', [id])
         
 		data._fields = db.model.getFields (type)
 

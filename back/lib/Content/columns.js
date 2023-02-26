@@ -72,7 +72,7 @@ get_item_of_columns:
     
     	const {db, rq: {type, id}} = this
     	    
-		const data = await db.getObject ('columns_vw', [id])
+		const data = await db.getObject ('columns_vw', id)
 
         data._fields = db.model.getFields (type)
         

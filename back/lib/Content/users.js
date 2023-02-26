@@ -216,7 +216,7 @@ do_update_users:
             await this.db.update ('users', d)
         }
         catch (x) {
-            throw x.cause.constraint == 'ix_users_login' ? '#login#: Этот login уже занят' : x
+            throw x.cause?.constraint == 'ix_users_login' ? '#login#: Этот login уже занят' : x
         }
 
     },
@@ -239,12 +239,7 @@ do_create_users:
             await this.db.insert ('users', d)
         }
         catch (x) {
-            if (this.db.is_pk_violation (x)) return d
-
-            throw (false
-            	|| x.constraint == 'ix_users_login'
-            	|| x.message.match (/constraint failed: users.login/)
-            ) ? '#login#: Этот login уже занят' : x
+            throw x.cause?.constraint == 'ix_users_login' ? '#login#: Этот login уже занят' : x
         }
         
         return d

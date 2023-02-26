@@ -44,6 +44,8 @@ module.exports = class extends WebService {
 				error: (job, error) => {
 
 					if (typeof error === 'string') error = Error (error)
+					
+					while (error.cause) error = error.cause
 
 					const m = /^#(.*?)#:(.*)/.exec (error.message); if (m) {					
 						error.field   = m [1]

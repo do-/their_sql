@@ -39,13 +39,21 @@ select_columns:
 
         }
         
-        const filters = []
-        
-    	if ('id_table' in rq) rq.pre = rq.id_table
-        if ('pre' in rq)          filters.push (['id', 'SIMILAR TO', `(${rq.pre}).%`])
-        if ('id_ref_table' in rq) filters.push (['id_ref_table', '=', rq.id_ref_table])
+        const q = db.w2uiQuery ([['columns_vw']], {order: ['id']}), {filters} = q.tables [0]
 
-		return db.getArray (db.w2uiQuery ([['columns_vw', {filters}]], {order: ['id']}))
+    	if ('id_table' in rq) rq.pre = rq.id_table
+    	
+		if ('pre' in rq) filters.push ({
+			sql: 'id SIMILAR TO ?',
+			params: [`(${rq.pre}).%`],
+		})
+    	
+		if ('id_ref_table' in rq) filters.push ({
+			sql: 'id_ref_table = ?',
+			params: [rq.id_ref_table],
+		})
+
+		return db.getArray (q)
 
     },
     
@@ -58,7 +66,7 @@ get_versions_of_columns:
     	const {db, rq} = this
 
 		return db.getArray (db.w2uiQuery ([
-			['columns_versions', {filters: [['_id', '=', rq.id]]}],
+			['columns_versions', {filters: [['_id', '=', rq._id]]}],
 			['users', {on: 'columns_versions._id_user = users.uuid'}],
 		], {order: [['_ts', true]]}))
 

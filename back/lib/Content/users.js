@@ -37,19 +37,21 @@ select_users:
             rq.search = ['label', 'login', 'mail'].map (field => ({field, operator: 'contains', value}))
 
         }
-
-		return db.getArray (db.w2uiQuery (
+        
+		const q = db.w2uiQuery (
 			[
-				['users', {
-					filters: [
-						['uuid', '<>', '00000000-0000-0000-0000-000000000000'],
-						['is_deleted', '=', 0],
-					]
-				}],
+				['users'],
 				['roles', {as: 'role'}]
 			], 
 			{order: ['label']}
-		))
+		)
+
+		q.tables [0].filters.push ({
+			sql: '(users.is_deleted=0 AND users.uuid <> ?)', 
+			params: ['00000000-0000-0000-0000-000000000000']
+		})
+
+		return db.getArray (q)
 
     },
 

@@ -41,14 +41,12 @@ select_tables:
 
         }
 
-		const q = db.w2uiQuery (
-			[
-				['tables_vw', {filters: [
-					['id', 'SIMILAR TO', `(${rq.pre}).%`]
-				].filter (i => 'pre' in rq)}]
-			], 
-			{order: ['id']}
-		)
+		const q = db.w2uiQuery ([['tables_vw']], {order: ['id']})
+		
+		if ('pre' in rq) q.tables [0].filters.push ({
+			sql: 'id SIMILAR TO ?',
+			params: [`(${rq.pre}).%`],
+		})
 
 		const list = await db.getArray (q)
 

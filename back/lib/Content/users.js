@@ -8,38 +8,48 @@ get_vocs_of_users:
 
     function () {
 
-        return this.db.add_vocabularies ({_fields: this.db.model.tables.users.columns}, {
-            roles: {},
-        })
+    	const {conf, db: {model}, rq: {type}} = this
+
+		const data = {
+		
+			_fields: model.getFields (type),
+				
+		}
+		
+		for (const k of ['roles']) data [k] = model.map.get (k).data
+
+		return data
 
     },
     
 ////////////////////////////////////////////////////////////////////////////////
 
-select_users: 
+select_users:
     
     function () {
-   
-        this.rq.sort = this.rq.sort || [{field: "label", direction: "asc"}]
 
-        if (this.rq.searchLogic == 'OR') {
+    	const {db, rq} = this
+    	
+        if (rq.searchLogic === 'OR') {
 
-            let q = this.rq.search [0].value
+            const {value} = rq.search [0]
 
-            this.rq.search = [
-                {field: 'label', operator: 'contains', value: q},
-                {field: 'login', operator: 'contains', value: q},
-                {field: 'mail',  operator: 'contains', value: q},
-            ]
+            rq.search = ['label', 'login', 'mail'].map (field => ({field, operator: 'contains', value}))
 
         }
-    
-        let filter = this.w2ui_filter ()
-        
-        filter ['uuid <>'] = '00000000-0000-0000-0000-000000000000'
-        filter.is_deleted  = 0
 
-        return this.db.add_all_cnt ({}, [{users: filter}, 'roles AS role'])
+		return db.getArray (db.w2uiQuery (
+			[
+				['users', {
+					filters: [
+						['uuid', '<>', '00000000-0000-0000-0000-000000000000'],
+						['is_deleted', '=', 0],
+					]
+				}],
+				['roles', {as: 'role'}]
+			], 
+			{order: ['label']}
+		))
 
     },
 
@@ -48,14 +58,19 @@ select_users:
 get_item_of_users: 
 
     async function () {
-        
-        let data = await this.db.get ([{users: 
 
-            {uuid: this.rq.id},
+    	const {db, rq: {id, type}} = this
 
-        }, 'roles AS role'])
-        
-        data._fields = this.db.model.tables.users.columns
+		const data = await db.getObject (db.w2uiQuery (
+			[
+				['users', {
+					filters: [['uuid', '=', id]]
+				}],
+				['roles', {as: 'role'}]
+			], 
+		))
+
+        data._fields = db.model.getFields (type)
         
         return data
 
@@ -66,21 +81,24 @@ get_item_of_users:
 get_options_of_users: 
 
     async function () {
-    
-        let user = await this.db.get ([{users: {uuid: this.rq.id}}, 'roles'])
-        
-        let filter = {'roles... LIKE': `% ${user['roles.name']} %`}
-        
-        return this.db.add ({}, [
-        
-            {voc_user_options: filter},
-            
-            {'user_options(is_on)': {
-                id_user: user.uuid,
-            }}
 
-        ])
+    	const {db, rq: {id, type}} = this
 
+    	const q = db.model.createQuery ([
+			['voc_user_options'],
+			['user_options', {
+				join    : 'LEFT',
+				on      : 'user_options.id_voc_user_option = voc_user_options.id',
+				filters : [['id_user', '=', id]],
+			}],
+    	])
+
+    	const voc_user_options = await db.getArray (q)
+    	
+    	return {voc_user_options}
+        
+//        let filter = {'roles... LIKE': `% ${user['roles.name']} %`}
+        
     },
     
 ////////////////////////////////////////////////////////////////////////////////
@@ -198,7 +216,7 @@ do_update_users:
             await this.db.update ('users', d)
         }
         catch (x) {
-            throw x.constraint == 'ix_users_login' ? '#login#: Этот login уже занят' : x
+            throw x.cause.constraint == 'ix_users_login' ? Error ('#login#: Этот login уже занят') : x
         }
 
     },

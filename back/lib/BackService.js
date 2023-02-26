@@ -38,15 +38,39 @@ module.exports = class extends WebService {
 				}
 
 			}),
+			
+			on: {
+
+				error: (job, error) => {
+
+					if (typeof error === 'string') error = Error (error)
+
+					const m = /^#(.*?)#:(.*)/.exec (error.message); if (m) {					
+						error.field   = m [1]
+						error.message = m [2].trim ()
+					}
+					
+					job.error = error
+
+				}
+
+			},
 
 			dumper: new HttpResultWriter ({
-				code: e => 500,
+				code: err => 'field' in err ? 422 : 500,
 				type: 'application/json',
-				stringify: (err, job) => JSON.stringify ({
-					success: false, 
-					id: job.uuid,
-					dt: new Date ().toJSON ()
-				})
+				stringify: (err, job) => JSON.stringify (
+					'field' in err ? {
+						field: err.field,
+						message: err.message
+					}
+					: {
+						success: false,
+						id: job.uuid,
+						dt: new Date ().toJSON ()
+					}					
+				)
+				
 			}),
 			
 			...o

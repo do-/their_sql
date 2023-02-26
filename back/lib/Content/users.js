@@ -216,7 +216,7 @@ do_update_users:
             await this.db.update ('users', d)
         }
         catch (x) {
-            throw x.cause.constraint == 'ix_users_login' ? Error ('#login#: Этот login уже занят') : x
+            throw x.cause.constraint == 'ix_users_login' ? '#login#: Этот login уже занят' : x
         }
 
     },

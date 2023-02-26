@@ -7,8 +7,8 @@
   "dependencies": {
     "content-disposition": "^0.5.3",
     "doix": "^0.0.37",
-    "doix-db": "^0.0.23",
-    "doix-db-postgresql": "^0.0.26",
+    "doix-db": "^0.0.24",
+    "doix-db-postgresql": "^0.0.27",
     "doix-http": "^0.0.8",
     "doix-w2ui": "^0.0.3",
     "generic-pool": "^3.7.1",

@@ -24,7 +24,7 @@ module.exports = class extends WebService {
 
 				stringify: content => {
 
-					if (COUNT in content) content = {
+					if (Array.isArray (content) && COUNT in content) content = {
 						[content [QUERY].tables [0].alias]: content,
 						cnt: content [COUNT],
 						portion: content [QUERY].options.limit,

@@ -30,7 +30,7 @@ get_vocs_of_tables:
 select_tables:
     
     async function () {
-
+console.log (this.user)
     	const {db, rq} = this
     	
         if (rq.searchLogic === 'OR') {

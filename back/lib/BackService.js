@@ -1,4 +1,4 @@
-const jwt = require ('jsonwebtoken')
+const Session = require ('./Session.js')
 
 const {WebService, HttpParamReader, HttpResultWriter} = require ('doix-http')
 
@@ -8,6 +8,8 @@ const COUNT = Symbol.for ('count')
 module.exports = class extends WebService {
 
 	constructor (app, o = {}) {
+	
+	    const session = new Session ()
 	
 	    super (app, {
 	    
@@ -43,31 +45,9 @@ module.exports = class extends WebService {
 			
 			on: {
 
-				start: job => {
-				
-					const {cookie} = job.http.request.headers; if (!cookie) return
-					
-					const sep = '; ', name = 'sid'
-					
-					const s = sep + cookie + sep, head = sep + name + '='
-					
-					const pos = s.indexOf (head)
-					
-					const v = s.substring (pos + head.length, s.indexOf (sep, pos + 1))
+				start: [job => session.read (job)],
 
-					job.user = jwt.verify (v, 'z', {}).sub
-				
-				},
-
-				end: job => {
-				
-					const {user, http: {response}} = job
-
-					const sid = jwt.sign ({sub: user}, 'z', {expiresIn: '30m'})
-
-					response.setHeader ('Set-Cookie', 'sid=' + sid + '; HttpOnly')
-
-				},
+				end:   [job => session.save (job)],
 
 				error: (job, error) => {
 
@@ -106,7 +86,7 @@ module.exports = class extends WebService {
 			...o
 
 	    })
-
+	    
 	}
 
 }

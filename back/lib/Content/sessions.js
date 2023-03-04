@@ -47,6 +47,9 @@ do_create_sessions:
         
         await this.session.start ()
 */
+
+		this.user = user
+
         return {user, timeout: 60/*this.session.o.timeout*/}
 
     },

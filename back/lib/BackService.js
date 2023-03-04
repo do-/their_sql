@@ -1,3 +1,5 @@
+const jwt = require ('jsonwebtoken')
+
 const {WebService, HttpParamReader, HttpResultWriter} = require ('doix-http')
 
 const QUERY = Symbol.for ('query')
@@ -41,6 +43,32 @@ module.exports = class extends WebService {
 			
 			on: {
 
+				start: job => {
+				
+					const {cookie} = job.http.request.headers; if (!cookie) return
+					
+					const sep = '; ', name = 'sid'
+					
+					const s = sep + cookie + sep, head = sep + name + '='
+					
+					const pos = s.indexOf (head)
+					
+					const v = s.substring (pos + head.length, s.indexOf (sep, pos + 1))
+
+					job.user = jwt.verify (v, 'z', {}).sub
+				
+				},
+
+				end: job => {
+				
+					const {user, http: {response}} = job
+
+					const sid = jwt.sign ({sub: user}, 'z', {expiresIn: '30m'})
+
+					response.setHeader ('Set-Cookie', 'sid=' + sid + '; HttpOnly')
+
+				},
+
 				error: (job, error) => {
 
 					if (typeof error === 'string') error = Error (error)
@@ -54,7 +82,7 @@ module.exports = class extends WebService {
 					
 					job.error = error
 
-				}
+				},
 
 			},
 

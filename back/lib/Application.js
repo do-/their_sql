@@ -1,3 +1,5 @@
+const fs            = require ('fs')
+const crypto        = require ('crypto')
 const Path          = require ('path')
 const {Application} = require ('doix')
 
@@ -7,7 +9,7 @@ const BackService   = require ('./BackService.js')
 module.exports = class extends Application {
 
 	constructor (conf, db, logger) {
-	
+
 		const m = new Model (db)
 
 	    super ({
@@ -34,7 +36,7 @@ module.exports = class extends Application {
 			},
 
 	    })
-
+	    
 	}
 	
 	createBackService (o) {
@@ -51,6 +53,20 @@ module.exports = class extends Application {
 		
 		await job.toComplete ()
 	
+	}
+	
+	pwdHash (password, salt) {
+		
+		const hash = crypto.createHash ('sha256')
+		
+		hash.update (fs.readFileSync (this.globals.get ('conf').auth.salt_file, 'utf8'))
+
+		if (salt != null) hash.update (salt)
+		
+		hash.update (String (password), 'utf8')
+
+		return hash.digest ('hex')
+
 	}
 
 }

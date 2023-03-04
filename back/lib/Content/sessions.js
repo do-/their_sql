@@ -6,30 +6,30 @@ do_create_sessions:
 
     async function () {
     
-		const u = {uuid: '00000000-0000-0000-0000-000000000000', id_role: 1}
-/*        
-        let u = await this.db.get ([{users: {
-            login: this.rq.data.login,
-        }}, 'roles(name)'])
+    	const {app, db, rq: {data: {login}}} = this
+    	
+    	const password = this.http.request.headers ['x-request-param-password']
+
+    	const u = await db.getObject ('SELECT * FROM users WHERE login = ?', [login])
 
         if (u.is_deleted) throw '#foo#: Вас пускать не велено'
                 
         if (u.uuid) {
-            if (u.password != await this.session.password_hash (u.salt, this.rq.password)) return {}
+            if (u.password != app.pwdHash (password, u.salt)) return {}
         }
         else if (this.conf.auth.allow_test_admin && this.rq.data.login == 'test' && this.rq.password == 'test') {
-            u = await this.db.get ([{users: {uuid: '00000000-0000-0000-0000-000000000000'}}, 'roles(name)'])
+            u = await await db.getObject ('users', '00000000-0000-0000-0000-000000000000')
         }
         else {
             return {}
         }
-*/        
+
         let user = {
 			id    : u.uuid,
 			uuid  : u.uuid,
 			label : u.label,
 			opt   : u.opt,
-			role  : u ['roles.name'],
+			role  : db.model.map.get ('roles').data.find (i => i.id == u.id_role).name,
         }
         
 		user.opt = {}/*await this.db.fold ([

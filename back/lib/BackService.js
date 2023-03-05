@@ -7,10 +7,8 @@ const COUNT = Symbol.for ('count')
 
 module.exports = class extends WebService {
 
-	constructor (app, o = {}) {
-	
-	    const session = new Session ()
-	
+	constructor (app, o) {
+		
 	    super (app, {
 	    
 			methods: ['POST'],
@@ -21,6 +19,25 @@ module.exports = class extends WebService {
 					bodyString: s => JSON.parse (s),	
 				}
 			}),
+			
+			on: {
+
+				error : (job, error) => {
+
+					if (typeof error === 'string') error = Error (error)
+					
+					while (error.cause) error = error.cause
+
+					const m = /^#(.*?)#:(.*)/.exec (error.message); if (m) {					
+						error.field   = m [1]
+						error.message = m [2].trim ()
+					}
+					
+					job.error = error
+
+				},
+
+			},
 
 			writer: new HttpResultWriter ({
 
@@ -42,29 +59,6 @@ module.exports = class extends WebService {
 				}
 
 			}),
-			
-			on: {
-
-				start: [job => session.read (job)],
-
-				end:   [job => session.save (job)],
-
-				error: (job, error) => {
-
-					if (typeof error === 'string') error = Error (error)
-					
-					while (error.cause) error = error.cause
-
-					const m = /^#(.*?)#:(.*)/.exec (error.message); if (m) {					
-						error.field   = m [1]
-						error.message = m [2].trim ()
-					}
-					
-					job.error = error
-
-				},
-
-			},
 
 			dumper: new HttpResultWriter ({
 				code: err => 'field' in err ? 422 : 500,
@@ -86,7 +80,9 @@ module.exports = class extends WebService {
 			...o
 
 	    })
-	    
+
+	    new Session (o.sessions).plugInto (this)
+
 	}
 
 }

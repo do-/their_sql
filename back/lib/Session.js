@@ -1,23 +1,68 @@
+const {randomUUID} = require ('crypto')
 const {Cookie} = require ('doix-http')
-const jwt = require ('jsonwebtoken')
+const redis = require ('redis')
+
+const SESSION = Symbol ('session')
 
 class Session extends Cookie {
+
+	constructor (o) {
 	
-	read (job) {
+		super (o)
+		
+		this.db = redis.createClient (o.db)
+		
+		this.setOptions = {EX: 60 * parseInt (this.ttl)}
+	
+	}
+	
+	newId () {
+		
+		return randomUUID ()
+		
+	}
+	
+	async getDb () {
 
-		const v = this.getRaw (job.http.request); if (!v) return
-
-		job.user = jwt.verify (v, 'z', {}).sub
+		const {db} = this; if (!db.isOpen) await db.connect ()
+		
+		return db
 
 	}
 
-	save (job) {
+	async read (job) {
 
-		const {user, http: {response}} = job
+		const sid = this.getRaw (job.http.request); if (!sid) return
 
-		const value = jwt.sign ({sub: user}, 'z', {expiresIn: this.ttl + 'm'})
+		job [SESSION] = sid
 		
-		this.setRaw (response, value)
+		const db = await this.getDb ()
+
+		const json = await db.get (sid)
+
+		job.user = JSON.parse (json)
+
+	}
+	
+	async save (job) {
+
+		const {user, http: {response}} = job; if (!user) return this.setRaw (response, '')
+
+		let sid = job [SESSION]
+		
+		if (!sid) this.setRaw (response, sid = this.newId ())
+
+		const db = await this.getDb ()
+
+		await db.set (sid, JSON.stringify (user), this.setOptions)
+
+	}
+	
+	plugInto (ws) {
+
+		ws.addHandler ('start', job => job.waitFor (this.read (job)))
+
+		ws.addHandler ('end', job => job.waitFor (this.save (job)))
 
 	}
 

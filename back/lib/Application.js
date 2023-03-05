@@ -39,9 +39,11 @@ module.exports = class extends Application {
 	    
 	}
 	
-	createBackService (o) {
+	createBackService () {
 	
-		return new BackService (this, o)
+		const {sessions} = this.globals.get ('conf').auth
+	
+		return new BackService (this, {sessions})
 	
 	}
 	

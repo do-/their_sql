@@ -46,15 +46,28 @@ class Session extends Cookie {
 	
 	async save (job) {
 
-		const {user, http: {response}} = job; if (!user) return this.setRaw (response, '')
-
-		let sid = job [SESSION]
+		const {user, http: {response}} = job; 
 		
-		if (!sid) this.setRaw (response, sid = this.newId ())
-
 		const db = await this.getDb ()
+		
+		let sid = job [SESSION]
 
-		await db.set (sid, JSON.stringify (user), this.setOptions)
+		if (user) {
+
+			if (!sid) this.setRaw (response, sid = this.newId ())
+
+			await db.set (sid, JSON.stringify (user), this.setOptions)
+
+		}
+		else {
+
+			if (!sid) return
+
+			await db.del (sid)
+
+			this.setRaw (response, '')
+
+		}
 
 	}
 	

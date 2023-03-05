@@ -60,7 +60,7 @@ do_delete_sessions:
 
     function () {
     
-        return this.session.finish ()
+        this.user = null
     
     },
     

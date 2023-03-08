@@ -174,7 +174,7 @@ do_set_password_users:
 
     async function () {
 
-    	const {db, rq: {id}, pwd, http: {request: {headers}}} = this
+    	const {db, user, rq: {id}, pwd, http: {request: {headers}}} = this
 
     	const p1 = headers ['x-request-param-p1']
     	const p2 = headers ['x-request-param-p2']
@@ -182,15 +182,12 @@ do_set_password_users:
         if (p1 == null) throw Error ('#p1#: Получено пустое значение пароля')
 
 		if (!crypto.timingSafeEqual (Buffer.from (p1), Buffer.from (p2))) throw Error ('#p2#: Повторное значение пароля не сходится')
-/*
-        let uuid = 
-                   this.user.role == 'admin' ? this.rq.id || this.user.uuid : 
-                   this.user.uuid
-*/
 
         const salt = pwd.sprinkle (32), password = pwd.cook (p1, salt)
+        
+        const uuid = user.role === 'admin' ? id : user.uuid
 
-        return db.update ('users', {uuid: id, salt, password})
+        return db.update ('users', {uuid, salt, password})
 
     },
 

@@ -34,29 +34,26 @@ do_create_sessions:
 			id    : u.uuid,
 			uuid  : u.uuid,
 			label : u.label,
-			opt   : u.opt,
+			opt   : {},
 			role  : db.model.map.get ('roles').data.find (i => i.id == u.id_role).name,
         }
         
-		user.opt = {}/*await this.db.fold ([
+		const opt = await db.getArray (`
+			SELECT
+				v.name
+			FROM
+				user_options t
+				JOIN voc_user_options v ON v.id = t.id_voc_user_option
+			WHERE
+				t.is_on = 1
+				AND t.id_user = ?
+		`, [user.uuid], {rowMode: 'scalar'})
 
-            {'user_options()': {
-                is_on: 1,
-                id_user: user.uuid
-            }},
-
-            'voc_user_options(name)'
-
-        ], (i, d) => {d [i ['voc_user_options.name']] = 1}, {})        
-
-        this.session.user = user
-        
-        await this.session.start ()
-*/
+		for (const k of opt) user.opt [k] = 1
 
 		this.user = user
 
-        return {user, timeout: 60/*this.session.o.timeout*/}
+        return {user, timeout: this.conf.auth.sessions.ttl}
 
     },
     

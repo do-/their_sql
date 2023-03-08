@@ -1,6 +1,5 @@
-const Session = require ('./Session.js')
-
 const {WebService, HttpParamReader, HttpResultWriter} = require ('doix-http')
+const {CookieRedis} = require ('doix-http-cookie-redis')
 
 const QUERY = Symbol.for ('query')
 const COUNT = Symbol.for ('count')
@@ -81,7 +80,7 @@ module.exports = class extends WebService {
 
 	    })
 
-	    new Session (o.sessions).plugInto (this)
+	    new CookieRedis ({prefix: 'session_', ...o.sessions}).plugInto (this)
 
 	}
 

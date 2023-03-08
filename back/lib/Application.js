@@ -3,8 +3,9 @@ const crypto        = require ('crypto')
 const Path          = require ('path')
 const {Application} = require ('doix')
 
-const Model         = require ('./Model.js')
-const BackService   = require ('./BackService.js')
+const Model          = require ('./Model.js')
+const BackService    = require ('./BackService.js')
+const PasswordShaker = require ('./PasswordShaker.js')
 
 module.exports = class extends Application {
 
@@ -18,6 +19,7 @@ module.exports = class extends Application {
 	    
 			globals: {
 				conf,
+			    pwd: new PasswordShaker ({path: conf.auth.salt_file}),
 			},
 
 			pools: {
@@ -36,7 +38,7 @@ module.exports = class extends Application {
 			},
 
 	    })
-	    
+	    	    
 	}
 	
 	createBackService () {
@@ -55,20 +57,6 @@ module.exports = class extends Application {
 		
 		await job.toComplete ()
 	
-	}
-	
-	pwdHash (password, salt) {
-		
-		const hash = crypto.createHash ('sha256')
-		
-		hash.update (fs.readFileSync (this.globals.get ('conf').auth.salt_file, 'utf8'))
-
-		if (salt != null) hash.update (salt)
-		
-		hash.update (String (password), 'utf8')
-
-		return hash.digest ('hex')
-
 	}
 
 }

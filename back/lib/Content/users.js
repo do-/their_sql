@@ -1,3 +1,4 @@
+const crypto = require ('crypto')
 const Dia = require ('../Ext/Dia/Dia.js')
 
 module.exports = {
@@ -169,21 +170,27 @@ get_own_options_of_users:
     
 ////////////////////////////////////////////////////////////////////////////////
 
-do_set_password_users: 
+do_set_password_users:
 
     async function () {
 
-        if (this.rq.p1 == undefined) throw '#p1#: Получено пустое значение пароля'
-        if (this.rq.p1 != this.rq.p2) throw '#p2#: Повторное значение пароля не сходится'
-darn (this.user)
+    	const {db, rq: {id}, pwd, http: {request: {headers}}} = this
+
+    	const p1 = headers ['x-request-param-p1']
+    	const p2 = headers ['x-request-param-p2']
+
+        if (p1 == null) throw Error ('#p1#: Получено пустое значение пароля')
+
+		if (!crypto.timingSafeEqual (Buffer.from (p1), Buffer.from (p2))) throw Error ('#p2#: Повторное значение пароля не сходится')
+/*
         let uuid = 
                    this.user.role == 'admin' ? this.rq.id || this.user.uuid : 
                    this.user.uuid
+*/
 
-        let salt     = await this.session.password_hash (Math.random (), new Date ().toJSON ())
-        let password = await this.session.password_hash (salt, this.rq.p1)
+        const salt = pwd.sprinkle (32), password = pwd.cook (p1, salt)
 
-        return this.db.update ('users', {uuid, salt, password})
+        return db.update ('users', {uuid: id, salt, password})
 
     },
 

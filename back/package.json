@@ -6,7 +6,7 @@
   "license": "MIT",
   "dependencies": {
     "content-disposition": "^0.5.3",
-    "doix": "^0.0.37",
+    "doix": "^0.0.38",
     "doix-db": "^0.0.25",
     "doix-db-postgresql": "^0.0.29",
     "doix-http": "^0.0.11",

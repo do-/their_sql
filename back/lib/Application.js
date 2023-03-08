@@ -1,11 +1,10 @@
 const fs            = require ('fs')
 const crypto        = require ('crypto')
 const Path          = require ('path')
-const {Application} = require ('doix')
+const {Application, PasswordShaker} = require ('doix')
 
 const Model          = require ('./Model.js')
 const BackService    = require ('./BackService.js')
-const PasswordShaker = require ('./PasswordShaker.js')
 
 module.exports = class extends Application {
 

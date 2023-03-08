@@ -10,14 +10,13 @@
     "doix-db": "^0.0.25",
     "doix-db-postgresql": "^0.0.29",
     "doix-http": "^0.0.11",
+    "doix-http-cookie-redis": "^0.0.1",
     "doix-w2ui": "^0.0.3",
     "generic-pool": "^3.7.1",
-    "jsonwebtoken": "^8.5.1",
     "odata-parser": "^1.4.1",
     "pg": "^8.8.0",
     "pg-copy-streams": "^5.1.1",
     "pg-query-stream": "^3.2.3",
-    "redis": "^4.6.5",
     "winston": "^3.8.2"
   }
 }

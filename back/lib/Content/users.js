@@ -106,26 +106,15 @@ get_options_of_users:
     
 ////////////////////////////////////////////////////////////////////////////////
 
-do_set_option_users: 
+do_set_option_users:
 
     async function () {
-    
-        if (this.user.role != 'admin') throw '#foo#:Доступ запрещён'
 
-        let d = {
-            id_user: this.rq.id,
-            uuid: Dia.new_uuid ()	// Caution! DON'T replicate this line!
-            	
-									// This is only a hack to allow dual PostreSQL / SQLite compatibility
+        if (this.user.role !== 'admin') throw '#foo#:Доступ запрещён'
 
-									// for PostreSQL, better decalre uuid=uuid_generate_v4()
-									// for SQLite, it mysteriously works with NULL uuids
+        const {uuid, db, rq: {id, data: {is_on, id_voc_user_option}}} = this
 
-        }
-        
-        for (let k of ['is_on', 'id_voc_user_option']) d [k] = this.rq.data [k]
-        
-        return this.db.upsert ('user_options', d, ['id_user', 'id_voc_user_option'])
+        return db.upsert ('user_options', {id_user: id, uuid, is_on, id_voc_user_option}, {key: ['id_user', 'id_voc_user_option']})
         
     },
 
@@ -135,17 +124,9 @@ do_set_own_option_users:
 
     async function () {
 
-        let voc_user_option = this.db.get ([{voc_user_options: {id: this.rq.data.id_voc_user_option}}]);
+        const {uuid, db, user, rq: {data: {is_on, id_voc_user_option}}} = this
 
-        if (!voc_user_option.is_own) throw '#foo#:Доступ запрещён'
-
-        let d = {
-            id_user: this.user.id
-        }
-
-        for (let k of ['is_on', 'id_voc_user_option']) d [k] = this.rq.data [k]
-
-        return this.db.upsert ('user_options', d, ['id_user', 'id_voc_user_option'])
+        return db.upsert ('user_options', {id_user: user.uuid, uuid, is_on, id_voc_user_option}, {key: ['id_user', 'id_voc_user_option']})
 
     },
     
@@ -155,19 +136,23 @@ get_own_options_of_users:
 
     async function () {
 
-        let filter = this.w2ui_filter ()
-        delete filter.LIMIT
-        filter ['roles... LIKE'] = `% ${this.user.role} %`
-        filter.is_own = 1
-        
-        return await this.db.add ({}, [{voc_user_options: filter},
-            {'user_options(is_on)': {
-                id_user: this.user.uuid,
-            }}
-        ])
+    	const {db, user, rq: {type}} = this
 
-    },    
-    
+    	const q = db.model.createQuery ([
+			['voc_user_options'],
+			['user_options', {
+				join    : 'LEFT',
+				on      : 'user_options.id_voc_user_option = voc_user_options.id',
+				filters : [['id_user', '=', user.uuid]],
+			}],
+    	])
+
+    	const voc_user_options = await db.getArray (q)
+
+    	return {voc_user_options}
+
+    },
+
 ////////////////////////////////////////////////////////////////////////////////
 
 do_set_password_users:

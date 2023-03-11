@@ -4,6 +4,18 @@ const {CookieRedis} = require ('doix-http-cookie-redis')
 const QUERY = Symbol.for ('query')
 const COUNT = Symbol.for ('count')
 
+class UnauthorizedError extends Error {
+
+	constructor () {
+	
+		super ('Unauthorized')
+		
+		this.code = 401
+	
+	}
+
+}
+
 module.exports = class extends WebService {
 
 	constructor (app, o) {
@@ -18,8 +30,10 @@ module.exports = class extends WebService {
 					bodyString: s => JSON.parse (s),	
 				}
 			}),
-			
+
 			on: {
+
+				module: job => {if (!job.user && !job.module.allowAnonymous) throw new UnauthorizedError ()},
 
 				error : (job, error) => {
 
@@ -60,8 +74,17 @@ module.exports = class extends WebService {
 			}),
 
 			dumper: new HttpResultWriter ({
-				code: err => 'field' in err ? 422 : 500,
+
+				code: err =>
+
+					'code'  in err ? err.code :
+
+					'field' in err ? 422 :
+
+					500,
+
 				type: 'application/json',
+
 				stringify: (err, job) => JSON.stringify (
 					'field' in err ? {
 						field: err.field,

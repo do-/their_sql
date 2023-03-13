@@ -1,20 +1,18 @@
-const fs            = require ('fs')
-const crypto        = require ('crypto')
-const Path          = require ('path')
 const {Application, PasswordShaker} = require ('doix')
 
-const Model          = require ('./Model.js')
-const BackService    = require ('./BackService.js')
+const createLogger                  = require ('./Logger.js')
+const DB                            = require ('./DB.js')
+const BackService                   = require ('./BackService.js')
 
 module.exports = class extends Application {
 
-	constructor (conf, db, logger) {
-
-		const m = new Model (db)
+	constructor (conf) {
+	
+		const log = name => createLogger (conf, name)
 
 	    super ({
 	    	
-	    	logger,
+	    	logger: log ('app'),
 	    
 			globals: {
 				conf,
@@ -22,7 +20,7 @@ module.exports = class extends Application {
 			},
 
 			pools: {
-				db,
+				db: new DB (conf.db, log ('db')),
 			},
 
 			modules: {

@@ -1,4 +1,5 @@
 const {Application, PasswordShaker} = require ('doix')
+const {DbPoolPg} = require ('doix-db-postgresql')
 
 const createLogger                  = require ('./Logger.js')
 const DB                            = require ('./DB.js')
@@ -9,7 +10,7 @@ module.exports = class extends Application {
 	constructor (conf) {
 	
 		const log = name => createLogger (conf, name)
-
+		
 	    super ({
 	    	
 	    	logger: log ('app'),
@@ -35,7 +36,9 @@ module.exports = class extends Application {
 			},
 
 	    })
-	    	    
+
+		this.ext = Object.fromEntries (conf.src.map (db => [db.id, new DbPoolPg ({db, logger: log (db.id)})]))
+
 	}
 	
 	createBackService () {

@@ -5,21 +5,19 @@ module.exports = {
 select_table_data: 
 
     async function () {
+    
+    	const {app: {ext}, rq: {id_table}} = this, [base, table] = id_table.split ('.')
+    	
+    	await ext [base].toSet (this, 'db_ext')
+    
+		const all = await this.db_ext.getArray ('SELECT * FROM ' + table, [], {maxRows: 100, isPartial: true})
 
-		let {conf, rq} = this, {id_table} = rq, [prefix] = id_table.split ('.')
-
-		return conf.response ({type: 'table_data', part: 'records'}, rq, {
-
-			db: conf.pools.db, 
-
-			db_ext: conf.ext_pools [prefix],
-
-		})
+		return {all, cnt: all.length}
 
 	},
 
 ////////////////////////////////////////////////////////////////////////////////
-
+/*
 get_records_of_table_data:
 
     async function () {
@@ -111,5 +109,5 @@ get_records_of_table_data:
 		return {all, cnt: all.length}
 
     },
-
+*/
 }

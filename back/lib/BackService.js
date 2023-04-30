@@ -77,7 +77,7 @@ module.exports = class extends WebService {
 
 				code: err =>
 
-					'code'  in err ? err.code :
+					'code'  in err && /^[1-5]\d\d$/.test (err.code) ? err.code :
 
 					'field' in err ? 422 :
 

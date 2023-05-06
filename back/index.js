@@ -12,5 +12,11 @@ app.init ().then (() =>
 		.add (app.createBackService ())
 
 		.listen ()
+		
+	, x => {
+	
+		console.error (x)
+	
+	}
 
 )
